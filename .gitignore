@@ -1,0 +1,10 @@
+# Alles ignorieren
+*
+
+!.gitignore
+
+# Ordner wieder einschließen
+!*/
+
+# .tex-Dateien erlauben
+!*.tex
