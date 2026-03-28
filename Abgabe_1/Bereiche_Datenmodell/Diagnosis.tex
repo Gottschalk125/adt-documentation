@@ -1,0 +1,183 @@
+\section{Use-Cases: Medikamentenverwaltung}
+
+Die Medikamentenverwaltung umfasst die Prozesse rund um Diagnosen, Verschreibungen und die Verwaltung von Medikamenten. Im Folgenden werden zentrale Use-Cases strukturiert dargestellt.
+
+\vspace{1em}
+
+\subsection{Use-Case: Medikation anlegen}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Arzt \\
+\hline
+\textbf{Beschreibung} &
+Ein Arzt erstellt basierend auf einer bestehenden Diagnose eine neue Medikation für einen Patienten. Dabei wird ein geeignetes Medikament ausgewählt sowie Dosierung und Einnahmefrequenz festgelegt. \\
+\hline
+\textbf{Trigger} &
+Eine Diagnose wurde gestellt und erfordert eine medikamentöse Behandlung. \\
+\hline
+\textbf{Vorbedingungen} &
+Die Diagnose existiert im System und ein passendes Medikament ist in der Tabelle \texttt{drugs} vorhanden. \\   
+\hline
+\textbf{Ablauf} &
+Der Arzt wählt die Diagnose aus, sucht ein Medikament aus der Datenbank aus, definiert Dosierung, Einheit und Einnahmefrequenz und legt den Startzeitpunkt der Medikation fest. Anschließend wird der Datensatz in der Tabelle \texttt{medication} gespeichert. \\
+\hline
+\textbf{Ergebnis} &
+Eine neue Medikation ist im System gespeichert und mit der entsprechenden Diagnose verknüpft. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Medikation anlegen}
+\end{table}
+
+\vspace{1em}
+
+\subsection{Use-Case: Medikation ändern}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Arzt \\
+\hline
+\textbf{Beschreibung} &
+Eine bestehende Medikation wird angepasst, beispielsweise aufgrund von Nebenwirkungen oder unzureichender Wirksamkeit. \\
+\hline
+\textbf{Trigger} &
+Änderung des Gesundheitszustands oder neue medizinische Erkenntnisse. \\
+\hline
+\textbf{Vorbedingungen} &
+Eine aktive Medikation ist im System vorhanden. \\
+\hline
+\textbf{Ablauf} &
+Der Arzt ruft die bestehende Medikation auf, passt Dosierung, Medikament oder Einnahmefrequenz an und speichert die Änderungen im System. \\
+\hline
+\textbf{Ergebnis} &
+Die aktualisierte Medikation ist im System gespeichert und für weiteres medizinisches Personal sichtbar. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Medikation ändern}
+\end{table}
+
+\vspace{1em}
+
+\subsection{Use-Case: Medikation beenden}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Arzt \\
+\hline
+\textbf{Beschreibung} &
+Eine Medikation wird beendet, sobald die Behandlung abgeschlossen ist oder das Medikament nicht mehr benötigt wird. \\
+\hline
+\textbf{Trigger} &
+Abschluss der Therapie oder Abbruch der Behandlung. \\
+\hline
+\textbf{Vorbedingungen} &
+Eine laufende Medikation existiert im System. \\
+\hline
+\textbf{Ablauf} &
+Der Arzt trägt ein Enddatum in die bestehende Medikation ein oder markiert diese als abgeschlossen. \\
+\hline
+\textbf{Ergebnis} &
+Die Medikation ist beendet, bleibt jedoch zur Nachvollziehbarkeit im System erhalten. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Medikation beenden}
+\end{table}
+
+\vspace{1em}
+
+\subsection{Use-Case: Arzneimittel verwalten}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Verwaltung / Apotheke \\
+\hline
+\textbf{Beschreibung} &
+Medikamente werden im System angelegt, aktualisiert oder deaktiviert. Dabei werden Informationen wie Name, Wirkstoff und Bestand gepflegt. \\
+\hline
+\textbf{Trigger} &
+Ein neues Medikament wird eingeführt oder bestehende Daten müssen aktualisiert werden. \\
+\hline
+\textbf{Vorbedingungen} &
+Zugriffsrechte für die Verwaltung sind vorhanden. \\
+\hline
+\textbf{Ablauf} &
+Ein Mitarbeiter legt ein neues Medikament an oder bearbeitet bestehende Einträge in der Tabelle \texttt{drugs}. Dabei werden alle relevanten Informationen gepflegt. \\
+\hline
+\textbf{Ergebnis} &
+Die Medikamentendaten sind aktuell und stehen für Verschreibungen zur Verfügung. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Arzneimittel verwalten}
+\end{table}
+
+\vspace{1em}
+
+\subsection{Use-Case: Verfügbarkeit prüfen}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Arzt / Pflegepersonal \\
+\hline
+\textbf{Beschreibung} &
+Vor der Verschreibung wird geprüft, ob ein Medikament im Krankenhaus verfügbar ist. \\
+\hline
+\textbf{Trigger} &
+Auswahl eines Medikaments zur Behandlung. \\
+\hline
+\textbf{Vorbedingungen} &
+Das Medikament ist in der Tabelle \texttt{drugs} erfasst. \\
+\hline
+\textbf{Ablauf} &
+Das System prüft den aktuellen Lagerbestand und zeigt an, ob das Medikament verfügbar ist oder nachbestellt werden muss. \\
+\hline
+\textbf{Ergebnis} &
+Der Akteur erhält Information über die Verfügbarkeit und kann entsprechend entscheiden. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Verfügbarkeit prüfen}
+\end{table}
+
+\vspace{1em}
+
+\subsection{Use-Case: Medikationshistorie einsehen}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Akteur} & Arzt / Pflegepersonal \\
+\hline
+\textbf{Beschreibung} &
+Die bisherige Medikation eines Patienten wird angezeigt, um fundierte Entscheidungen treffen zu können. \\
+\hline
+\textbf{Trigger} &
+Behandlungsentscheidung oder Patientenaufnahme. \\
+\hline
+\textbf{Vorbedingungen} &
+Der Patient hat bereits Medikationen im System. \\
+\hline
+\textbf{Ablauf} &
+Das System lädt alle Medikationen eines Patienten aus der Datenbank und stellt diese chronologisch dar. \\
+\hline
+\textbf{Ergebnis} &
+Das medizinische Personal erhält einen vollständigen Überblick über die bisherige Behandlung. \\
+\hline
+\end{tabular}
+\caption{Use-Case: Medikationshistorie einsehen}
+\end{table}
