@@ -1,0 +1,774 @@
+id,name
+1,panic disorder
+2,vocal cord polyp
+3,turner syndrome
+4,cryptorchidism
+5,poisoning due to ethylene glycol
+6,atrophic vaginitis
+7,fracture of the hand
+8,cellulitis or abscess of mouth
+9,eye alignment disorder
+10,headache after lumbar puncture
+11,pyloric stenosis
+12,salivary gland disorder
+13,osteochondrosis
+14,injury to the knee
+15,metabolic disorder
+16,vaginitis
+17,sick sinus syndrome
+18,tinnitus of unknown cause
+19,glaucoma
+20,eating disorder
+21,transient ischemic attack
+22,pyelonephritis
+23,rotator cuff injury
+24,chronic pain disorder
+25,problem during pregnancy
+26,liver cancer
+27,atelectasis
+28,injury to the hand
+29,choledocholithiasis
+30,injury to the hip
+31,cirrhosis
+32,thoracic aortic aneurysm
+33,subdural hemorrhage
+34,diabetic retinopathy
+35,fibromyalgia
+36,ischemia of the bowel
+37,fetal alcohol syndrome
+38,peritonitis
+39,injury to the abdomen
+40,acute pancreatitis
+41,thrombophlebitis
+42,asthma
+43,foreign body in the vagina
+44,restless leg syndrome
+45,emphysema
+46,cysticercosis
+47,induced abortion
+48,teething syndrome
+49,infectious gastroenteritis
+50,acute sinusitis
+51,substance-related mental disorder
+52,postpartum depression
+53,coronary atherosclerosis
+54,spondylitis
+55,pituitary adenoma
+56,uterine fibroids
+57,idiopathic nonmenstrual bleeding
+58,chalazion
+59,ovarian torsion
+60,retinopathy due to high blood pressure
+61,vaginal yeast infection
+62,mastoiditis
+63,lung contusion
+64,hypertrophic obstructive cardiomyopathy (hocm)
+65,ingrown toe nail
+66,pulmonary eosinophilia
+67,corneal disorder
+68,foreign body in the gastrointestinal tract
+69,endophthalmitis
+70,intestinal malabsorption
+71,viral warts
+72,hyperhidrosis
+73,stroke
+74,pilonidal cyst
+75,crushing injury
+76,normal pressure hydrocephalus
+77,alopecia
+78,hashimoto thyroiditis
+79,flat feet
+80,nonalcoholic liver disease (nash)
+81,hemarthrosis
+82,pelvic organ prolapse
+83,fracture of the arm
+84,coagulation (bleeding) disorder
+85,intracranial hemorrhage
+86,hyperkalemia
+87,cornea infection
+88,abscess of the lung
+89,dengue fever
+90,chronic sinusitis
+91,cholesteatoma
+92,volvulus
+93,injury to the finger
+94,poisoning due to analgesics
+95,atrial fibrillation
+96,pinworm infection
+97,urethral valves
+98,open wound of the neck
+99,achalasia
+100,conductive hearing loss
+101,abdominal hernia
+102,cerebral palsy
+103,marijuana abuse
+104,cryptococcosis
+105,obesity
+106,indigestion
+107,bursitis
+108,esophageal cancer
+109,pulmonary congestion
+110,juvenile rheumatoid arthritis
+111,actinic keratosis
+112,acute otitis media
+113,astigmatism
+114,tuberous sclerosis
+115,empyema
+116,presbyacusis
+117,neonatal jaundice
+118,chronic obstructive pulmonary disease (copd)
+119,dislocation of the elbow
+120,spondylosis
+121,herpangina
+122,injury to the shoulder
+123,poisoning due to antidepressants
+124,infection of open wound
+125,deep vein thrombosis (dvt)
+126,protein deficiency
+127,myoclonus
+128,bone spur of the calcaneous
+129,von willebrand disease
+130,open wound of the back
+131,heart block
+132,colonic polyp
+133,magnesium deficiency
+134,female infertility of unknown cause
+135,pericarditis
+136,attention deficit hyperactivity disorder (adhd)
+137,pulmonic valve disease
+138,tietze syndrome
+139,cranial nerve palsy
+140,injury to the arm
+141,conversion disorder
+142,complex regional pain syndrome
+143,otosclerosis
+144,injury to the trunk
+145,hypothyroidism
+146,primary insomnia
+147,lice
+148,vitamin b12 deficiency
+149,diabetes
+150,vulvodynia
+151,endometriosis
+152,vasculitis
+153,concussion
+154,oral leukoplakia
+155,chronic kidney disease
+156,bladder disorder
+157,chorioretinitis
+158,priapism
+159,myositis
+160,mononucleosis
+161,neuralgia
+162,polycystic kidney disease
+163,bipolar disorder
+164,amyloidosis
+165,chronic inflammatory demyelinating polyneuropathy (cidp)
+166,gastroesophageal reflux disease (gerd)
+167,vitreous hemorrhage
+168,poisoning due to antimicrobial drugs
+169,open wound of the mouth
+170,scleroderma
+171,myasthenia gravis
+172,hypoglycemia
+173,idiopathic absence of menstruation
+174,dislocation of the ankle
+175,carbon monoxide poisoning
+176,panic attack
+177,plantar fasciitis
+178,hyperopia
+179,poisoning due to sedatives
+180,pemphigus
+181,peyronie disease
+182,hiatal hernia
+183,extrapyramidal effect of drugs
+184,meniere disease
+185,anal fissure
+186,allergy
+187,chronic otitis media
+188,fracture of the finger
+189,hirschsprung disease
+190,polymyalgia rheumatica
+191,lymphedema
+192,bladder cancer
+193,acute bronchospasm
+194,acute glaucoma
+195,open wound of the chest
+196,dislocation of the patella
+197,sciatica
+198,hypercalcemia
+199,stress incontinence
+200,varicose veins
+201,benign kidney cyst
+202,hydrocele of the testicle
+203,degenerative disc disease
+204,hirsutism
+205,dislocation of the foot
+206,hydronephrosis
+207,diverticulosis
+208,pain after an operation
+209,huntington disease
+210,lymphoma
+211,dermatitis due to sun exposure
+212,anemia due to chronic kidney disease
+213,injury to internal organ
+214,scleritis
+215,pterygium
+216,fungal infection of the skin
+217,insulin overdose
+218,syndrome of inappropriate secretion of adh (siadh)
+219,foreign body in the ear
+220,premenstrual tension syndrome
+221,orbital cellulitis
+222,injury to the leg
+223,hepatic encephalopathy
+224,bone cancer
+225,syringomyelia
+226,pulmonary fibrosis
+227,mitral valve disease
+228,parkinson disease
+229,gout
+230,otitis media
+231,drug abuse (opioids)
+232,myelodysplastic syndrome
+233,fracture of the shoulder
+234,acute kidney injury
+235,threatened pregnancy
+236,intracranial abscess
+237,gum disease
+238,open wound from surgical incision
+239,gastrointestinal hemorrhage
+240,seborrheic dermatitis
+241,drug abuse (methamphetamine)
+242,torticollis
+243,poisoning due to antihypertensives
+244,tension headache
+245,alcohol intoxication
+246,scurvy
+247,narcolepsy
+248,food allergy
+249,labyrinthitis
+250,anxiety
+251,impulse control disorder
+252,stenosis of the tear duct
+253,abscess of nose
+254,omphalitis
+255,leukemia
+256,bell palsy
+257,conjunctivitis due to allergy
+258,drug reaction
+259,adrenal cancer
+260,myopia
+261,osteoarthritis
+262,thyroid disease
+263,pharyngitis
+264,chronic rheumatic fever
+265,hypocalcemia
+266,macular degeneration
+267,pneumonia
+268,cold sore
+269,premature ventricular contractions (pvcs)
+270,testicular cancer
+271,hydrocephalus
+272,breast cancer
+273,anemia due to malignancy
+274,esophageal varices
+275,endometrial cancer
+276,cystic fibrosis
+277,intertrigo (skin condition)
+278,parathyroid adenoma
+279,glucocorticoid deficiency
+280,temporomandibular joint disorder
+281,wilson disease
+282,vesicoureteral reflux
+283,vitamin a deficiency
+284,gonorrhea
+285,fracture of the rib
+286,ependymoma
+287,hepatitis due to a toxin
+288,vaginal cyst
+289,open wound of the shoulder
+290,ectopic pregnancy
+291,chronic knee pain
+292,pinguecula
+293,hypergammaglobulinemia
+294,alcohol abuse
+295,carpal tunnel syndrome
+296,pituitary disorder
+297,kidney stone
+298,autism
+299,cat scratch disease
+300,chronic glaucoma
+301,retinal detachment
+302,aplastic anemia
+303,overflow incontinence
+304,hemolytic anemia
+305,lateral epicondylitis (tennis elbow)
+306,open wound of the eye
+307,syphilis
+308,diabetic kidney disease
+309,nose disorder
+310,drug withdrawal
+311,dental caries
+312,hypercholesterolemia
+313,fracture of the patella
+314,kidney failure
+315,fracture of the neck
+316,muscle spasm
+317,hemophilia
+318,hyperosmotic hyperketotic state
+319,peritonsillar abscess
+320,gastroparesis
+321,itching of unknown cause
+322,polycythemia vera
+323,thrombocytopenia
+324,head and neck cancer
+325,pseudohypoparathyroidism
+326,goiter
+327,urge incontinence
+328,edward syndrome
+329,open wound of the arm
+330,muscular dystrophy
+331,mittelschmerz
+332,corneal abrasion
+333,anemia of chronic disease
+334,dysthymic disorder
+335,scarlet fever
+336,hypertensive heart disease
+337,drug abuse (barbiturates)
+338,polycystic ovarian syndrome (pcos)
+339,encephalitis
+340,cyst of the eyelid
+341,balanitis
+342,foreign body in the throat
+343,drug abuse (cocaine)
+344,optic neuritis
+345,alcohol withdrawal
+346,premature atrial contractions (pacs)
+347,hemiplegia
+348,hammer toe
+349,open wound of the cheek
+350,joint effusion
+351,open wound of the knee
+352,meningioma
+353,brain cancer
+354,placental abruption
+355,seasonal allergies (hay fever)
+356,lung cancer
+357,primary kidney disease
+358,uterine cancer
+359,dry eye of unknown cause
+360,fibrocystic breast disease
+361,fungal infection of the hair
+362,tooth abscess
+363,envenomation from spider or animal bite
+364,vacterl syndrome
+365,vertebrobasilar insufficiency
+366,rectal disorder
+367,atonic bladder
+368,benign paroxysmal positional vertical (bppv)
+369,blepharospasm
+370,sarcoidosis
+371,metastatic cancer
+372,trigger finger (finger disorder)
+373,stye
+374,hemochromatosis
+375,osteochondroma
+376,cushing syndrome
+377,typhoid fever
+378,vitreous degeneration
+379,atrophic skin condition
+380,aspergillosis
+381,uterine atony
+382,trichinosis
+383,whooping cough
+384,open wound of the lip
+385,subacute thyroiditis
+386,oral mucosal lesion
+387,open wound due to trauma
+388,intracerebral hemorrhage
+389,alzheimer disease
+390,vaginismus
+391,systemic lupus erythematosis (sle)
+392,premature ovarian failure
+393,thoracic outlet syndrome
+394,ganglion cyst
+395,dislocation of the knee
+396,crohn disease
+397,postoperative infection
+398,folate deficiency
+399,fluid overload
+400,atrial flutter
+401,skin disorder
+402,floaters
+403,tooth disorder
+404,heart attack
+405,open wound of the abdomen
+406,fracture of the leg
+407,oral thrush (yeast infection)
+408,pityriasis rosea
+409,allergy to animals
+410,orthostatic hypotension
+411,obstructive sleep apnea (osa)
+412,hypokalemia
+413,psoriasis
+414,dislocation of the shoulder
+415,intussusception
+416,cervicitis
+417,abscess of the pharynx
+418,primary thrombocythemia
+419,arthritis of the hip
+420,decubitus ulcer
+421,hypernatremia
+422,sensorineural hearing loss
+423,chronic ulcer
+424,osteoporosis
+425,ileus
+426,sickle cell crisis
+427,urethritis
+428,prostatitis
+429,otitis externa (swimmer's ear)
+430,poisoning due to anticonvulsants
+431,testicular torsion
+432,tricuspid valve disease
+433,urethral stricture
+434,vitamin d deficiency
+435,hydatidiform mole
+436,pain disorder affecting the neck
+437,tuberculosis
+438,pelvic fistula
+439,acute bronchiolitis
+440,presbyopia
+441,dementia
+442,insect bite
+443,paroxysmal ventricular tachycardia
+444,congenital heart defect
+445,connective tissue disorder
+446,foreign body in the eye
+447,poisoning due to gas
+448,pyogenic skin infection
+449,endometrial hyperplasia
+450,acanthosis nigricans
+451,central atherosclerosis
+452,viral exanthem
+453,noninfectious gastroenteritis
+454,benign prostatic hyperplasia (bph)
+455,menopause
+456,primary immunodeficiency
+457,ovarian cancer
+458,cataract
+459,dislocation of the hip
+460,spinal stenosis
+461,intestinal obstruction
+462,heart contusion
+463,congenital malformation syndrome
+464,sporotrichosis
+465,lymphangitis
+466,wernicke korsakoff syndrome
+467,intestinal disease
+468,acute bronchitis
+469,persistent vomiting of unknown cause
+470,open wound of the foot
+471,myocarditis
+472,preeclampsia
+473,ischemic heart disease
+474,neurofibromatosis
+475,chickenpox
+476,pancreatic cancer
+477,neuropathy due to drugs
+478,croup
+479,idiopathic excessive menstruation
+480,amblyopia
+481,meckel diverticulum
+482,dislocation of the wrist
+483,ear drum damage
+484,erectile dysfunction
+485,temporary or benign blood in urine
+486,kidney disease due to longstanding hypertension
+487,chondromalacia of the patella
+488,onychomycosis
+489,urethral disorder
+490,lyme disease
+491,iron deficiency anemia
+492,acute respiratory distress syndrome (ards)
+493,toxic multinodular goiter
+494,open wound of the finger
+495,autonomic nervous system disorder
+496,psychosexual disorder
+497,anemia
+498,tendinitis
+499,common cold
+500,amyotrophic lateral sclerosis (als)
+501,central retinal artery or vein occlusion
+502,paroxysmal supraventricular tachycardia
+503,venous insufficiency
+504,trichomonas infection
+505,acne
+506,depression
+507,drug abuse
+508,urinary tract obstruction
+509,diabetes insipidus
+510,iridocyclitis
+511,varicocele of the testicles
+512,irritable bowel syndrome
+513,fracture of the foot
+514,ovarian cyst
+515,chlamydia
+516,parasitic disease
+517,fracture of the jaw
+518,lipoma
+519,female genitalia infection
+520,pulmonary hypertension
+521,thyroid nodule
+522,broken tooth
+523,dumping syndrome
+524,lymphadenitis
+525,injury to the face
+526,aortic valve disease
+527,rheumatoid arthritis
+528,spermatocele
+529,impetigo
+530,anal fistula
+531,hypothermia
+532,oppositional disorder
+533,migraine
+534,diabetic peripheral neuropathy
+535,testicular disorder
+536,gestational diabetes
+537,hidradenitis suppurativa
+538,valley fever
+539,conjunctivitis due to bacteria
+540,lewy body dementia
+541,multiple myeloma
+542,head injury
+543,ascending cholangitis
+544,idiopathic irregular menstrual cycle
+545,interstitial lung disease
+546,mononeuritis
+547,malaria
+548,somatization disorder
+549,hypovolemia
+550,schizophrenia
+551,knee ligament or meniscus tear
+552,endocarditis
+553,sepsis
+554,heat stroke
+555,cholecystitis
+556,cardiac arrest
+557,cardiomyopathy
+558,social phobia
+559,meningitis
+560,spherocytosis
+561,hormone disorder
+562,raynaud disease
+563,reactive arthritis
+564,scabies
+565,ear wax impaction
+566,hypertension of pregnancy
+567,peripheral arterial embolism
+568,rosacea
+569,fracture of the skull
+570,uveitis
+571,fracture of the facial bones
+572,tracheitis
+573,jaw disorder
+574,perirectal infection
+575,breast cyst
+576,post-traumatic stress disorder (ptsd)
+577,kidney cancer
+578,vulvar cancer
+579,blepharitis
+580,celiac disease
+581,cystitis
+582,sickle cell anemia
+583,subconjunctival hemorrhage
+584,hemorrhoids
+585,contact dermatitis
+586,sinus bradycardia
+587,high blood pressure
+588,pelvic inflammatory disease
+589,liver disease
+590,chronic constipation
+591,thyroid cancer
+592,flu
+593,friedrich ataxia
+594,tic (movement) disorder
+595,skin polyp
+596,brachial neuritis
+597,cervical cancer
+598,adrenal adenoma
+599,esophagitis
+600,gas gangrene
+601,yeast infection
+602,spina bifida
+603,drug poisoning due to medication
+604,alcoholic liver disease
+605,malignant hypertension
+606,diverticulitis
+607,moyamoya disease
+608,heat exhaustion
+609,psychotic disorder
+610,frostbite
+611,atrophy of the corpus cavernosum
+612,smoking or tobacco addiction
+613,sprain or strain
+614,essential tremor
+615,open wound of the ear
+616,foreign body in the nose
+617,idiopathic painful menstruation
+618,down syndrome
+619,idiopathic infrequent menstruation
+620,pneumothorax
+621,de quervain disease
+622,fracture of the vertebra
+623,human immunodeficiency virus infection (hiv)
+624,mumps
+625,subarachnoid hemorrhage
+626,acute fatty liver of pregnancy (aflp)
+627,ectropion
+628,scar
+629,lactose intolerance
+630,eustachian tube dysfunction (ear disorder)
+631,appendicitis
+632,graves disease
+633,dissociative disorder
+634,open wound of the face
+635,dislocation of the vertebra
+636,phimosis
+637,hyperemesis gravidarum
+638,pregnancy
+639,thalassemia
+640,placenta previa
+641,epidural hemorrhage
+642,septic arthritis
+643,athlete's foot
+644,pleural effusion
+645,aphakia
+646,vulvar disorder
+647,sialoadenitis
+648,gynecomastia
+649,urinary tract infection
+650,histoplasmosis
+651,erythema multiforme
+652,scoliosis
+653,bunion
+654,arrhythmia
+655,trigeminal neuralgia
+656,ankylosing spondylitis
+657,peripheral nerve disorder
+658,sebaceous cyst
+659,poisoning due to antipsychotics
+660,neurosis
+661,prostate cancer
+662,cerebral edema
+663,dislocation of the finger
+664,birth trauma
+665,chronic pancreatitis
+666,hematoma
+667,carcinoid syndrome
+668,open wound of the head
+669,seborrheic keratosis
+670,burn
+671,spontaneous abortion
+672,genital herpes
+673,adjustment reaction
+674,gallstone
+675,multiple sclerosis
+676,zenker diverticulum
+677,fracture of the pelvis
+678,pneumoconiosis
+679,hyperlipidemia
+680,ulcerative colitis
+681,male genitalia infection
+682,hpv
+683,angina
+684,injury to the spinal cord
+685,nasal polyp
+686,lichen simplex
+687,trichiasis
+688,acariasis
+689,colorectal cancer
+690,skin pigmentation disorder
+691,factitious disorder
+692,lymphogranuloma venereum
+693,galactorrhea of unknown cause
+694,g6pd enzyme deficiency
+695,nerve impingement near the shoulder
+696,toxoplasmosis
+697,fibroadenoma
+698,open wound of the hand
+699,missed abortion
+700,diabetic ketoacidosis
+701,granuloma inguinale
+702,obsessive compulsive disorder (ocd)
+703,injury of the ankle
+704,hyponatremia
+705,stricture of the esophagus
+706,fracture of the ankle
+707,soft tissue sarcoma
+708,bone disorder
+709,epilepsy
+710,personality disorder
+711,shingles (herpes zoster)
+712,tourette syndrome
+713,avascular necrosis
+714,strep throat
+715,spinocerebellar ataxia
+716,osteomyelitis
+717,sjogren syndrome
+718,adhesive capsulitis of the shoulder
+719,viral hepatitis
+720,tonsillar hypertrophy
+721,gastritis
+722,skin cancer
+723,rheumatic fever
+724,aphthous ulcer
+725,tonsillitis
+726,intestinal cancer
+727,rocky mountain spotted fever
+728,stomach cancer
+729,developmental disability
+730,acute stress reaction
+731,delirium
+732,callus
+733,guillain barre syndrome
+734,lumbago
+735,deviated nasal septum
+736,hemangioma
+737,peripheral arterial disease
+738,chronic back pain
+739,heart failure
+740,conjunctivitis
+741,herniated disk
+742,rhabdomyolysis
+743,breast infection (mastitis)
+744,abdominal aortic aneurysm
+745,pulmonary embolism
+746,conduct disorder
+747,mastectomy
+748,epididymitis
+749,premature rupture of amniotic membrane
+750,molluscum contagiosum
+751,necrotizing fasciitis
+752,benign vaginal discharge (leukorrhea)
+753,bladder obstruction
+754,melanoma
+755,cervical disorder
+756,laryngitis
+757,dyshidrosis
+758,poisoning due to opioids
+759,diaper rash
+760,lichen planus
+761,gastroduodenal ulcer
+762,inguinal hernia
+763,eczema
+764,asperger syndrome
+765,mucositis
+766,paronychia
+767,open wound of the jaw
+768,white blood cell disease
+769,kaposi sarcoma
+770,spondylolisthesis
+771,pseudotumor cerebri
+772,conjunctivitis due to virus
+773,open wound of the nose
