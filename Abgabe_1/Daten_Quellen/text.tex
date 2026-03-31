@@ -1,0 +1,28 @@
+Datenbeschaffung und Datenaufbereitung
+
+1.Zielsetzung
+Ziel dieses Projektteils ist die strukturierte Beschaffung und Aufbereitung von Daten um die Datenbank und das System das darauf aufbaut zu testen. Der Fokus liegt hierbei vor allem auf der Transformation von Rohdaten in ein konsistentes, qualitätsgesichertes Format. 
+
+2.Datenquelle
+Als primäre Datenquelle dienen öffentlich zugängliche Datensätze der Plattform Kaggle. Die Platform bietet eine Vielzahl an Datensammlungen aus unterschiedlichen Anwendungsbereichen an und eignet sich ideal für Datengetriebene Projekte. 
+Die Datensätze liegen normalerweise als JSON oder CSV vor und enthalten bereits strukturierte Informationen. Trotz dieser Vorarbeit gibt es leider keinen Datensatz der eins zu eins in unser Datenbankmodell passt. Auch handelt es sich dabei meist um Rohdaten die noch von Unstimmigkeiten, fehlenden Werten oder uneinheitlichen Formaten bereinigt werden müssen. 
+
+3.Datenimport 
+Um die Daten in die Datenbank zu importieren haben wir uns entschieden das automatisiert über Python Skripte stattfinden zu lassen. Python eignet sich durch seine umfangreichen Bibliotheken im Bereich der Datenverarbeitung besonders gut für diesen Anwendungsfall. 
+Der Importprozess gliedert sich in folgende Schritte: 
+Einlesen der Quelldateien
+Erste Strukturprüfung der Dateien 
+Transformation in geeignete Datenstrukturen 
+Bei diesem Prozess halten wir uns bewusst an eine Trennung zwischen Datenimport und Datenaufbereitung um eine klare Modularisierung zu gewährleisten. 
+
+4.Datenaufbereitung
+Ein zentraler Abschnitt nach der Erstellung der Datenbank ist es diese mit Daten zu füllen. Da es für unsere Datenbankschema keine bereits existierenden Datensets gibt haben wir hier das Ziel die Rohdaten in eine Form zu bringen. Der erste Schritt dafür ist die Bereinigung der Daten von Fehlenden Werten, inkonsistenten Schreibweisen und weiteren Problemen. Die Soll stattfinden durch das vereinheitlichen von Duplikaten, Entfernen unvollständiger Datensätze und weiteren Methode. Nach der Bereinigung werden diese Daten noch transformiert um sie an die Anforderungen unseres Datenbankschemas anzupassen. Hauptaufgabe wird es sein in diesem Schritt die Datentypen entsprechend unseres Datenbankmodells anzupassen und zu transformieren. Auch wird es in diesem Schritt unter Umständen Nötig sein Attribute aufzuteilen oder zusammenzuführen um sie unserem Datenbankschema anzupassen. Abschließendes Ziel in diesem Fall ist es eine einheitliche und logisch strukturierte Datenbasis zu bilden. 
+Bevor weitere Schritte zur Speicherung der Daten unternommen werden können muss die Datenbasis noch einmal abschließend validiert werden um eine hohe Datenqualität zu gewährleisten und spätere Probleme beim einfügen in die Datenbank oder bei der Datenverarbeitung und Datenanalyse zu verhindern. 
+
+5.Vorbereitung für die Speicherung 
+Nach der Aufbereitung werden die Daten in eine strukturierte Form überführt die es uns ermöglicht diese Daten einfach in eine Datenbank zu übertragen. Dabei soll bereits Rücksicht genommen werden das ganze so einfach wie möglich in die Datenbank Einpflegen zu können. 6.Technologischer Ansatz
+Für die Umsetzung der Datenverarbeitung und Vorbereitung haben wir uns für die Verwendung von Python entschieden. Die Gründe hierfür waren die gute Unterstützung für Datenverarbeitung, eine große Auswahl an Bibliotheken und die einfache Erweiterbarkeit. 
+Konkrete Entscheidungen für die Datenbanktechnologien und andere Tools werden in einem anderen Abschnitt behandelt und erläutert. 
+
+7.Herausforderungen
+Im Rahmen der Datenaufbereitung sind wir mehrere Problemen konfrontiert gewesen. Die größten Herausforderungen waren 
