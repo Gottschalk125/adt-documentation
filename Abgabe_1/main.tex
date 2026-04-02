@@ -9,12 +9,14 @@
 \usepackage{bookmark}
 \usepackage{csquotes}
 \usepackage{float}
+\usepackage{biblatex}
+\addbibresource{literature.bib}
 
 \title{Dokumentation Teil 1}
 \author{
   {\Large Gruppe 1} \\[0.5em]
   {\large \textit{THWS W\"urzburg Schweinfurt}} \\[1em]
-  Joshua Pfennig: \\
+  Joshua Pfennig: 5123097\\
   Tim Kn\"uttel: 5123101\\
   Jasmin Wander: \\
   David Heppenheimer: 5123026\\
@@ -28,10 +30,14 @@
 \newpage
 \tableofcontents
 
+\include{Einleitung/einleitung}
 \include{Infrastruktur/text}
 \include{Daten_Quellen/text}
 \include{Bereiche_Datenmodell/Diagnosis}
 \include{Bereiche_Datenmodell/PatientsAndPerson}
 \include{Bereiche_Datenmodell/Rooms}
+
+
+\printbibliography
 
 \end{document}
