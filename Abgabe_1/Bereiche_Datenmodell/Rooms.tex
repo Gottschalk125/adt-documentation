@@ -76,9 +76,16 @@ Aus den beschriebenen Anwendungsfällen lassen sich die notwendigen Entitäten u
 
 \begin{itemize}
     \item \textbf{Department (Abteilung):} Bildet die oberste organisatorische Einheit und gruppiert medizinische Kompetenzen sowie die zugehörigen Stationen.
-    \item \textbf{Station:} Repräsentiert eine physische Pflegeeinheit, die funktional fest einem \texttt{department} zugeordnet ist.
-    \item \textbf{Rooms (Zimmer):} Jedes Zimmer ist über die \texttt{station\_id} eindeutig lokalisierbar.
+    \item \textbf{Station:} Repräsentiert eine Pflegeeinheit, die funktional fest einem \texttt{department} zugeordnet ist.
+    \item \textbf{Rooms (Zimmer):} Jedes Zimmer ist über die \texttt{station\_id} eindeutig lokalisierbar und einer Station zugeordnet.
     \item \textbf{Patient:} Die zentrale Entität für alle medizinischen und administrativen Prozesse, verknüpft mit den Stammdaten der Relation \texttt{person}.
     \item \textbf{Bookings (Buchungen):} Fungiert als Auflösung der Relation \textit{Patient - Room}: Sie speichert die zeitliche Dimension (\texttt{from}/\texttt{until}) der Raumbelegung und verknüpft Patienten mit ihren jeweiligen Aufenthaltsorten.
 \end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Bereiche_Datenmodell/Entities_Patients_and_Rooms.png}
+    \caption{Resultierende Klassen zur Patienten- und Raumverwaltung}
+    \label{fig:patientsAndRoomsUseCases}
+\end{figure}
 
