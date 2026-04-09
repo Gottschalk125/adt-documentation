@@ -264,6 +264,16 @@ def fetch_table_counts(conn, table_names: list[str], schema: str = DEFAULT_SCHEM
     return counts
 
 
+def truncate_table(conn, schema: str, table: str) -> None:
+    sql = (
+        f"TRUNCATE TABLE {quote_ident(schema)}.{quote_ident(table)} "
+        "RESTART IDENTITY CASCADE"
+    )
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    conn.commit()
+
+
 def fetch_foreign_keys(
     conn,
     schema: str = DEFAULT_SCHEMA,
@@ -1372,6 +1382,10 @@ def cmd_import(args: argparse.Namespace) -> int:
         print("Resolved column mapping:")
         print_mapping(mapping)
 
+        if args.drop and not args.dry_run:
+            print(f"Dropping existing data in {target_table} (TRUNCATE ... CASCADE).")
+            truncate_table(conn, schema=args.schema, table=target_table)
+
         precheck_report = None
         if args.fk_precheck:
             refs = fk_map.get(target_table, [])
@@ -1731,6 +1745,11 @@ def build_parser() -> argparse.ArgumentParser:
     import_parser.add_argument("--batch-size", type=int, default=2000, help="Insert batch size.")
     import_parser.add_argument("--limit", type=int, help="Only process first N rows.")
     import_parser.add_argument("--dry-run", action="store_true", help="Validate and count rows without insert.")
+    import_parser.add_argument(
+        "--drop",
+        action="store_true",
+        help="TRUNCATE target table (RESTART IDENTITY CASCADE) before inserting.",
+    )
     import_parser.add_argument(
         "--fk-precheck",
         action=argparse.BooleanOptionalAction,

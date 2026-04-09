@@ -6,7 +6,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 INPUT_FILE = BASE_DIR / "medicine.jsonl"
-MEDICATION_FILE = BASE_DIR / "medication.csv"
 OUTPUT_FILE = BASE_DIR / "drugs.csv"
 
 DRUG_TYPES = [
@@ -45,23 +44,6 @@ def infer_type(_name: str) -> str:
     return random.choice(DRUG_TYPES)
 
 
-def load_required_drug_ids_from_medication() -> list[int]:
-    required: set[int] = set()
-    if not MEDICATION_FILE.exists():
-        return []
-    with MEDICATION_FILE.open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            value = (row.get("drug") or "").strip()
-            if not value:
-                continue
-            try:
-                required.add(int(value))
-            except ValueError:
-                continue
-    return sorted(required)
-
-
 def write_rows(rows: list[list[str | int]]) -> None:
     with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
@@ -70,7 +52,7 @@ def write_rows(rows: list[list[str | int]]) -> None:
 
 
 def build_from_jsonl() -> list[list[str | int]]:
-    rows: list[list[str | int]] = []
+    by_id: dict[int, list[str | int]] = {}
     with INPUT_FILE.open("r", encoding="utf-8") as jsonl_file:
         for line in jsonl_file:
             data = safe_json_load(line)
@@ -80,48 +62,34 @@ def build_from_jsonl() -> list[list[str | int]]:
             drug_id = data.get("id")
             if drug_id in (None, ""):
                 continue
-            rows.append(
+            try:
+                numeric_id = int(drug_id)
+            except (TypeError, ValueError):
+                continue
+
+            by_id.setdefault(
+                numeric_id,
                 [
-                    int(drug_id),
+                    numeric_id,
                     generate_stock(),
-                    name or f"Drug {drug_id}",
+                    name or f"medicine_{numeric_id}",
                     extract_active_ingredient(name),
                     infer_type(name),
-                ]
+                ],
             )
-    return rows
-
-
-def build_fallback_rows() -> list[list[str | int]]:
-    required_ids = load_required_drug_ids_from_medication()
-    if not required_ids:
-        required_ids = list(range(1, 701))
-
-    rows: list[list[str | int]] = []
-    for drug_id in required_ids:
-        name = f"Drug {drug_id}"
-        rows.append(
-            [
-                drug_id,
-                generate_stock(),
-                name,
-                f"ingredient_{drug_id}",
-                random.choice(DRUG_TYPES),
-            ]
-        )
-    return rows
+    return [by_id[key] for key in sorted(by_id.keys())]
 
 
 def main() -> None:
-    if INPUT_FILE.exists():
-        rows = build_from_jsonl()
-        source = INPUT_FILE.name
-    else:
-        rows = build_fallback_rows()
-        source = "fallback"
+    if not INPUT_FILE.exists():
+        raise RuntimeError(f"{INPUT_FILE} not found. This generator now requires medicine.jsonl.")
+
+    rows = build_from_jsonl()
+    if not rows:
+        raise RuntimeError(f"No valid medicine rows found in {INPUT_FILE}.")
 
     write_rows(rows)
-    print(f"{OUTPUT_FILE.name} created with {len(rows)} rows (source: {source}).")
+    print(f"{OUTPUT_FILE.name} created with {len(rows)} rows (source: {INPUT_FILE.name}).")
 
 
 if __name__ == "__main__":

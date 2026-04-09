@@ -44,7 +44,7 @@ run() {
   echo ""
   echo "=== Importing ${table} <- ${csv} ==="
   check_csv "$csv"
-  "$PY" "$IMP" import "$csv" --table "$table" --batch-size 2000 --on-conflict-do-nothing
+  "$PY" "$IMP" import "$csv" --table "$table" --batch-size 2000 --drop
 }
 
 run person persons_transformed.csv

@@ -48,6 +48,12 @@ Shows sample rows and per-column coverage stats.
 Interactive flow (table-first): choose DB table, choose CSV, inspect mismatches, dry-run, then import.
 
 ```bash
+.venv/bin/python insertion/showcase_demo.py
+```
+
+Prints one patient demo case with linked diagnosis, doctor, department, medication and dose details.
+
+```bash
 .venv/bin/python insertion/csv_importer.py import persons_transformed.csv --table person --dry-run
 ```
 
@@ -61,6 +67,12 @@ Runs actual insert.
 
 `import` now runs an FK precheck by default (disable with `--no-fk-precheck`).
 If FK refs are missing, import is aborted early by default to avoid very slow row-by-row failures.
+
+```bash
+.venv/bin/python insertion/csv_importer.py import persons_transformed.csv --table person --drop
+```
+
+Replaces existing table data first (`TRUNCATE ... RESTART IDENTITY CASCADE`), then imports fresh.
 
 ```bash
 .venv/bin/python insertion/csv_importer.py mismatches --details
