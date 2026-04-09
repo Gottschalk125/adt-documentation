@@ -42,8 +42,8 @@ def main():
         writer = csv.writer(patients_file)
         writer.writerow(["id", "person_id"])
 
-        for person_uuid in patient_uuids:
-            writer.writerow([str(uuid.uuid4()), person_uuid])
+        for patient_id, person_uuid in enumerate(patient_uuids, start=1):
+            writer.writerow([patient_id, person_uuid])
 
     with open(EMPLOYEES_OUTPUT_FILE, "w", newline="", encoding="utf-8") as employees_file:
         writer = csv.writer(employees_file)

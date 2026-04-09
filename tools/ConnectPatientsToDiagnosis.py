@@ -1,48 +1,64 @@
 import csv
-import random
+from collections import defaultdict
+from pathlib import Path
 
-PATIENTS_FILE = 'tools/patients.csv'
-DIAGNOSIS_FILE = 'tools/diagnosis.csv'
-OUTPUT_FILE = 'tools/patients_with_diagnosis.csv'
-
-patients = []
-with open(PATIENTS_FILE, newline='', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        patients.append(row)
+BASE_DIR = Path(__file__).resolve().parent
+PATIENTS_FILE = BASE_DIR / "patients.csv"
+DIAGNOSIS_FILE = BASE_DIR / "diagnosis.csv"
+OUTPUT_FILE = BASE_DIR / "patients_with_diagnosis.csv"
 
 
-diagnosis_pool = []
-with open(DIAGNOSIS_FILE, newline='', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        diagnosis_pool.append(row['id'])
-
-random.shuffle(diagnosis_pool)
-
-
-result_rows = []
-diag_index = 0
-
-for patient in patients:
-    count = random.randint(1, 3)
-    assigned = []
-    for _ in range(count):
-        diag_id = diagnosis_pool[diag_index % len(diagnosis_pool)]
-        diag_index += 1
-        assigned.append(diag_id)
-
-    result_rows.append({
-        'id': patient['id'],
-        'person_id': patient['person_id'],
-        'diagnosis_ids': assigned 
-    })
+def load_patients() -> list[dict[str, str]]:
+    patients: list[dict[str, str]] = []
+    with PATIENTS_FILE.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            patient_id = (row.get("id") or "").strip()
+            person_id = (row.get("person_id") or "").strip()
+            if patient_id and person_id:
+                patients.append({"id": patient_id, "person_id": person_id})
+    return patients
 
 
-with open(OUTPUT_FILE, 'w', newline='', encoding='utf-8') as f:
-    fieldnames = ['id', 'person_id', 'diagnosis_ids']
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(result_rows)
+def load_diagnosis_by_patient() -> dict[str, list[str]]:
+    diagnosis_by_patient: dict[str, list[str]] = defaultdict(list)
+    with DIAGNOSIS_FILE.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            diagnosis_id = (row.get("id") or "").strip()
+            diagnosed_patient = (row.get("diagnosed_patient") or "").strip()
+            if diagnosis_id and diagnosed_patient:
+                diagnosis_by_patient[diagnosed_patient].append(diagnosis_id)
+    return diagnosis_by_patient
 
-print(f"Fertig! {len(result_rows)} Patienten in '{OUTPUT_FILE}' geschrieben.")
+
+def main() -> None:
+    patients = load_patients()
+    diagnosis_by_patient = load_diagnosis_by_patient()
+
+    if not patients:
+        raise RuntimeError(f"No patients found in {PATIENTS_FILE}.")
+
+    result_rows: list[dict[str, str]] = []
+    for patient in patients:
+        diagnosis_ids = diagnosis_by_patient.get(patient["person_id"], [])
+        result_rows.append(
+            {
+                "id": patient["id"],
+                "person_id": patient["person_id"],
+                "diagnosis_ids": str(diagnosis_ids),
+                "diagnosis_count": str(len(diagnosis_ids)),
+            }
+        )
+
+    with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f:
+        fieldnames = ["id", "person_id", "diagnosis_ids", "diagnosis_count"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(result_rows)
+
+    print(f"{OUTPUT_FILE.name} created with {len(result_rows)} rows.")
+
+
+if __name__ == "__main__":
+    main()

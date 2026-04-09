@@ -1,700 +1,700 @@
 id,stock,name,active_ingredient,type
-1,482,Paracetamol,Paracetamol,suppository
-2,1087,Ibuprofen,Ibuprofen,spray
-3,3203,Amoxicillin,Amoxicillin,capsule
-4,3201,Cetirizine,Cetirizine,cream
-5,3683,Omeprazole,Omeprazole,spray
-6,4337,Metformin,Metformin,capsule
-7,4168,Loratadine,Loratadine,syrup
-8,1408,Atenolol,Atenolol,ointment
-9,3255,Clarithromycin,Clarithromycin,syrup
-10,2088,Domperidone,Domperidone,syrup
-11,4965,Levocetirizine,Levocetirizine,spray
-12,3248,Ranitidine,Ranitidine,drops
-13,4364,Metronidazole,Metronidazole,injection
-14,2885,Amlodipine,Amlodipine,drops
-15,1455,Ciprofloxacin,Ciprofloxacin,injection
-16,3176,Montelukast,Montelukast,suppository
-17,2796,Tramadol,Tramadol,syrup
-18,1871,Losartan,Losartan,injection
-19,1317,Fexofenadine,Fexofenadine,drops
-20,92,Venlafaxine,Venlafaxine,ointment
-21,2731,Sertraline,Sertraline,syrup
-22,3283,Atorvastatin,Atorvastatin,capsule
-23,4023,Simvastatin,Simvastatin,ointment
-24,935,Gabapentin,Gabapentin,syrup
-25,1123,Pregabalin,Pregabalin,syrup
-26,2950,Doxycycline,Doxycycline,spray
-27,2256,Prednisolone,Prednisolone,drops
-28,1823,Salbutamol,Salbutamol,ointment
-29,612,Theophylline,Theophylline,cream
-30,1419,Fluticasone,Fluticasone,injection
-31,4077,Budesonide,Budesonide,suppository
-32,1606,Paroxetine,Paroxetine,infusion
-33,1903,Escitalopram,Escitalopram,tablet
-34,1047,Venlafaxine,Venlafaxine,ointment
-35,728,Duloxetine,Duloxetine,syrup
-36,1481,Clonazepam,Clonazepam,drops
-37,486,Alprazolam,Alprazolam,syrup
-38,1329,Zolpidem,Zolpidem,cream
-39,1540,Tamsulosin,Tamsulosin,syrup
-40,140,Finasteride,Finasteride,infusion
-41,1664,Sildenafil,Sildenafil,ointment
-42,3953,Tadalafil,Tadalafil,injection
-43,2164,Levothyroxine,Levothyroxine,capsule
-44,3262,Calcium Carbonate,Calcium,drops
-45,903,Vitamin D3,Vitamin,infusion
-46,2213,Folic Acid,Folic,syrup
-47,2563,Iron Supplements,Iron,infusion
-48,1740,Multivitamin,Multivitamin,tablet
-49,1314,Aspirin,Aspirin,tablet
-50,1365,Clopidogrel,Clopidogrel,capsule
-51,1241,Warfarin,Warfarin,cream
-52,3035,Enalapril,Enalapril,cream
-53,1469,Ramipril,Ramipril,capsule
-54,2432,Isosorbide Mononitrate,Isosorbide,injection
-55,2532,Digoxin,Digoxin,drops
-56,1378,Carvedilol,Carvedilol,drops
-57,172,Propranolol,Propranolol,infusion
-58,3392,Nitroglycerin,Nitroglycerin,syrup
-59,3675,Hydrochlorothiazide,Hydrochlorothiazide,drops
-60,3073,Furosemide,Furosemide,syrup
-61,491,Acetazolamide,Acetazolamide,suppository
-62,1153,Spironolactone,Spironolactone,cream
-63,3530,Methotrexate,Methotrexate,suppository
-64,1592,Azathioprine,Azathioprine,capsule
-65,1039,Cyclosporine,Cyclosporine,syrup
-66,4545,Prednisone,Prednisone,ointment
-67,2807,Baclofen,Baclofen,tablet
-68,1548,Tizanidine,Tizanidine,infusion
-69,1388,Diazepam,Diazepam,suppository
-70,1998,Zopiclone,Zopiclone,capsule
-71,3251,Ondansetron,Ondansetron,capsule
-72,1226,Domperidone,Domperidone,tablet
-73,1829,Rabeprazole,Rabeprazole,ointment
-74,685,Esomeprazole,Esomeprazole,spray
-75,3683,Sucralfate,Sucralfate,drops
-76,3254,Misoprostol,Misoprostol,cream
-77,4457,Lactulose,Lactulose,tablet
-78,3556,Senna,Senna,injection
-79,1431,Loperamide,Loperamide,syrup
-80,4399,Bismuth Subsalicylate,Bismuth,capsule
-81,887,Colesevelam,Colesevelam,cream
-82,826,Ezetimibe,Ezetimibe,injection
-83,1582,Pioglitazone,Pioglitazone,suppository
-84,782,Gliclazide,Gliclazide,suppository
-85,1897,Repaglinide,Repaglinide,syrup
-86,618,Sitagliptin,Sitagliptin,syrup
-87,3944,Empagliflozin,Empagliflozin,ointment
-88,2160,Linagliptin,Linagliptin,injection
-89,4078,Canagliflozin,Canagliflozin,injection
-90,1190,Dapagliflozin,Dapagliflozin,tablet
-91,3601,Insulin Glargine,Insulin,ointment
-92,1881,Insulin Aspart,Insulin,suppository
-93,1838,Insulin Detemir,Insulin,tablet
-94,1938,Insulin Lispro,Insulin,suppository
-95,3370,Insulin Regular,Insulin,suppository
-96,2476,Insulin NPH,Insulin,suppository
-97,2836,Nateglinide,Nateglinide,infusion
-98,3485,Glimepiride,Glimepiride,cream
-99,1821,Chlorpropamide,Chlorpropamide,tablet
-100,660,Glibenclamide,Glibenclamide,drops
-101,990,Gliclazide MR,Gliclazide,suppository
-102,3424,Glipizide,Glipizide,syrup
-103,2668,Pioglitazone Metformin,Pioglitazone,syrup
-104,2278,Metformin Glimepiride,Metformin,tablet
-105,2580,Rosiglitazone,Rosiglitazone,drops
-106,819,Linagliptin Metformin,Linagliptin,syrup
-107,1047,Sitagliptin Metformin,Sitagliptin,cream
-108,1387,Empagliflozin Metformin,Empagliflozin,tablet
-109,3666,Dapagliflozin Metformin,Dapagliflozin,suppository
-110,1746,Canagliflozin Metformin,Canagliflozin,cream
-111,911,Chloramphenicol,Chloramphenicol,syrup
-112,3159,Cefixime,Cefixime,ointment
-113,3813,Cefuroxime,Cefuroxime,cream
-114,890,Cefpodoxime,Cefpodoxime,cream
-115,2813,Ceftibuten,Ceftibuten,injection
-116,1549,Cephalexin,Cephalexin,drops
-117,4772,Clindamycin,Clindamycin,syrup
-118,2205,Linezolid,Linezolid,tablet
-119,1856,Vancomycin,Vancomycin,infusion
-120,1898,Teicoplanin,Teicoplanin,injection
-121,1064,Aztreonam,Aztreonam,drops
-122,1613,Meropenem,Meropenem,injection
-123,3076,Imipenem/Cilastatin,Imipenem/Cilastatin,cream
-124,2315,Ertapenem,Ertapenem,spray
-125,2512,Doripenem,Doripenem,suppository
-126,955,Tigecycline,Tigecycline,cream
-127,1442,Colistin,Colistin,cream
-128,907,Fosfomycin,Fosfomycin,infusion
-129,3467,Nitrofurantoin,Nitrofurantoin,spray
-130,2023,Trimethoprim-Sulfamethoxazole,Trimethoprim-Sulfamethoxazole,injection
-131,1039,Flucloxacillin,Flucloxacillin,suppository
-132,2425,Dicloxacillin,Dicloxacillin,spray
-133,2482,Amoxicillin-Clavulanate,Amoxicillin-Clavulanate,spray
-134,4047,Augmentin,Augmentin,suppository
-135,1309,Piperacillin-Tazobactam,Piperacillin-Tazobactam,drops
-136,2153,Ceftriaxone,Ceftriaxone,infusion
-137,3121,Ceftazidime,Ceftazidime,spray
-138,1284,Ceftolozane-Tazobactam,Ceftolozane-Tazobactam,infusion
-139,1116,Ceftazidime-Avibactam,Ceftazidime-Avibactam,injection
-140,1452,Tedizolid,Tedizolid,cream
-141,1011,Oritavancin,Oritavancin,ointment
-142,2908,Delafloxacin,Delafloxacin,syrup
-143,1328,Eravacycline,Eravacycline,ointment
-144,1636,Plazomicin,Plazomicin,capsule
-145,2099,Cefiderocol,Cefiderocol,drops
-146,96,Levofloxacin,Levofloxacin,spray
-147,2874,Moxifloxacin,Moxifloxacin,cream
-148,2411,Norfloxacin,Norfloxacin,infusion
-149,346,Ofloxacin,Ofloxacin,tablet
-150,4066,Ciprofloxacin,Ciprofloxacin,tablet
-151,1006,Nitazoxanide,Nitazoxanide,suppository
-152,2526,Albendazole,Albendazole,infusion
-153,860,Mebendazole,Mebendazole,injection
-154,3508,Praziquantel,Praziquantel,tablet
-155,2665,Ivermectin,Ivermectin,tablet
-156,2192,Diethylcarbamazine,Diethylcarbamazine,cream
-157,1623,Pyrantel Pamoate,Pyrantel,ointment
-158,1165,Niclosamide,Niclosamide,cream
-159,2149,Chloroquine,Chloroquine,capsule
-160,1859,Hydroxychloroquine,Hydroxychloroquine,ointment
-161,1466,Artemether-Lumefantrine,Artemether-Lumefantrine,tablet
-162,4353,Atovaquone-Proguanil,Atovaquone-Proguanil,injection
-163,2207,Primaquine,Primaquine,syrup
-164,604,Quinine,Quinine,cream
-165,1860,Mefloquine,Mefloquine,capsule
-166,4209,Doxycycline,Doxycycline,suppository
-167,3484,Clindamycin,Clindamycin,spray
-168,3556,Pyrimethamine,Pyrimethamine,drops
-169,1875,Sulfadiazine,Sulfadiazine,infusion
-170,465,Metronidazole,Metronidazole,cream
-171,512,Tinidazole,Tinidazole,cream
-172,1972,Secnidazole,Secnidazole,tablet
-173,822,Nitrofurantoin,Nitrofurantoin,drops
-174,2672,Fosfomycin,Fosfomycin,infusion
-175,1123,Trimethoprim,Trimethoprim,syrup
-176,1421,Nitazoxanide,Nitazoxanide,suppository
-177,2924,Albendazole,Albendazole,syrup
-178,1664,Mebendazole,Mebendazole,suppository
-179,3226,Praziquantel,Praziquantel,spray
-180,2006,Ivermectin,Ivermectin,drops
-181,2402,Diethylcarbamazine,Diethylcarbamazine,drops
-182,1060,Pyrantel Pamoate,Pyrantel,tablet
-183,1606,Niclosamide,Niclosamide,capsule
-184,1574,Chloroquine,Chloroquine,ointment
-185,3396,Hydroxychloroquine,Hydroxychloroquine,injection
-186,1027,Artemether-Lumefantrine,Artemether-Lumefantrine,injection
-187,4473,Atovaquone-Proguanil,Atovaquone-Proguanil,infusion
-188,2722,Primaquine,Primaquine,suppository
-189,3000,Quinine,Quinine,capsule
-190,843,Mefloquine,Mefloquine,drops
-191,3448,Doxycycline,Doxycycline,syrup
-192,4181,Clindamycin,Clindamycin,suppository
-193,3056,Pyrimethamine,Pyrimethamine,injection
-194,2127,Sulfadiazine,Sulfadiazine,capsule
-195,3157,Metronidazole,Metronidazole,capsule
-196,2693,Tinidazole,Tinidazole,capsule
-197,2557,Secnidazole,Secnidazole,syrup
-198,1967,Nitrofurantoin,Nitrofurantoin,injection
-199,1109,Fosfomycin,Fosfomycin,drops
-200,2148,Trimethoprim,Trimethoprim,capsule
-201,1187,Acyclovir,Acyclovir,cream
-202,2680,Valacyclovir,Valacyclovir,tablet
-203,1226,Ganciclovir,Ganciclovir,capsule
-204,1697,Oseltamivir,Oseltamivir,spray
-205,3362,Zanamivir,Zanamivir,drops
-206,3786,Remdesivir,Remdesivir,ointment
-207,733,Ribavirin,Ribavirin,ointment
-208,2782,Tenofovir Disoproxil,Tenofovir,cream
-209,2127,Tenofovir Alafenamide,Tenofovir,tablet
-210,1747,Emtricitabine,Emtricitabine,drops
-211,4068,Lamivudine,Lamivudine,spray
-212,573,Efavirenz,Efavirenz,syrup
-213,68,Nevirapine,Nevirapine,injection
-214,740,Ritonavir,Ritonavir,spray
-215,3002,Atazanavir,Atazanavir,spray
-216,2209,Darunavir,Darunavir,syrup
-217,1564,Raltegravir,Raltegravir,suppository
-218,1030,Dolutegravir,Dolutegravir,suppository
-219,1824,Maraviroc,Maraviroc,drops
-220,2581,Enfuvirtide,Enfuvirtide,capsule
-221,2660,Interferon-alpha,Interferon-alpha,suppository
-222,1011,Interferon-beta,Interferon-beta,tablet
-223,1618,Peginterferon alfa-2a,Peginterferon,tablet
-224,3151,Peginterferon alfa-2b,Peginterferon,tablet
-225,1860,Imatinib,Imatinib,ointment
-226,3169,Dasatinib,Dasatinib,suppository
-227,568,Nilotinib,Nilotinib,syrup
-228,2261,Bosutinib,Bosutinib,spray
-229,2389,Ponatinib,Ponatinib,syrup
-230,3047,Midostaurin,Midostaurin,ointment
-231,2157,Venetoclax,Venetoclax,tablet
-232,875,Idelalisib,Idelalisib,spray
-233,1149,Duvelisib,Duvelisib,suppository
-234,2113,Copanlisib,Copanlisib,cream
-235,1808,Umbralisib,Umbralisib,spray
-236,4638,Acalabrutinib,Acalabrutinib,injection
-237,3373,Zanubrutinib,Zanubrutinib,tablet
-238,709,Ibrutinib,Ibrutinib,injection
-239,2147,Pirtobrutinib,Pirtobrutinib,ointment
-240,3219,Obinutuzumab,Obinutuzumab,drops
-241,3252,Rituximab,Rituximab,spray
-242,4524,Ofatumumab,Ofatumumab,ointment
-243,2362,Ublituximab,Ublituximab,ointment
-244,1907,Ocrelizumab,Ocrelizumab,cream
-245,847,Satralizumab,Satralizumab,tablet
-246,684,Eculizumab,Eculizumab,drops
-247,2435,Ravulizumab,Ravulizumab,ointment
-248,1977,Avacopan,Avacopan,spray
-249,3629,Anifrolumab,Anifrolumab,cream
-250,2729,Belimumab,Belimumab,tablet
-251,2705,Abatacept,Abatacept,injection
-252,2306,Tofacitinib,Tofacitinib,ointment
-253,3950,Baricitinib,Baricitinib,injection
-254,1598,Upadacitinib,Upadacitinib,infusion
-255,3297,Filgrastim,Filgrastim,infusion
-256,2755,Pegfilgrastim,Pegfilgrastim,capsule
-257,3846,Sargramostim,Sargramostim,spray
-258,1452,Epoetin alfa,Epoetin,ointment
-259,2637,Darbepoetin alfa,Darbepoetin,infusion
-260,2973,Methoxy Polyethylene Glycol-Epoetin Beta,Methoxy,infusion
-261,2141,Romiplostim,Romiplostim,spray
-262,1813,Eltrombopag,Eltrombopag,infusion
-263,3022,Avatrombopag,Avatrombopag,tablet
-264,3181,Lusutrombopag,Lusutrombopag,suppository
-265,833,Desmopressin,Desmopressin,capsule
-266,1949,Octreotide,Octreotide,ointment
-267,2128,Lanreotide,Lanreotide,cream
-268,132,Pasireotide,Pasireotide,capsule
-269,1180,Somatropin,Somatropin,injection
-270,3401,Tesamorelin,Tesamorelin,tablet
-271,2960,Cabergoline,Cabergoline,suppository
-272,2544,Pramipexole,Pramipexole,suppository
-273,3552,Ropinirole,Ropinirole,drops
-274,2320,Rotigotine,Rotigotine,drops
-275,3596,Amantadine,Amantadine,capsule
-276,1274,Entacapone,Entacapone,infusion
-277,1008,Opicapone,Opicapone,capsule
-278,1565,Selegiline,Selegiline,spray
-279,2310,Rasagiline,Rasagiline,spray
-281,2055,Levodopa/Carbidopa,Levodopa/Carbidopa,tablet
-282,2998,Carbidopa/Levodopa/Entacapone,Carbidopa/Levodopa/Entacapone,drops
-283,2769,Levodopa/Carbidopa Intestinal Gel,Levodopa/Carbidopa,injection
-284,4683,Levodopa/Carbidopa Extended-Release,Levodopa/Carbidopa,capsule
-285,1469,Levodopa/Carbidopa Controlled-Release,Levodopa/Carbidopa,ointment
-286,655,Trihexyphenidyl,Trihexyphenidyl,suppository
-287,1261,Benztropine,Benztropine,spray
-288,2623,Procyclidine,Procyclidine,tablet
-289,3476,Biperiden,Biperiden,drops
-290,2820,Orphenadrine,Orphenadrine,injection
-291,3431,Baclofen,Baclofen,suppository
-292,2405,Tizanidine,Tizanidine,spray
-293,4003,Dantrolene,Dantrolene,infusion
-294,814,Cyclobenzaprine,Cyclobenzaprine,capsule
-295,1119,Methocarbamol,Methocarbamol,cream
-296,4324,Carisoprodol,Carisoprodol,drops
-297,824,Metaxalone,Metaxalone,drops
-298,911,Orphenadrine,Orphenadrine,infusion
-299,1163,Chlorzoxazone,Chlorzoxazone,spray
-300,3413,Tolperisone,Tolperisone,drops
-301,2383,Gabapentin,Gabapentin,drops
-302,2307,Pregabalin,Pregabalin,syrup
-303,1772,Carbamazepine,Carbamazepine,ointment
-304,568,Oxcarbazepine,Oxcarbazepine,tablet
-305,1344,Lamotrigine,Lamotrigine,suppository
-306,2588,Topiramate,Topiramate,ointment
-307,2001,Levetiracetam,Levetiracetam,injection
-308,3961,Eslicarbazepine,Eslicarbazepine,capsule
-309,1600,Perampanel,Perampanel,cream
-310,2662,Brivaracetam,Brivaracetam,ointment
-311,809,Lacosamide,Lacosamide,drops
-312,3291,Zonisamide,Zonisamide,cream
-313,1476,Ethosuximide,Ethosuximide,tablet
-314,3228,Clobazam,Clobazam,ointment
-315,2127,Stiripentol,Stiripentol,capsule
-316,1756,Felbamate,Felbamate,cream
-317,2735,Primidone,Primidone,ointment
-318,322,Phenytoin,Phenytoin,tablet
-319,2618,Fosphenytoin,Fosphenytoin,drops
-320,2455,Valproic Acid,Valproic,infusion
-321,1274,Sodium Valproate,Sodium,cream
-322,1494,Clonazepam,Clonazepam,ointment
-323,118,Lorazepam,Lorazepam,drops
-324,2564,Midazolam,Midazolam,suppository
-325,3620,Alprazolam,Alprazolam,capsule
-326,3455,Temazepam,Temazepam,drops
-327,2533,Estazolam,Estazolam,ointment
-328,3789,Quazepam,Quazepam,drops
-329,3399,Flurazepam,Flurazepam,ointment
-330,864,Triazolam,Triazolam,capsule
-331,1576,Eszopiclone,Eszopiclone,infusion
-332,3421,Zolpidem,Zolpidem,capsule
-333,3652,Zaleplon,Zaleplon,ointment
-334,1848,Ramelteon,Ramelteon,infusion
-335,1955,Tasimelteon,Tasimelteon,suppository
-336,1286,Suvorexant,Suvorexant,cream
-337,1166,Lemborexant,Lemborexant,injection
-338,953,Daridorexant,Daridorexant,syrup
-339,1424,Trazodone,Trazodone,tablet
-340,400,Doxepin,Doxepin,syrup
-341,2393,Doxylamine,Doxylamine,spray
-342,3186,Diphenhydramine,Diphenhydramine,injection
-343,3378,Promethazine,Promethazine,suppository
-344,4046,Meclizine,Meclizine,drops
-345,3984,Hydroxyzine,Hydroxyzine,syrup
-346,776,Cyproheptadine,Cyproheptadine,syrup
-347,1391,Cetirizine,Cetirizine,drops
-348,3350,Loratadine,Loratadine,drops
-349,2945,Fexofenadine,Fexofenadine,syrup
-350,837,Desloratadine,Desloratadine,drops
-351,2600,Levocetirizine,Levocetirizine,spray
-352,4026,Bilastine,Bilastine,drops
-353,2006,Famotidine,Famotidine,injection
-354,2866,Ranitidine,Ranitidine,capsule
-355,1857,Nizatidine,Nizatidine,tablet
-356,681,Cimetidine,Cimetidine,injection
-357,1462,Omeprazole,Omeprazole,injection
-358,327,Esomeprazole,Esomeprazole,tablet
-359,1465,Lansoprazole,Lansoprazole,infusion
-360,1123,Pantoprazole,Pantoprazole,injection
-361,2903,Esomeprazole,Esomeprazole,drops
-362,2418,Rabeprazole,Rabeprazole,injection
-363,1435,Ilaprazole,Ilaprazole,spray
-364,1139,Tenatoprazole,Tenatoprazole,tablet
-365,667,Vonoprazan,Vonoprazan,capsule
-366,959,Revexeprazole,Revexeprazole,spray
-367,4027,Tegoprazan,Tegoprazan,tablet
-368,2225,Potassium Citrate,Potassium,cream
-369,3021,Sodium Bicarbonate,Sodium,cream
-370,1877,Calcium Carbonate,Calcium,cream
-371,2167,Sucralfate,Sucralfate,injection
-372,1892,Misoprostol,Misoprostol,tablet
-373,2143,Ranitidine Bismuth Citrate,Ranitidine,syrup
-374,4063,Bismuth Subsalicylate,Bismuth,drops
-375,3762,Loperamide,Loperamide,cream
-376,4193,Racecadotril,Racecadotril,spray
-377,2207,Diphenoxylate/Atropine,Diphenoxylate/Atropine,tablet
-378,2362,Kaolin-Pectin,Kaolin-Pectin,spray
-379,1155,Attapulgite,Attapulgite,spray
-380,3789,Activated Charcoal,Activated,tablet
-381,1235,Lactulose,Lactulose,syrup
-382,365,Macrogol (PEG),Macrogol,infusion
-383,1339,Senna,Senna,suppository
-384,2514,Bisacodyl,Bisacodyl,spray
-385,3373,Castor Oil,Castor,suppository
-386,3518,Mineral Oil,Mineral,spray
-387,2906,Docusate Sodium,Docusate,tablet
-388,3182,Sodium Picosulfate,Sodium,spray
-389,2739,Linaclotide,Linaclotide,cream
-390,1827,Plecanatide,Plecanatide,syrup
-391,2439,Prucalopride,Prucalopride,injection
-392,2061,Lubiprostone,Lubiprostone,drops
-393,3854,Naloxegol,Naloxegol,capsule
-394,2113,Naltrexone,Naltrexone,syrup
-395,1701,Methylnaltrexone,Methylnaltrexone,tablet
-396,4027,Naloxone,Naloxone,injection
-397,4031,Loperamide,Loperamide,syrup
-398,1461,Codeine,Codeine,tablet
-399,3123,Loperamide,Loperamide,syrup
-400,2206,Diphenoxylate,Diphenoxylate,suppository
-401,1874,Buprenorphine,Buprenorphine,drops
-402,2606,Naloxone,Naloxone,spray
-403,3443,Methadone,Methadone,suppository
-404,2754,Naltrexone,Naltrexone,injection
-405,1796,Bupropion,Bupropion,spray
-406,2252,Varenicline,Varenicline,syrup
-407,538,Acamprosate,Acamprosate,suppository
-408,3512,Disulfiram,Disulfiram,syrup
-409,1230,Topiramate,Topiramate,drops
-410,1633,Nalmefene,Nalmefene,infusion
-411,1551,Naltrexone,Naltrexone,drops
-412,1623,Gabapentin,Gabapentin,infusion
-413,864,Clonidine,Clonidine,infusion
-414,2529,Acamprosate,Acamprosate,infusion
-415,1456,Disulfiram,Disulfiram,cream
-416,1972,Baclofen,Baclofen,cream
-417,522,Naltrexone,Naltrexone,infusion
-418,2457,Lorazepam,Lorazepam,ointment
-419,3716,Chlordiazepoxide,Chlordiazepoxide,ointment
-420,4243,Diazepam,Diazepam,tablet
-421,3137,Olanzapine,Olanzapine,syrup
-422,2800,Risperidone,Risperidone,spray
-423,2173,Quetiapine,Quetiapine,injection
-424,1115,Ziprasidone,Ziprasidone,infusion
-425,638,Aripiprazole,Aripiprazole,drops
-426,3642,Paliperidone,Paliperidone,tablet
-427,730,Clozapine,Clozapine,spray
-428,1864,Iloperidone,Iloperidone,tablet
-429,2162,Asenapine,Asenapine,cream
-430,1583,Brexpiprazole,Brexpiprazole,infusion
-431,987,Cariprazine,Cariprazine,syrup
-432,3164,Lurasidone,Lurasidone,spray
-433,2180,Olanzapine-Fluoxetine,Olanzapine-Fluoxetine,tablet
-434,3028,Aripiprazole Lauroxil,Aripiprazole,ointment
-435,2029,Risperidone Consta,Risperidone,suppository
-436,2251,Paliperidone Palmitate,Paliperidone,tablet
-437,993,Olanzapine Pamoate,Olanzapine,capsule
-438,2645,Haloperidol,Haloperidol,infusion
-439,1178,Fluphenazine,Fluphenazine,spray
-440,2161,Perphenazine,Perphenazine,infusion
-441,2329,Thioridazine,Thioridazine,spray
-442,245,Trifluoperazine,Trifluoperazine,injection
-443,1922,Loxapine,Loxapine,tablet
-444,1717,Molindone,Molindone,tablet
-445,2444,Chlorpromazine,Chlorpromazine,syrup
-446,733,Thiothixene,Thiothixene,cream
-447,3465,Flupenthixol,Flupenthixol,tablet
-448,3195,Zuclopenthixol,Zuclopenthixol,cream
-449,2886,Penfluridol,Penfluridol,infusion
-450,2998,Pimozide,Pimozide,ointment
-451,1807,Clozapine,Clozapine,capsule
-452,1540,Olanzapine,Olanzapine,suppository
-453,577,Quetiapine,Quetiapine,ointment
-454,3976,Risperidone,Risperidone,ointment
-455,2590,Aripiprazole,Aripiprazole,ointment
-456,2854,Paliperidone,Paliperidone,ointment
-457,2368,Ziprasidone,Ziprasidone,drops
-458,2253,Lurasidone,Lurasidone,drops
-459,2373,Brexpiprazole,Brexpiprazole,injection
-460,3211,Cariprazine,Cariprazine,tablet
-461,1128,Olanzapine,Olanzapine,cream
-462,1067,Risperidone,Risperidone,injection
-463,1101,Quetiapine,Quetiapine,injection
-464,2540,Aripiprazole,Aripiprazole,injection
-465,1539,Paliperidone,Paliperidone,suppository
-466,2351,Ziprasidone,Ziprasidone,suppository
-467,2103,Lurasidone,Lurasidone,syrup
-468,2783,Brexpiprazole,Brexpiprazole,drops
-469,1707,Cariprazine,Cariprazine,tablet
-470,3949,Lumateperone,Lumateperone,suppository
-471,322,Olanzapine,Olanzapine,drops
-472,1239,Risperidone,Risperidone,capsule
-473,1728,Quetiapine,Quetiapine,injection
-474,4139,Aripiprazole,Aripiprazole,injection
-475,1683,Paliperidone,Paliperidone,capsule
-476,2518,Ziprasidone,Ziprasidone,tablet
-477,1296,Lurasidone,Lurasidone,injection
-478,1939,Brexpiprazole,Brexpiprazole,injection
-479,3421,Cariprazine,Cariprazine,capsule
-480,3908,Lumateperone,Lumateperone,cream
-481,2921,Olanzapine,Olanzapine,suppository
-482,2983,Risperidone,Risperidone,cream
-483,3335,Quetiapine,Quetiapine,cream
-484,393,Aripiprazole,Aripiprazole,infusion
-485,2544,Paliperidone,Paliperidone,infusion
-486,1889,Ziprasidone,Ziprasidone,infusion
-487,2650,Lurasidone,Lurasidone,syrup
-488,500,Brexpiprazole,Brexpiprazole,drops
-489,1542,Cariprazine,Cariprazine,suppository
-490,2366,Lumateperone,Lumateperone,injection
-491,3680,Olanzapine,Olanzapine,cream
-492,1330,Risperidone,Risperidone,spray
-493,3433,Quetiapine,Quetiapine,suppository
-494,2690,Aripiprazole,Aripiprazole,injection
-495,1279,Paliperidone,Paliperidone,cream
-496,853,Ziprasidone,Ziprasidone,drops
-497,2143,Lurasidone,Lurasidone,ointment
-498,4020,Brexpiprazole,Brexpiprazole,ointment
-499,2220,Cariprazine,Cariprazine,injection
-500,1272,Lumateperone,Lumateperone,ointment
-501,2658,Olanzapine,Olanzapine,infusion
-502,1383,Risperidone,Risperidone,spray
-503,802,Quetiapine,Quetiapine,tablet
-504,1928,Aripiprazole,Aripiprazole,capsule
-505,2688,Paliperidone,Paliperidone,injection
-506,1714,Ziprasidone,Ziprasidone,syrup
-507,2950,Lurasidone,Lurasidone,drops
-508,1850,Brexpiprazole,Brexpiprazole,ointment
-509,2383,Cariprazine,Cariprazine,cream
-510,3665,Lumateperone,Lumateperone,infusion
-511,3955,Olanzapine,Olanzapine,cream
-512,945,Risperidone,Risperidone,tablet
-513,1143,Quetiapine,Quetiapine,ointment
-514,2147,Aripiprazole,Aripiprazole,syrup
-515,3309,Paliperidone,Paliperidone,infusion
-516,3980,Ziprasidone,Ziprasidone,suppository
-517,1104,Lurasidone,Lurasidone,syrup
-518,3017,Brexpiprazole,Brexpiprazole,infusion
-519,2943,Cariprazine,Cariprazine,injection
-520,2674,Lumateperone,Lumateperone,suppository
-521,3158,Olanzapine,Olanzapine,infusion
-522,1417,Risperidone,Risperidone,infusion
-523,3046,Quetiapine,Quetiapine,capsule
-524,1548,Aripiprazole,Aripiprazole,syrup
-525,1768,Paliperidone,Paliperidone,infusion
-526,2717,Ziprasidone,Ziprasidone,capsule
-527,2041,Lurasidone,Lurasidone,drops
-528,2611,Brexpiprazole,Brexpiprazole,tablet
-529,386,Cariprazine,Cariprazine,suppository
-530,1722,Lumateperone,Lumateperone,ointment
-531,551,Olanzapine,Olanzapine,cream
-532,1748,Risperidone,Risperidone,ointment
-533,4006,Quetiapine,Quetiapine,drops
-534,1133,Aripiprazole,Aripiprazole,drops
-535,1281,Paliperidone,Paliperidone,capsule
-536,2080,Ziprasidone,Ziprasidone,cream
-537,1881,Lurasidone,Lurasidone,injection
-538,1112,Brexpiprazole,Brexpiprazole,suppository
-539,1769,Cariprazine,Cariprazine,suppository
-540,3274,Lumateperone,Lumateperone,suppository
-541,1327,Olanzapine,Olanzapine,suppository
-542,1869,Risperidone,Risperidone,ointment
-543,1557,Quetiapine,Quetiapine,suppository
-544,1231,Aripiprazole,Aripiprazole,spray
-545,2259,Paliperidone,Paliperidone,tablet
-546,3003,Ziprasidone,Ziprasidone,ointment
-547,3054,Lurasidone,Lurasidone,capsule
-548,2066,Brexpiprazole,Brexpiprazole,syrup
-549,1471,Cariprazine,Cariprazine,cream
-550,1087,Lumateperone,Lumateperone,drops
-551,915,Olanzapine,Olanzapine,spray
-552,529,Risperidone,Risperidone,suppository
-553,1519,Quetiapine,Quetiapine,syrup
-554,1181,Aripiprazole,Aripiprazole,capsule
-555,1552,Paliperidone,Paliperidone,ointment
-556,2706,Ziprasidone,Ziprasidone,cream
-557,1515,Lurasidone,Lurasidone,cream
-558,1420,Brexpiprazole,Brexpiprazole,capsule
-559,2562,Cariprazine,Cariprazine,spray
-560,1952,Lumateperone,Lumateperone,cream
-561,3227,Olanzapine,Olanzapine,drops
-562,2837,Risperidone,Risperidone,suppository
-563,1382,Quetiapine,Quetiapine,syrup
-564,1527,Aripiprazole,Aripiprazole,drops
-565,2269,Paliperidone,Paliperidone,infusion
-566,2151,Ziprasidone,Ziprasidone,cream
-567,2598,Lurasidone,Lurasidone,tablet
-568,2116,Brexpiprazole,Brexpiprazole,tablet
-569,2591,Cariprazine,Cariprazine,injection
-570,3040,Lumateperone,Lumateperone,drops
-571,2078,Olanzapine,Olanzapine,tablet
-572,921,Risperidone,Risperidone,infusion
-573,1372,Quetiapine,Quetiapine,syrup
-574,1326,Aripiprazole,Aripiprazole,injection
-575,785,Paliperidone,Paliperidone,capsule
-576,3683,Ziprasidone,Ziprasidone,spray
-577,2502,Lurasidone,Lurasidone,suppository
-578,1100,Brexpiprazole,Brexpiprazole,tablet
-579,3615,Cariprazine,Cariprazine,injection
-580,1822,Lumateperone,Lumateperone,injection
-581,3330,Olanzapine,Olanzapine,cream
-582,2674,Risperidone,Risperidone,tablet
-583,3547,Quetiapine,Quetiapine,infusion
-584,521,Aripiprazole,Aripiprazole,spray
-585,370,Paliperidone,Paliperidone,drops
-586,1504,Ziprasidone,Ziprasidone,syrup
-587,376,Lurasidone,Lurasidone,spray
-588,3454,Brexpiprazole,Brexpiprazole,syrup
-589,2346,Cariprazine,Cariprazine,capsule
-590,2037,Lumateperone,Lumateperone,spray
-591,2607,Olanzapine,Olanzapine,capsule
-592,4025,Risperidone,Risperidone,infusion
-593,2741,Quetiapine,Quetiapine,capsule
-594,2477,Aripiprazole,Aripiprazole,drops
-595,3710,Paliperidone,Paliperidone,suppository
-596,1032,Ziprasidone,Ziprasidone,ointment
-597,1938,Lurasidone,Lurasidone,capsule
-598,1654,Brexpiprazole,Brexpiprazole,injection
-599,1516,Cariprazine,Cariprazine,syrup
-600,1455,Lumateperone,Lumateperone,injection
-601,1634,Aripiprazole,Aripiprazole,injection
-602,3956,Asenapine,Asenapine,drops
-603,2039,Brexpiprazole,Brexpiprazole,tablet
-604,817,Cariprazine,Cariprazine,syrup
-605,3705,Clozapine,Clozapine,suppository
-606,971,Iloperidone,Iloperidone,ointment
-607,1791,Lurasidone,Lurasidone,ointment
-608,2446,Olanzapine,Olanzapine,suppository
-609,2056,Paliperidone,Paliperidone,cream
-610,3018,Quetiapine,Quetiapine,infusion
-611,2211,Risperidone,Risperidone,cream
-612,712,Ziprasidone,Ziprasidone,injection
-613,3441,Aripiprazole Lauroxil,Aripiprazole,suppository
-614,4584,Risperidone Consta,Risperidone,cream
-615,1681,Paliperidone Palmitate,Paliperidone,suppository
-616,3956,Olanzapine Pamoate,Olanzapine,suppository
-617,3305,Haloperidol,Haloperidol,cream
-618,3221,Fluphenazine,Fluphenazine,tablet
-619,2608,Perphenazine,Perphenazine,spray
-620,4000,Thioridazine,Thioridazine,cream
-621,2520,Trifluoperazine,Trifluoperazine,suppository
-622,1666,Loxapine,Loxapine,spray
-623,2012,Molindone,Molindone,infusion
-624,1828,Chlorpromazine,Chlorpromazine,syrup
-625,3202,Thiothixene,Thiothixene,capsule
-626,3199,Flupenthixol,Flupenthixol,tablet
-627,1675,Zuclopenthixol,Zuclopenthixol,infusion
-628,341,Penfluridol,Penfluridol,syrup
-629,1641,Pimozide,Pimozide,suppository
-630,3115,Lumateperone,Lumateperone,syrup
-631,2511,Brexipiprazole,Brexipiprazole,suppository
-632,1229,Cariprazine,Cariprazine,syrup
-633,2366,Lurasidone,Lurasidone,injection
-634,3168,Olanzapine,Olanzapine,cream
-635,1908,Quetiapine,Quetiapine,syrup
-636,2393,Risperidone,Risperidone,ointment
-637,882,Paliperidone,Paliperidone,injection
-638,3456,Ziprasidone,Ziprasidone,spray
-639,2409,Brexpiprazole,Brexpiprazole,spray
-640,991,Lumateperone,Lumateperone,infusion
-641,3913,Olanzapine,Olanzapine,tablet
-642,1384,Risperidone,Risperidone,capsule
-643,1468,Quetiapine,Quetiapine,cream
-644,4675,Aripiprazole,Aripiprazole,capsule
-645,1281,Paliperidone,Paliperidone,cream
-646,790,Ziprasidone,Ziprasidone,syrup
-647,3155,Lurasidone,Lurasidone,cream
-648,1017,Brexpiprazole,Brexpiprazole,tablet
-649,612,Cariprazine,Cariprazine,cream
-650,966,Lumateperone,Lumateperone,infusion
-651,2506,Olanzapine,Olanzapine,infusion
-652,4302,Risperidone,Risperidone,infusion
-653,2288,Quetiapine,Quetiapine,ointment
-654,2008,Aripiprazole,Aripiprazole,cream
-655,3383,Paliperidone,Paliperidone,tablet
-656,1257,Ziprasidone,Ziprasidone,capsule
-657,2596,Lurasidone,Lurasidone,infusion
-658,3221,Brexpiprazole,Brexpiprazole,drops
-659,3116,Cariprazine,Cariprazine,tablet
-660,2213,Lumateperone,Lumateperone,suppository
-661,2566,Olanzapine,Olanzapine,drops
-662,1222,Risperidone,Risperidone,syrup
-663,935,Quetiapine,Quetiapine,cream
-664,1594,Aripiprazole,Aripiprazole,suppository
-665,1196,Paliperidone,Paliperidone,tablet
-666,2246,Ziprasidone,Ziprasidone,capsule
-667,1076,Lurasidone,Lurasidone,ointment
-668,2515,Brexpiprazole,Brexpiprazole,ointment
-669,1114,Cariprazine,Cariprazine,injection
-670,2768,Lumateperone,Lumateperone,drops
-671,4185,Olanzapine,Olanzapine,ointment
-672,3296,Risperidone,Risperidone,spray
-673,2552,Quetiapine,Quetiapine,capsule
-674,2487,Aripiprazole,Aripiprazole,drops
-675,3777,Paliperidone,Paliperidone,cream
-676,1385,Ziprasidone,Ziprasidone,cream
-677,3807,Lurasidone,Lurasidone,injection
-678,1705,Brexpiprazole,Brexpiprazole,tablet
-679,1991,Cariprazine,Cariprazine,ointment
-680,1884,Lumateperone,Lumateperone,tablet
-681,2146,Olanzapine,Olanzapine,syrup
-682,1042,Risperidone,Risperidone,spray
-683,3591,Quetiapine,Quetiapine,capsule
-684,4191,Aripiprazole,Aripiprazole,infusion
-685,726,Paliperidone,Paliperidone,ointment
-686,1980,Ziprasidone,Ziprasidone,suppository
-687,2910,Lurasidone,Lurasidone,cream
-688,1638,Brexpiprazole,Brexpiprazole,tablet
-689,4709,Cariprazine,Cariprazine,ointment
-690,4123,Lumateperone,Lumateperone,spray
-691,2068,Olanzapine,Olanzapine,syrup
-692,688,Risperidone,Risperidone,infusion
-693,2654,Quetiapine,Quetiapine,tablet
-694,3355,Aripiprazole,Aripiprazole,capsule
-695,1566,Paliperidone,Paliperidone,injection
-696,2249,Ziprasidone,Ziprasidone,injection
-697,1631,Lurasidone,Lurasidone,capsule
-698,1494,Brexpiprazole,Brexpiprazole,suppository
-699,1036,Cariprazine,Cariprazine,injection
-700,247,Lumateperone,Lumateperone,capsule
+1,1625,Drug 1,ingredient_1,injection
+2,2481,Drug 2,ingredient_2,capsule
+3,1169,Drug 3,ingredient_3,injection
+4,2503,Drug 4,ingredient_4,ointment
+5,1879,Drug 5,ingredient_5,spray
+6,2134,Drug 6,ingredient_6,cream
+7,4725,Drug 7,ingredient_7,syrup
+8,1756,Drug 8,ingredient_8,drops
+9,3371,Drug 9,ingredient_9,capsule
+10,1579,Drug 10,ingredient_10,cream
+11,1955,Drug 11,ingredient_11,capsule
+12,396,Drug 12,ingredient_12,injection
+13,1232,Drug 13,ingredient_13,cream
+14,2618,Drug 14,ingredient_14,drops
+15,856,Drug 15,ingredient_15,capsule
+16,2607,Drug 16,ingredient_16,infusion
+17,3233,Drug 17,ingredient_17,cream
+18,991,Drug 18,ingredient_18,suppository
+19,2065,Drug 19,ingredient_19,injection
+20,2338,Drug 20,ingredient_20,drops
+21,3206,Drug 21,ingredient_21,drops
+22,2229,Drug 22,ingredient_22,ointment
+23,3788,Drug 23,ingredient_23,capsule
+24,544,Drug 24,ingredient_24,cream
+25,1679,Drug 25,ingredient_25,infusion
+26,1702,Drug 26,ingredient_26,ointment
+27,692,Drug 27,ingredient_27,ointment
+28,432,Drug 28,ingredient_28,suppository
+29,4379,Drug 29,ingredient_29,ointment
+30,1423,Drug 30,ingredient_30,injection
+31,2532,Drug 31,ingredient_31,syrup
+32,1393,Drug 32,ingredient_32,suppository
+33,756,Drug 33,ingredient_33,capsule
+34,1600,Drug 34,ingredient_34,spray
+35,1168,Drug 35,ingredient_35,syrup
+36,1683,Drug 36,ingredient_36,capsule
+37,1947,Drug 37,ingredient_37,ointment
+38,954,Drug 38,ingredient_38,cream
+39,1281,Drug 39,ingredient_39,injection
+40,1896,Drug 40,ingredient_40,capsule
+41,2174,Drug 41,ingredient_41,syrup
+42,2824,Drug 42,ingredient_42,injection
+43,1887,Drug 43,ingredient_43,infusion
+44,3337,Drug 44,ingredient_44,syrup
+45,2425,Drug 45,ingredient_45,tablet
+46,858,Drug 46,ingredient_46,tablet
+47,1704,Drug 47,ingredient_47,injection
+48,3042,Drug 48,ingredient_48,suppository
+49,3148,Drug 49,ingredient_49,capsule
+50,961,Drug 50,ingredient_50,injection
+51,2961,Drug 51,ingredient_51,injection
+52,904,Drug 52,ingredient_52,injection
+53,3065,Drug 53,ingredient_53,cream
+54,3510,Drug 54,ingredient_54,spray
+55,2661,Drug 55,ingredient_55,spray
+56,1933,Drug 56,ingredient_56,drops
+57,1065,Drug 57,ingredient_57,capsule
+58,2333,Drug 58,ingredient_58,ointment
+59,1879,Drug 59,ingredient_59,drops
+60,2659,Drug 60,ingredient_60,drops
+61,1429,Drug 61,ingredient_61,infusion
+62,3956,Drug 62,ingredient_62,syrup
+63,3949,Drug 63,ingredient_63,tablet
+64,2488,Drug 64,ingredient_64,capsule
+65,512,Drug 65,ingredient_65,suppository
+66,1968,Drug 66,ingredient_66,suppository
+67,3026,Drug 67,ingredient_67,capsule
+68,3742,Drug 68,ingredient_68,syrup
+69,3799,Drug 69,ingredient_69,spray
+70,1508,Drug 70,ingredient_70,tablet
+71,2429,Drug 71,ingredient_71,infusion
+72,742,Drug 72,ingredient_72,ointment
+73,1137,Drug 73,ingredient_73,infusion
+74,3421,Drug 74,ingredient_74,tablet
+75,1643,Drug 75,ingredient_75,capsule
+76,1892,Drug 76,ingredient_76,suppository
+77,4310,Drug 77,ingredient_77,suppository
+78,806,Drug 78,ingredient_78,drops
+79,613,Drug 79,ingredient_79,drops
+80,2107,Drug 80,ingredient_80,ointment
+81,1412,Drug 81,ingredient_81,spray
+82,2104,Drug 82,ingredient_82,injection
+83,2058,Drug 83,ingredient_83,syrup
+84,1970,Drug 84,ingredient_84,tablet
+85,3457,Drug 85,ingredient_85,drops
+86,1326,Drug 86,ingredient_86,spray
+87,992,Drug 87,ingredient_87,suppository
+88,1147,Drug 88,ingredient_88,suppository
+89,183,Drug 89,ingredient_89,tablet
+90,1782,Drug 90,ingredient_90,infusion
+91,1122,Drug 91,ingredient_91,drops
+92,2268,Drug 92,ingredient_92,suppository
+93,1326,Drug 93,ingredient_93,ointment
+94,4064,Drug 94,ingredient_94,capsule
+95,2232,Drug 95,ingredient_95,spray
+96,3162,Drug 96,ingredient_96,drops
+97,1583,Drug 97,ingredient_97,ointment
+98,2223,Drug 98,ingredient_98,tablet
+99,3356,Drug 99,ingredient_99,injection
+100,1587,Drug 100,ingredient_100,injection
+101,3592,Drug 101,ingredient_101,cream
+102,2529,Drug 102,ingredient_102,cream
+103,1396,Drug 103,ingredient_103,ointment
+104,3378,Drug 104,ingredient_104,infusion
+105,1565,Drug 105,ingredient_105,drops
+106,4184,Drug 106,ingredient_106,infusion
+107,1052,Drug 107,ingredient_107,infusion
+108,2949,Drug 108,ingredient_108,tablet
+109,985,Drug 109,ingredient_109,cream
+110,1661,Drug 110,ingredient_110,suppository
+111,4270,Drug 111,ingredient_111,drops
+112,1748,Drug 112,ingredient_112,suppository
+113,2121,Drug 113,ingredient_113,spray
+114,998,Drug 114,ingredient_114,ointment
+115,1568,Drug 115,ingredient_115,spray
+116,1635,Drug 116,ingredient_116,injection
+117,3343,Drug 117,ingredient_117,spray
+118,21,Drug 118,ingredient_118,tablet
+119,3033,Drug 119,ingredient_119,cream
+120,1647,Drug 120,ingredient_120,syrup
+121,2284,Drug 121,ingredient_121,spray
+122,2684,Drug 122,ingredient_122,cream
+123,2579,Drug 123,ingredient_123,injection
+124,1512,Drug 124,ingredient_124,spray
+125,1777,Drug 125,ingredient_125,ointment
+126,1072,Drug 126,ingredient_126,spray
+127,3437,Drug 127,ingredient_127,ointment
+128,1006,Drug 128,ingredient_128,drops
+129,1871,Drug 129,ingredient_129,injection
+130,1683,Drug 130,ingredient_130,ointment
+131,1630,Drug 131,ingredient_131,cream
+132,2122,Drug 132,ingredient_132,syrup
+133,756,Drug 133,ingredient_133,tablet
+134,2785,Drug 134,ingredient_134,cream
+135,1794,Drug 135,ingredient_135,injection
+136,3739,Drug 136,ingredient_136,cream
+137,913,Drug 137,ingredient_137,drops
+138,1239,Drug 138,ingredient_138,capsule
+139,3280,Drug 139,ingredient_139,ointment
+140,885,Drug 140,ingredient_140,tablet
+141,3656,Drug 141,ingredient_141,suppository
+142,2192,Drug 142,ingredient_142,drops
+143,3869,Drug 143,ingredient_143,tablet
+144,767,Drug 144,ingredient_144,ointment
+145,787,Drug 145,ingredient_145,cream
+146,2048,Drug 146,ingredient_146,drops
+147,1280,Drug 147,ingredient_147,infusion
+148,3189,Drug 148,ingredient_148,tablet
+149,3234,Drug 149,ingredient_149,ointment
+150,1079,Drug 150,ingredient_150,infusion
+151,4130,Drug 151,ingredient_151,injection
+152,1632,Drug 152,ingredient_152,drops
+153,2876,Drug 153,ingredient_153,cream
+154,2456,Drug 154,ingredient_154,injection
+155,1595,Drug 155,ingredient_155,capsule
+156,4347,Drug 156,ingredient_156,tablet
+157,3787,Drug 157,ingredient_157,tablet
+158,896,Drug 158,ingredient_158,capsule
+159,1728,Drug 159,ingredient_159,suppository
+160,1176,Drug 160,ingredient_160,injection
+161,3378,Drug 161,ingredient_161,tablet
+162,1826,Drug 162,ingredient_162,tablet
+163,2681,Drug 163,ingredient_163,ointment
+164,700,Drug 164,ingredient_164,ointment
+165,1823,Drug 165,ingredient_165,cream
+166,2591,Drug 166,ingredient_166,infusion
+167,1268,Drug 167,ingredient_167,capsule
+168,752,Drug 168,ingredient_168,tablet
+169,2448,Drug 169,ingredient_169,tablet
+170,3235,Drug 170,ingredient_170,drops
+171,921,Drug 171,ingredient_171,cream
+172,2204,Drug 172,ingredient_172,infusion
+173,746,Drug 173,ingredient_173,spray
+174,907,Drug 174,ingredient_174,drops
+175,3809,Drug 175,ingredient_175,syrup
+176,2481,Drug 176,ingredient_176,capsule
+177,2557,Drug 177,ingredient_177,cream
+178,2590,Drug 178,ingredient_178,cream
+179,3542,Drug 179,ingredient_179,syrup
+180,2713,Drug 180,ingredient_180,spray
+181,2992,Drug 181,ingredient_181,spray
+182,973,Drug 182,ingredient_182,syrup
+183,2476,Drug 183,ingredient_183,injection
+184,3463,Drug 184,ingredient_184,capsule
+185,4566,Drug 185,ingredient_185,suppository
+186,675,Drug 186,ingredient_186,tablet
+187,1844,Drug 187,ingredient_187,cream
+188,972,Drug 188,ingredient_188,drops
+189,2274,Drug 189,ingredient_189,tablet
+190,480,Drug 190,ingredient_190,cream
+191,3138,Drug 191,ingredient_191,suppository
+192,1266,Drug 192,ingredient_192,spray
+193,3545,Drug 193,ingredient_193,syrup
+194,1788,Drug 194,ingredient_194,tablet
+195,804,Drug 195,ingredient_195,suppository
+196,1613,Drug 196,ingredient_196,suppository
+197,1428,Drug 197,ingredient_197,spray
+198,177,Drug 198,ingredient_198,capsule
+199,2576,Drug 199,ingredient_199,drops
+200,2968,Drug 200,ingredient_200,tablet
+201,2447,Drug 201,ingredient_201,tablet
+202,3481,Drug 202,ingredient_202,spray
+203,2196,Drug 203,ingredient_203,cream
+204,2679,Drug 204,ingredient_204,syrup
+205,1443,Drug 205,ingredient_205,capsule
+206,4643,Drug 206,ingredient_206,infusion
+207,1944,Drug 207,ingredient_207,suppository
+208,3016,Drug 208,ingredient_208,drops
+209,3313,Drug 209,ingredient_209,infusion
+210,3594,Drug 210,ingredient_210,cream
+211,4424,Drug 211,ingredient_211,suppository
+212,386,Drug 212,ingredient_212,spray
+213,1494,Drug 213,ingredient_213,spray
+214,1668,Drug 214,ingredient_214,infusion
+215,1574,Drug 215,ingredient_215,capsule
+216,1174,Drug 216,ingredient_216,injection
+217,885,Drug 217,ingredient_217,ointment
+218,3810,Drug 218,ingredient_218,tablet
+219,2705,Drug 219,ingredient_219,syrup
+220,1065,Drug 220,ingredient_220,ointment
+221,822,Drug 221,ingredient_221,ointment
+222,3566,Drug 222,ingredient_222,spray
+223,1725,Drug 223,ingredient_223,drops
+224,266,Drug 224,ingredient_224,tablet
+225,1804,Drug 225,ingredient_225,capsule
+226,3337,Drug 226,ingredient_226,capsule
+227,392,Drug 227,ingredient_227,drops
+228,3333,Drug 228,ingredient_228,infusion
+229,3813,Drug 229,ingredient_229,syrup
+230,2997,Drug 230,ingredient_230,spray
+231,4448,Drug 231,ingredient_231,injection
+232,2533,Drug 232,ingredient_232,spray
+233,3730,Drug 233,ingredient_233,infusion
+234,3982,Drug 234,ingredient_234,capsule
+235,1132,Drug 235,ingredient_235,cream
+236,1578,Drug 236,ingredient_236,tablet
+237,3206,Drug 237,ingredient_237,tablet
+238,2232,Drug 238,ingredient_238,infusion
+239,3738,Drug 239,ingredient_239,ointment
+240,2061,Drug 240,ingredient_240,tablet
+241,1303,Drug 241,ingredient_241,syrup
+242,4024,Drug 242,ingredient_242,suppository
+243,1328,Drug 243,ingredient_243,injection
+244,2625,Drug 244,ingredient_244,ointment
+245,3018,Drug 245,ingredient_245,drops
+246,4073,Drug 246,ingredient_246,cream
+247,1374,Drug 247,ingredient_247,ointment
+248,1278,Drug 248,ingredient_248,drops
+249,2558,Drug 249,ingredient_249,tablet
+250,3753,Drug 250,ingredient_250,drops
+251,1825,Drug 251,ingredient_251,capsule
+252,4373,Drug 252,ingredient_252,capsule
+253,1773,Drug 253,ingredient_253,infusion
+254,551,Drug 254,ingredient_254,suppository
+255,126,Drug 255,ingredient_255,infusion
+256,1168,Drug 256,ingredient_256,capsule
+257,501,Drug 257,ingredient_257,tablet
+258,1784,Drug 258,ingredient_258,infusion
+259,586,Drug 259,ingredient_259,injection
+260,1822,Drug 260,ingredient_260,capsule
+261,3526,Drug 261,ingredient_261,syrup
+262,2114,Drug 262,ingredient_262,tablet
+263,2583,Drug 263,ingredient_263,injection
+264,642,Drug 264,ingredient_264,ointment
+265,2277,Drug 265,ingredient_265,tablet
+266,1432,Drug 266,ingredient_266,syrup
+267,2498,Drug 267,ingredient_267,ointment
+268,4162,Drug 268,ingredient_268,infusion
+269,2006,Drug 269,ingredient_269,injection
+270,3110,Drug 270,ingredient_270,ointment
+271,641,Drug 271,ingredient_271,spray
+272,3184,Drug 272,ingredient_272,spray
+273,2964,Drug 273,ingredient_273,spray
+274,1963,Drug 274,ingredient_274,tablet
+275,2406,Drug 275,ingredient_275,cream
+276,2004,Drug 276,ingredient_276,ointment
+277,1463,Drug 277,ingredient_277,spray
+278,4300,Drug 278,ingredient_278,ointment
+279,1321,Drug 279,ingredient_279,spray
+281,4573,Drug 281,ingredient_281,suppository
+282,1775,Drug 282,ingredient_282,suppository
+283,2874,Drug 283,ingredient_283,cream
+284,571,Drug 284,ingredient_284,infusion
+285,1660,Drug 285,ingredient_285,syrup
+286,786,Drug 286,ingredient_286,syrup
+287,1081,Drug 287,ingredient_287,suppository
+288,1914,Drug 288,ingredient_288,tablet
+289,2083,Drug 289,ingredient_289,injection
+290,2473,Drug 290,ingredient_290,capsule
+291,4642,Drug 291,ingredient_291,spray
+292,1569,Drug 292,ingredient_292,syrup
+293,1429,Drug 293,ingredient_293,ointment
+294,1357,Drug 294,ingredient_294,drops
+295,3278,Drug 295,ingredient_295,suppository
+296,2204,Drug 296,ingredient_296,capsule
+297,3690,Drug 297,ingredient_297,drops
+298,1507,Drug 298,ingredient_298,suppository
+299,3016,Drug 299,ingredient_299,suppository
+300,1083,Drug 300,ingredient_300,drops
+301,3108,Drug 301,ingredient_301,infusion
+302,3972,Drug 302,ingredient_302,syrup
+303,735,Drug 303,ingredient_303,capsule
+304,972,Drug 304,ingredient_304,suppository
+305,1583,Drug 305,ingredient_305,cream
+306,1599,Drug 306,ingredient_306,infusion
+307,1873,Drug 307,ingredient_307,suppository
+308,1846,Drug 308,ingredient_308,tablet
+309,1194,Drug 309,ingredient_309,cream
+310,3154,Drug 310,ingredient_310,capsule
+311,936,Drug 311,ingredient_311,suppository
+312,1183,Drug 312,ingredient_312,suppository
+313,2455,Drug 313,ingredient_313,syrup
+314,1320,Drug 314,ingredient_314,capsule
+315,1102,Drug 315,ingredient_315,drops
+316,2049,Drug 316,ingredient_316,suppository
+317,723,Drug 317,ingredient_317,spray
+318,2068,Drug 318,ingredient_318,infusion
+319,2176,Drug 319,ingredient_319,cream
+320,1798,Drug 320,ingredient_320,infusion
+321,922,Drug 321,ingredient_321,tablet
+322,2806,Drug 322,ingredient_322,infusion
+323,2265,Drug 323,ingredient_323,suppository
+324,1376,Drug 324,ingredient_324,capsule
+325,3923,Drug 325,ingredient_325,capsule
+326,1908,Drug 326,ingredient_326,infusion
+327,3063,Drug 327,ingredient_327,syrup
+328,1810,Drug 328,ingredient_328,injection
+329,1322,Drug 329,ingredient_329,tablet
+330,1150,Drug 330,ingredient_330,suppository
+331,2499,Drug 331,ingredient_331,drops
+332,2169,Drug 332,ingredient_332,capsule
+333,877,Drug 333,ingredient_333,ointment
+334,1685,Drug 334,ingredient_334,syrup
+335,2148,Drug 335,ingredient_335,spray
+336,2743,Drug 336,ingredient_336,spray
+337,3715,Drug 337,ingredient_337,suppository
+338,2585,Drug 338,ingredient_338,infusion
+339,2083,Drug 339,ingredient_339,infusion
+340,1656,Drug 340,ingredient_340,injection
+341,2943,Drug 341,ingredient_341,spray
+342,1393,Drug 342,ingredient_342,suppository
+343,823,Drug 343,ingredient_343,spray
+344,846,Drug 344,ingredient_344,cream
+345,1573,Drug 345,ingredient_345,syrup
+346,3320,Drug 346,ingredient_346,cream
+347,2910,Drug 347,ingredient_347,suppository
+348,1387,Drug 348,ingredient_348,tablet
+349,2787,Drug 349,ingredient_349,capsule
+350,821,Drug 350,ingredient_350,ointment
+351,3424,Drug 351,ingredient_351,spray
+352,1067,Drug 352,ingredient_352,drops
+353,2265,Drug 353,ingredient_353,ointment
+354,3565,Drug 354,ingredient_354,tablet
+355,2667,Drug 355,ingredient_355,spray
+356,1873,Drug 356,ingredient_356,capsule
+357,3087,Drug 357,ingredient_357,capsule
+358,970,Drug 358,ingredient_358,injection
+359,3145,Drug 359,ingredient_359,ointment
+360,2335,Drug 360,ingredient_360,ointment
+361,4413,Drug 361,ingredient_361,ointment
+362,2143,Drug 362,ingredient_362,capsule
+363,2189,Drug 363,ingredient_363,tablet
+364,1884,Drug 364,ingredient_364,suppository
+365,2685,Drug 365,ingredient_365,spray
+366,3602,Drug 366,ingredient_366,infusion
+367,609,Drug 367,ingredient_367,cream
+368,1979,Drug 368,ingredient_368,drops
+369,3671,Drug 369,ingredient_369,syrup
+370,3954,Drug 370,ingredient_370,spray
+371,2964,Drug 371,ingredient_371,spray
+372,2776,Drug 372,ingredient_372,syrup
+373,2716,Drug 373,ingredient_373,ointment
+374,1895,Drug 374,ingredient_374,injection
+375,3454,Drug 375,ingredient_375,spray
+376,3900,Drug 376,ingredient_376,infusion
+377,2893,Drug 377,ingredient_377,injection
+378,356,Drug 378,ingredient_378,capsule
+379,1687,Drug 379,ingredient_379,ointment
+380,2598,Drug 380,ingredient_380,injection
+381,2169,Drug 381,ingredient_381,tablet
+382,1822,Drug 382,ingredient_382,infusion
+383,1249,Drug 383,ingredient_383,spray
+384,162,Drug 384,ingredient_384,ointment
+385,1639,Drug 385,ingredient_385,cream
+386,694,Drug 386,ingredient_386,capsule
+387,2390,Drug 387,ingredient_387,drops
+388,2307,Drug 388,ingredient_388,infusion
+389,2606,Drug 389,ingredient_389,infusion
+390,509,Drug 390,ingredient_390,spray
+391,3665,Drug 391,ingredient_391,injection
+392,2045,Drug 392,ingredient_392,capsule
+393,3049,Drug 393,ingredient_393,injection
+394,1854,Drug 394,ingredient_394,infusion
+395,1441,Drug 395,ingredient_395,spray
+396,1385,Drug 396,ingredient_396,capsule
+397,1038,Drug 397,ingredient_397,cream
+398,321,Drug 398,ingredient_398,drops
+399,1646,Drug 399,ingredient_399,syrup
+400,206,Drug 400,ingredient_400,tablet
+401,2499,Drug 401,ingredient_401,cream
+402,704,Drug 402,ingredient_402,cream
+403,1169,Drug 403,ingredient_403,injection
+404,3204,Drug 404,ingredient_404,suppository
+405,2473,Drug 405,ingredient_405,cream
+406,1598,Drug 406,ingredient_406,injection
+407,1585,Drug 407,ingredient_407,syrup
+408,3273,Drug 408,ingredient_408,capsule
+409,1872,Drug 409,ingredient_409,capsule
+410,854,Drug 410,ingredient_410,capsule
+411,1032,Drug 411,ingredient_411,spray
+412,3356,Drug 412,ingredient_412,injection
+413,1036,Drug 413,ingredient_413,injection
+414,2703,Drug 414,ingredient_414,drops
+415,563,Drug 415,ingredient_415,injection
+416,4026,Drug 416,ingredient_416,tablet
+417,2983,Drug 417,ingredient_417,ointment
+418,2053,Drug 418,ingredient_418,infusion
+419,3882,Drug 419,ingredient_419,suppository
+420,2591,Drug 420,ingredient_420,spray
+421,1430,Drug 421,ingredient_421,ointment
+422,2117,Drug 422,ingredient_422,spray
+423,4081,Drug 423,ingredient_423,infusion
+424,1820,Drug 424,ingredient_424,syrup
+425,4213,Drug 425,ingredient_425,ointment
+426,3680,Drug 426,ingredient_426,ointment
+427,974,Drug 427,ingredient_427,injection
+428,3762,Drug 428,ingredient_428,infusion
+429,1447,Drug 429,ingredient_429,capsule
+430,1287,Drug 430,ingredient_430,drops
+431,2097,Drug 431,ingredient_431,spray
+432,2656,Drug 432,ingredient_432,ointment
+433,2463,Drug 433,ingredient_433,injection
+434,793,Drug 434,ingredient_434,ointment
+435,2821,Drug 435,ingredient_435,cream
+436,1740,Drug 436,ingredient_436,injection
+437,1128,Drug 437,ingredient_437,drops
+438,1472,Drug 438,ingredient_438,capsule
+439,4575,Drug 439,ingredient_439,injection
+440,1475,Drug 440,ingredient_440,tablet
+441,2376,Drug 441,ingredient_441,suppository
+442,3409,Drug 442,ingredient_442,tablet
+443,3438,Drug 443,ingredient_443,drops
+444,2048,Drug 444,ingredient_444,injection
+445,1780,Drug 445,ingredient_445,syrup
+446,3762,Drug 446,ingredient_446,drops
+447,4212,Drug 447,ingredient_447,ointment
+448,3352,Drug 448,ingredient_448,cream
+449,2518,Drug 449,ingredient_449,syrup
+450,1085,Drug 450,ingredient_450,suppository
+451,2644,Drug 451,ingredient_451,cream
+452,3478,Drug 452,ingredient_452,spray
+453,1952,Drug 453,ingredient_453,infusion
+454,1635,Drug 454,ingredient_454,infusion
+455,3680,Drug 455,ingredient_455,spray
+456,2868,Drug 456,ingredient_456,injection
+457,4021,Drug 457,ingredient_457,infusion
+458,2652,Drug 458,ingredient_458,injection
+459,1689,Drug 459,ingredient_459,suppository
+460,3029,Drug 460,ingredient_460,infusion
+461,1798,Drug 461,ingredient_461,drops
+462,1441,Drug 462,ingredient_462,syrup
+463,3557,Drug 463,ingredient_463,tablet
+464,2208,Drug 464,ingredient_464,syrup
+465,1190,Drug 465,ingredient_465,suppository
+466,4056,Drug 466,ingredient_466,cream
+467,2984,Drug 467,ingredient_467,spray
+468,2431,Drug 468,ingredient_468,capsule
+469,4399,Drug 469,ingredient_469,drops
+470,2356,Drug 470,ingredient_470,cream
+471,1757,Drug 471,ingredient_471,spray
+472,2230,Drug 472,ingredient_472,tablet
+473,1850,Drug 473,ingredient_473,syrup
+474,1188,Drug 474,ingredient_474,injection
+475,1209,Drug 475,ingredient_475,ointment
+476,2396,Drug 476,ingredient_476,suppository
+477,1724,Drug 477,ingredient_477,spray
+478,1964,Drug 478,ingredient_478,spray
+479,2015,Drug 479,ingredient_479,drops
+480,1700,Drug 480,ingredient_480,ointment
+481,4013,Drug 481,ingredient_481,capsule
+482,2819,Drug 482,ingredient_482,tablet
+483,2519,Drug 483,ingredient_483,injection
+484,2021,Drug 484,ingredient_484,syrup
+485,1364,Drug 485,ingredient_485,syrup
+486,1725,Drug 486,ingredient_486,ointment
+487,2668,Drug 487,ingredient_487,infusion
+488,1065,Drug 488,ingredient_488,spray
+489,1146,Drug 489,ingredient_489,injection
+490,841,Drug 490,ingredient_490,suppository
+491,863,Drug 491,ingredient_491,suppository
+492,3339,Drug 492,ingredient_492,drops
+493,3328,Drug 493,ingredient_493,spray
+494,2446,Drug 494,ingredient_494,injection
+495,3784,Drug 495,ingredient_495,suppository
+496,1763,Drug 496,ingredient_496,suppository
+497,2022,Drug 497,ingredient_497,spray
+498,1427,Drug 498,ingredient_498,injection
+499,2039,Drug 499,ingredient_499,ointment
+500,1263,Drug 500,ingredient_500,cream
+501,733,Drug 501,ingredient_501,spray
+502,2314,Drug 502,ingredient_502,drops
+503,1460,Drug 503,ingredient_503,tablet
+504,1069,Drug 504,ingredient_504,spray
+505,3333,Drug 505,ingredient_505,spray
+506,2403,Drug 506,ingredient_506,syrup
+507,2556,Drug 507,ingredient_507,syrup
+508,2536,Drug 508,ingredient_508,cream
+509,2857,Drug 509,ingredient_509,syrup
+510,2138,Drug 510,ingredient_510,tablet
+511,2853,Drug 511,ingredient_511,capsule
+512,976,Drug 512,ingredient_512,tablet
+513,1858,Drug 513,ingredient_513,capsule
+514,3058,Drug 514,ingredient_514,suppository
+515,1560,Drug 515,ingredient_515,injection
+516,947,Drug 516,ingredient_516,injection
+517,697,Drug 517,ingredient_517,injection
+518,1304,Drug 518,ingredient_518,tablet
+519,1786,Drug 519,ingredient_519,injection
+520,1668,Drug 520,ingredient_520,cream
+521,2115,Drug 521,ingredient_521,infusion
+522,3277,Drug 522,ingredient_522,syrup
+523,4070,Drug 523,ingredient_523,cream
+524,1228,Drug 524,ingredient_524,capsule
+525,3333,Drug 525,ingredient_525,ointment
+526,2494,Drug 526,ingredient_526,capsule
+527,3314,Drug 527,ingredient_527,cream
+528,467,Drug 528,ingredient_528,ointment
+529,747,Drug 529,ingredient_529,ointment
+530,3418,Drug 530,ingredient_530,cream
+531,3121,Drug 531,ingredient_531,tablet
+532,1515,Drug 532,ingredient_532,syrup
+533,1800,Drug 533,ingredient_533,ointment
+534,1022,Drug 534,ingredient_534,ointment
+535,1810,Drug 535,ingredient_535,spray
+536,3913,Drug 536,ingredient_536,cream
+537,1199,Drug 537,ingredient_537,tablet
+538,3051,Drug 538,ingredient_538,injection
+539,1387,Drug 539,ingredient_539,tablet
+540,3184,Drug 540,ingredient_540,injection
+541,2620,Drug 541,ingredient_541,injection
+542,2834,Drug 542,ingredient_542,syrup
+543,876,Drug 543,ingredient_543,ointment
+544,1685,Drug 544,ingredient_544,cream
+545,666,Drug 545,ingredient_545,infusion
+546,845,Drug 546,ingredient_546,spray
+547,216,Drug 547,ingredient_547,injection
+548,1948,Drug 548,ingredient_548,capsule
+549,1204,Drug 549,ingredient_549,drops
+550,3559,Drug 550,ingredient_550,suppository
+551,1524,Drug 551,ingredient_551,ointment
+552,1267,Drug 552,ingredient_552,injection
+553,4036,Drug 553,ingredient_553,suppository
+554,569,Drug 554,ingredient_554,drops
+555,3731,Drug 555,ingredient_555,injection
+556,3476,Drug 556,ingredient_556,suppository
+557,1190,Drug 557,ingredient_557,ointment
+558,2566,Drug 558,ingredient_558,infusion
+559,1783,Drug 559,ingredient_559,injection
+560,4169,Drug 560,ingredient_560,infusion
+561,367,Drug 561,ingredient_561,drops
+562,1621,Drug 562,ingredient_562,capsule
+563,4115,Drug 563,ingredient_563,injection
+564,3038,Drug 564,ingredient_564,drops
+565,460,Drug 565,ingredient_565,injection
+566,3259,Drug 566,ingredient_566,drops
+567,1387,Drug 567,ingredient_567,cream
+568,3839,Drug 568,ingredient_568,syrup
+569,3319,Drug 569,ingredient_569,drops
+570,888,Drug 570,ingredient_570,capsule
+571,1501,Drug 571,ingredient_571,ointment
+572,1607,Drug 572,ingredient_572,syrup
+573,1804,Drug 573,ingredient_573,drops
+574,962,Drug 574,ingredient_574,cream
+575,3071,Drug 575,ingredient_575,capsule
+576,1455,Drug 576,ingredient_576,cream
+577,1246,Drug 577,ingredient_577,spray
+578,1451,Drug 578,ingredient_578,injection
+579,2411,Drug 579,ingredient_579,tablet
+580,3774,Drug 580,ingredient_580,tablet
+581,3895,Drug 581,ingredient_581,syrup
+582,2051,Drug 582,ingredient_582,capsule
+583,895,Drug 583,ingredient_583,syrup
+584,2079,Drug 584,ingredient_584,suppository
+585,2282,Drug 585,ingredient_585,capsule
+586,415,Drug 586,ingredient_586,capsule
+587,1157,Drug 587,ingredient_587,cream
+588,1501,Drug 588,ingredient_588,tablet
+589,2567,Drug 589,ingredient_589,infusion
+590,1172,Drug 590,ingredient_590,syrup
+591,1056,Drug 591,ingredient_591,tablet
+592,4277,Drug 592,ingredient_592,suppository
+593,2024,Drug 593,ingredient_593,capsule
+594,1015,Drug 594,ingredient_594,injection
+595,756,Drug 595,ingredient_595,ointment
+596,2772,Drug 596,ingredient_596,infusion
+597,2764,Drug 597,ingredient_597,suppository
+598,2887,Drug 598,ingredient_598,syrup
+599,3222,Drug 599,ingredient_599,syrup
+600,597,Drug 600,ingredient_600,spray
+601,2337,Drug 601,ingredient_601,drops
+602,2806,Drug 602,ingredient_602,cream
+603,1586,Drug 603,ingredient_603,suppository
+604,2373,Drug 604,ingredient_604,tablet
+605,2455,Drug 605,ingredient_605,infusion
+606,1503,Drug 606,ingredient_606,spray
+607,2880,Drug 607,ingredient_607,spray
+608,1103,Drug 608,ingredient_608,tablet
+609,1473,Drug 609,ingredient_609,tablet
+610,4003,Drug 610,ingredient_610,injection
+611,3102,Drug 611,ingredient_611,spray
+612,2222,Drug 612,ingredient_612,infusion
+613,2601,Drug 613,ingredient_613,syrup
+614,859,Drug 614,ingredient_614,capsule
+615,1484,Drug 615,ingredient_615,drops
+616,1560,Drug 616,ingredient_616,capsule
+617,2428,Drug 617,ingredient_617,ointment
+618,2016,Drug 618,ingredient_618,spray
+619,2791,Drug 619,ingredient_619,ointment
+620,711,Drug 620,ingredient_620,ointment
+621,1886,Drug 621,ingredient_621,tablet
+622,3605,Drug 622,ingredient_622,infusion
+623,2725,Drug 623,ingredient_623,injection
+624,2647,Drug 624,ingredient_624,cream
+625,2358,Drug 625,ingredient_625,ointment
+626,2018,Drug 626,ingredient_626,suppository
+627,934,Drug 627,ingredient_627,tablet
+628,3933,Drug 628,ingredient_628,syrup
+629,3285,Drug 629,ingredient_629,tablet
+630,2395,Drug 630,ingredient_630,tablet
+631,3706,Drug 631,ingredient_631,drops
+632,2977,Drug 632,ingredient_632,suppository
+633,4823,Drug 633,ingredient_633,infusion
+634,3081,Drug 634,ingredient_634,injection
+635,2158,Drug 635,ingredient_635,infusion
+636,2871,Drug 636,ingredient_636,ointment
+637,1432,Drug 637,ingredient_637,cream
+638,2726,Drug 638,ingredient_638,cream
+639,1561,Drug 639,ingredient_639,ointment
+640,2652,Drug 640,ingredient_640,drops
+641,3374,Drug 641,ingredient_641,cream
+642,1465,Drug 642,ingredient_642,injection
+643,2143,Drug 643,ingredient_643,cream
+644,2327,Drug 644,ingredient_644,capsule
+645,3346,Drug 645,ingredient_645,suppository
+646,3491,Drug 646,ingredient_646,ointment
+647,412,Drug 647,ingredient_647,cream
+648,1437,Drug 648,ingredient_648,syrup
+649,1845,Drug 649,ingredient_649,suppository
+650,3422,Drug 650,ingredient_650,syrup
+651,3223,Drug 651,ingredient_651,suppository
+652,2492,Drug 652,ingredient_652,injection
+653,1683,Drug 653,ingredient_653,tablet
+654,2060,Drug 654,ingredient_654,spray
+655,3858,Drug 655,ingredient_655,injection
+656,832,Drug 656,ingredient_656,infusion
+657,2974,Drug 657,ingredient_657,ointment
+658,1475,Drug 658,ingredient_658,infusion
+659,959,Drug 659,ingredient_659,injection
+660,1061,Drug 660,ingredient_660,injection
+661,2421,Drug 661,ingredient_661,spray
+662,3412,Drug 662,ingredient_662,ointment
+663,2297,Drug 663,ingredient_663,tablet
+664,2534,Drug 664,ingredient_664,suppository
+665,2453,Drug 665,ingredient_665,spray
+666,1388,Drug 666,ingredient_666,injection
+667,575,Drug 667,ingredient_667,cream
+668,1452,Drug 668,ingredient_668,tablet
+669,1556,Drug 669,ingredient_669,injection
+670,1680,Drug 670,ingredient_670,suppository
+671,490,Drug 671,ingredient_671,suppository
+672,1023,Drug 672,ingredient_672,capsule
+673,2813,Drug 673,ingredient_673,ointment
+674,2109,Drug 674,ingredient_674,syrup
+675,1401,Drug 675,ingredient_675,infusion
+676,2423,Drug 676,ingredient_676,spray
+677,923,Drug 677,ingredient_677,tablet
+678,3551,Drug 678,ingredient_678,drops
+679,2417,Drug 679,ingredient_679,infusion
+680,3533,Drug 680,ingredient_680,ointment
+681,1615,Drug 681,ingredient_681,suppository
+682,4182,Drug 682,ingredient_682,ointment
+683,2257,Drug 683,ingredient_683,ointment
+684,1700,Drug 684,ingredient_684,tablet
+685,1198,Drug 685,ingredient_685,capsule
+686,2177,Drug 686,ingredient_686,ointment
+687,3199,Drug 687,ingredient_687,syrup
+688,1158,Drug 688,ingredient_688,infusion
+689,2580,Drug 689,ingredient_689,tablet
+690,1931,Drug 690,ingredient_690,drops
+691,3139,Drug 691,ingredient_691,syrup
+692,3715,Drug 692,ingredient_692,infusion
+693,3300,Drug 693,ingredient_693,capsule
+694,2464,Drug 694,ingredient_694,ointment
+695,2554,Drug 695,ingredient_695,suppository
+696,2235,Drug 696,ingredient_696,tablet
+697,2139,Drug 697,ingredient_697,infusion
+698,307,Drug 698,ingredient_698,syrup
+699,518,Drug 699,ingredient_699,injection
+700,1257,Drug 700,ingredient_700,injection

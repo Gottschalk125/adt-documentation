@@ -26,7 +26,7 @@ def generate_birthdate_from_age(age_value: str) -> str:
     random_offset = random.randint(0, delta_days)
 
     birthdate = start_of_year + timedelta(days=random_offset)
-    return birthdate.strftime("%d.%m.%Y")
+    return birthdate.strftime("%Y-%m-%d")
 
 
 def parse_int(value: str):

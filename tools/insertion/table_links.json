@@ -1,0 +1,12 @@
+{
+  "department": "departments.csv",
+  "diagnosis": "diagnosis.csv",
+  "doctors": "doctors.csv",
+  "dose": "dose.csv",
+  "drugs": "drugs.csv",
+  "employee": "employees.csv",
+  "medication": "medication.csv",
+  "nurses": "nurses.csv",
+  "patient": "patients.csv",
+  "person": "persons_transformed.csv"
+}
