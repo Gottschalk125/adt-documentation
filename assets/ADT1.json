@@ -1,16 +1,16 @@
 {
   "id": "0",
   "name": "ADT1",
-  "createdAt": "2026-03-26T07:20:24.451Z",
-  "updatedAt": "2026-04-09T09:47:06.874Z",
+  "createdAt": "2026-04-09T17:59:43.105Z",
+  "updatedAt": "2026-04-09T18:08:08.082Z",
   "databaseType": "postgresql",
   "tables": [
     {
       "id": "1",
-      "name": "medication",
+      "name": "patient",
       "schema": "public",
-      "x": 814.4536814703114,
-      "y": 335.90119980092936,
+      "x": 125.41437426634661,
+      "y": 190.06125389006337,
       "fields": [
         {
           "id": "2",
@@ -22,365 +22,10 @@
           "primaryKey": true,
           "unique": true,
           "nullable": false,
-          "createdAt": 1774431162389
-        },
-        {
-          "id": "3",
-          "name": "dosis",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774431700115
-        },
-        {
-          "id": "4",
-          "name": "drug",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432076095
-        },
-        {
-          "id": "5",
-          "name": "started",
-          "type": {
-            "id": "date",
-            "name": "date"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434620031
-        },
-        {
-          "id": "6",
-          "name": "ended",
-          "type": {
-            "id": "date",
-            "name": "date"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434654608
-        }
-      ],
-      "indexes": [
-        {
-          "id": "7",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "2"
-          ],
-          "createdAt": 1774431162389,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#8eb7ff",
-      "isView": false,
-      "createdAt": 1774431162389,
-      "order": 3,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "8",
-      "name": "diagnosis",
-      "schema": "public",
-      "x": 485.08549827001053,
-      "y": 583.9553875433415,
-      "fields": [
-        {
-          "id": "9",
-          "name": "id",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774431230463
-        },
-        {
-          "id": "10",
-          "name": "medication",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774431258745
-        },
-        {
-          "id": "11",
-          "name": "disease",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434326778
-        },
-        {
-          "id": "12",
-          "name": "diagnosed_by",
-          "type": {
-            "id": "uuid",
-            "name": "uuid"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774431671930
-        },
-        {
-          "id": "13",
-          "name": "diagnosed_at",
-          "type": {
-            "id": "date",
-            "name": "date"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434643447
-        },
-        {
-          "id": "14",
-          "name": "diagnosed_patient",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "unique": false,
-          "nullable": true,
-          "primaryKey": false,
-          "createdAt": 1775727515257
-        }
-      ],
-      "indexes": [
-        {
-          "id": "15",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "9"
-          ],
-          "createdAt": 1774431230463,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#ff6b8a",
-      "isView": false,
-      "createdAt": 1774431230463,
-      "order": 8,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "16",
-      "name": "person",
-      "schema": "public",
-      "x": -400,
-      "y": 140.34822022531844,
-      "fields": [
-        {
-          "id": "17",
-          "name": "id",
-          "type": {
-            "id": "uuid",
-            "name": "uuid"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774432749348
-        },
-        {
-          "id": "18",
-          "name": "gender",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432844841
-        },
-        {
-          "id": "19",
-          "name": "first_name",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432811152
-        },
-        {
-          "id": "20",
-          "name": "last_name",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432814562
-        },
-        {
-          "id": "21",
-          "name": "plz",
-          "type": {
-            "id": "int",
-            "name": "int"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432818305
-        },
-        {
-          "id": "22",
-          "name": "city",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "unique": false,
-          "nullable": true,
-          "primaryKey": false,
-          "createdAt": 1774962586173
-        },
-        {
-          "id": "23",
-          "name": "street",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432821980
-        },
-        {
-          "id": "24",
-          "name": "street_no",
-          "type": {
-            "id": "int",
-            "name": "int"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432824285
-        },
-        {
-          "id": "25",
-          "name": "country",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432835502
-        },
-        {
-          "id": "26",
-          "name": "birthday",
-          "type": {
-            "id": "date",
-            "name": "date"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432839492
-        },
-        {
-          "id": "27",
-          "name": "phone",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432921491
-        },
-        {
-          "id": "28",
-          "name": "email",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432924088
-        }
-      ],
-      "indexes": [
-        {
-          "id": "29",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "17"
-          ],
-          "createdAt": 1774432749348,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#ff6b8a",
-      "isView": false,
-      "createdAt": 1774432749348,
-      "order": 12,
-      "expanded": true,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "30",
-      "name": "patient",
-      "schema": "public",
-      "x": 136.83178643003524,
-      "y": 106.34313419109333,
-      "fields": [
-        {
-          "id": "31",
-          "name": "id",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
           "createdAt": 1774431147114
         },
         {
-          "id": "32",
+          "id": "3",
           "name": "person",
           "type": {
             "id": "uuid",
@@ -394,11 +39,11 @@
       ],
       "indexes": [
         {
-          "id": "33",
+          "id": "4",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "31"
+            "2"
           ],
           "createdAt": 1774431147114,
           "isPrimaryKey": true
@@ -408,315 +53,17 @@
       "isView": false,
       "createdAt": 1774431147114,
       "order": 0,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
-      "id": "34",
-      "name": "dose",
-      "schema": "public",
-      "x": 1227.2518293980825,
-      "y": 221.3928809012738,
-      "fields": [
-        {
-          "id": "35",
-          "name": "id",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774431171354
-        },
-        {
-          "id": "36",
-          "name": "unit",
-          "type": {
-            "id": "enum",
-            "name": "enum"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434514994
-        },
-        {
-          "id": "37",
-          "name": "amount",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434528399
-        },
-        {
-          "id": "38",
-          "name": "frequency",
-          "type": {
-            "id": "enum",
-            "name": "enum"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434532606
-        },
-        {
-          "id": "39",
-          "name": "frequency_amount",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "unique": false,
-          "nullable": true,
-          "primaryKey": false,
-          "createdAt": 1774514034808
-        }
-      ],
-      "indexes": [
-        {
-          "id": "40",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "35"
-          ],
-          "createdAt": 1774431171354,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#8eb7ff",
-      "isView": false,
-      "createdAt": 1774431171354,
-      "order": 4,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "41",
-      "name": "department",
-      "schema": "public",
-      "x": -60,
-      "y": 1040,
-      "fields": [
-        {
-          "id": "42",
-          "name": "id",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774431803066
-        },
-        {
-          "id": "43",
-          "name": "name",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774433626096
-        },
-        {
-          "id": "44",
-          "name": "building",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774433633268
-        }
-      ],
-      "indexes": [
-        {
-          "id": "45",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "42"
-          ],
-          "createdAt": 1774431803066,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#8eb7ff",
-      "isView": false,
-      "createdAt": 1774431803066,
-      "order": 9,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "46",
-      "name": "drugs",
-      "schema": "public",
-      "x": 820,
-      "y": 680,
-      "fields": [
-        {
-          "id": "47",
-          "name": "id",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774432084224
-        },
-        {
-          "id": "48",
-          "name": "stock",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774432610521
-        },
-        {
-          "id": "49",
-          "name": "name",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434679301
-        },
-        {
-          "id": "50",
-          "name": "active_ingredient",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "isArray": false,
-          "createdAt": 1774434683198
-        },
-        {
-          "id": "51",
-          "name": "type",
-          "type": {
-            "id": "enum",
-            "name": "enum"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434796402
-        }
-      ],
-      "indexes": [
-        {
-          "id": "52",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "47"
-          ],
-          "createdAt": 1774432084224,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#8eb7ff",
-      "isView": false,
-      "createdAt": 1774432084224,
-      "order": 11,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "53",
-      "name": "doctors",
-      "schema": "public",
-      "x": -60,
-      "y": 680,
-      "fields": [
-        {
-          "id": "54",
-          "name": "id",
-          "type": {
-            "id": "uuid",
-            "name": "uuid"
-          },
-          "primaryKey": true,
-          "unique": true,
-          "nullable": false,
-          "createdAt": 1774431456163
-        },
-        {
-          "id": "55",
-          "name": "work_phone",
-          "type": {
-            "id": "text",
-            "name": "text"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774433373938
-        },
-        {
-          "id": "56",
-          "name": "type",
-          "type": {
-            "id": "enum",
-            "name": "enum"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774433382356
-        }
-      ],
-      "indexes": [
-        {
-          "id": "57",
-          "name": "",
-          "unique": true,
-          "fieldIds": [
-            "54"
-          ],
-          "createdAt": 1774433178029,
-          "isPrimaryKey": true
-        }
-      ],
-      "color": "#8eb7ff",
-      "isView": false,
-      "createdAt": 1774431456163,
-      "width": 224,
-      "order": 7,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "58",
+      "id": "5",
       "name": "nurses",
       "schema": "public",
       "x": -60.459479341998815,
       "y": 880.9189586839976,
       "fields": [
         {
-          "id": "59",
+          "id": "6",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -728,7 +75,7 @@
           "createdAt": 1774431481995
         },
         {
-          "id": "60",
+          "id": "7",
           "name": "station",
           "type": {
             "id": "bigint",
@@ -742,11 +89,11 @@
       ],
       "indexes": [
         {
-          "id": "61",
+          "id": "8",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "59"
+            "6"
           ],
           "createdAt": 1774433180257,
           "isPrimaryKey": true
@@ -756,17 +103,17 @@
       "isView": false,
       "createdAt": 1774431481995,
       "order": 8,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
-      "id": "62",
-      "name": "station",
+      "id": "9",
+      "name": "department",
       "schema": "public",
-      "x": 482.28197486237787,
-      "y": 912.3160444199632,
+      "x": -60,
+      "y": 1040,
       "fields": [
         {
-          "id": "63",
+          "id": "10",
           "name": "id",
           "type": {
             "id": "bigint",
@@ -775,10 +122,10 @@
           "primaryKey": true,
           "unique": true,
           "nullable": false,
-          "createdAt": 1774431895106
+          "createdAt": 1774431803066
         },
         {
-          "id": "64",
+          "id": "11",
           "name": "name",
           "type": {
             "id": "text",
@@ -787,61 +134,157 @@
           "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "createdAt": 1774431903129
+          "createdAt": 1774433626096
         },
         {
-          "id": "65",
-          "name": "department",
+          "id": "12",
+          "name": "building",
           "type": {
-            "id": "bigint",
-            "name": "bigint"
+            "id": "text",
+            "name": "text"
           },
           "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "createdAt": 1774432005083
+          "createdAt": 1774433633268
         }
       ],
       "indexes": [
         {
-          "id": "66",
+          "id": "13",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "63"
+            "10"
           ],
-          "createdAt": 1774431895106,
+          "createdAt": 1774431803066,
           "isPrimaryKey": true
         }
       ],
       "color": "#8eb7ff",
       "isView": false,
-      "createdAt": 1774431895106,
-      "order": 10,
-      "diagramId": "3ccrm6x3sk3k"
+      "createdAt": 1774431803066,
+      "order": 9,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
-      "id": "67",
-      "name": "bookings",
+      "id": "14",
+      "name": "person",
       "schema": "public",
-      "x": 810.9129056711756,
-      "y": -51.301741690621554,
+      "x": -377.1651756726228,
+      "y": 222.4352810437615,
       "fields": [
         {
-          "id": "68",
+          "id": "15",
           "name": "id",
           "type": {
-            "id": "bigint",
-            "name": "bigint"
+            "id": "uuid",
+            "name": "uuid"
           },
           "primaryKey": true,
           "unique": true,
           "nullable": false,
-          "createdAt": 1774431180834
+          "createdAt": 1774432749348
         },
         {
-          "id": "69",
-          "name": "from",
+          "id": "16",
+          "name": "gender",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432844841
+        },
+        {
+          "id": "17",
+          "name": "first_name",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432811152
+        },
+        {
+          "id": "18",
+          "name": "last_name",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432814562
+        },
+        {
+          "id": "19",
+          "name": "plz",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432818305
+        },
+        {
+          "id": "20",
+          "name": "city",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774962586173
+        },
+        {
+          "id": "21",
+          "name": "street",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432821980
+        },
+        {
+          "id": "22",
+          "name": "street_no",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432824285
+        },
+        {
+          "id": "23",
+          "name": "country",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432835502
+        },
+        {
+          "id": "24",
+          "name": "birthday",
           "type": {
             "id": "date",
             "name": "date"
@@ -849,84 +292,61 @@
           "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "createdAt": 1774434848616
+          "createdAt": 1774432839492
         },
         {
-          "id": "70",
-          "name": "until",
+          "id": "25",
+          "name": "phone",
           "type": {
-            "id": "date",
-            "name": "date"
+            "id": "text",
+            "name": "text"
           },
           "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "createdAt": 1774434866868
+          "createdAt": 1774432921491
         },
         {
-          "id": "71",
-          "name": "state",
+          "id": "26",
+          "name": "email",
           "type": {
-            "id": "enum",
-            "name": "enum"
+            "id": "text",
+            "name": "text"
           },
           "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "createdAt": 1774434900566
-        },
-        {
-          "id": "72",
-          "name": "room",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774435041334
-        },
-        {
-          "id": "73",
-          "name": "patient",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774435089620
+          "createdAt": 1774432924088
         }
       ],
       "indexes": [
         {
-          "id": "74",
+          "id": "27",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "68"
+            "15"
           ],
-          "createdAt": 1774431180834,
+          "createdAt": 1774432749348,
           "isPrimaryKey": true
         }
       ],
-      "color": "#8eb7ff",
+      "color": "#ff6b8a",
       "isView": false,
-      "createdAt": 1774431180834,
-      "order": 5,
-      "diagramId": "3ccrm6x3sk3k"
+      "createdAt": 1774432749348,
+      "order": 12,
+      "expanded": true,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
-      "id": "75",
+      "id": "28",
       "name": "rooms",
       "schema": "public",
-      "x": 922.4326051843537,
-      "y": 976.3622802403751,
+      "x": 911.140177141923,
+      "y": 880.3766418797156,
       "fields": [
         {
-          "id": "76",
+          "id": "29",
           "name": "id",
           "type": {
             "id": "bigint",
@@ -938,7 +358,7 @@
           "createdAt": 1774431160200
         },
         {
-          "id": "77",
+          "id": "30",
           "name": "station",
           "type": {
             "id": "bigint",
@@ -950,7 +370,7 @@
           "createdAt": 1774431956820
         },
         {
-          "id": "78",
+          "id": "31",
           "name": "number",
           "type": {
             "id": "bigint",
@@ -962,7 +382,7 @@
           "createdAt": 1774435207807
         },
         {
-          "id": "79",
+          "id": "32",
           "name": "floor",
           "type": {
             "id": "bigint",
@@ -974,25 +394,25 @@
           "createdAt": 1774435214399
         },
         {
-          "id": "80",
+          "id": "33",
           "name": "beds",
           "type": {
             "id": "bigint",
             "name": "bigint"
           },
+          "primaryKey": false,
           "unique": false,
           "nullable": true,
-          "primaryKey": false,
           "createdAt": 1774963140055
         }
       ],
       "indexes": [
         {
-          "id": "81",
+          "id": "34",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "76"
+            "29"
           ],
           "createdAt": 1774431160200,
           "isPrimaryKey": true
@@ -1002,17 +422,202 @@
       "isView": false,
       "createdAt": 1774431160200,
       "order": 2,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
-      "id": "82",
+      "id": "35",
+      "name": "drugs",
+      "schema": "public",
+      "x": 825.6462140212153,
+      "y": 619.7737171070373,
+      "fields": [
+        {
+          "id": "36",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774432084224
+        },
+        {
+          "id": "37",
+          "name": "stock",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432610521
+        },
+        {
+          "id": "38",
+          "name": "name",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434679301
+        },
+        {
+          "id": "39",
+          "name": "active_ingredient",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "isArray": false,
+          "createdAt": 1774434683198
+        },
+        {
+          "id": "40",
+          "name": "type",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434796402
+        }
+      ],
+      "indexes": [
+        {
+          "id": "41",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "36"
+          ],
+          "createdAt": 1774432084224,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774432084224,
+      "order": 11,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "42",
+      "name": "diagnosis",
+      "schema": "public",
+      "x": 485.08549827001053,
+      "y": 583.9553875433415,
+      "fields": [
+        {
+          "id": "43",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431230463
+        },
+        {
+          "id": "44",
+          "name": "medication",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774431258745
+        },
+        {
+          "id": "45",
+          "name": "disease",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434326778
+        },
+        {
+          "id": "46",
+          "name": "diagnosed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774431671930
+        },
+        {
+          "id": "47",
+          "name": "diagnosed_at",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434643447
+        },
+        {
+          "id": "48",
+          "name": "diagnosed_patient",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1775727515257
+        }
+      ],
+      "indexes": [
+        {
+          "id": "49",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "43"
+          ],
+          "createdAt": 1774431230463,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff6b8a",
+      "isView": false,
+      "createdAt": 1774431230463,
+      "order": 8,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "50",
       "name": "employee",
       "schema": "public",
       "x": -400,
       "y": 920,
       "fields": [
         {
-          "id": "83",
+          "id": "51",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -1024,7 +629,7 @@
           "createdAt": 1774431156084
         },
         {
-          "id": "84",
+          "id": "52",
           "name": "department",
           "type": {
             "id": "bigint",
@@ -1036,7 +641,7 @@
           "createdAt": 1774431865906
         },
         {
-          "id": "85",
+          "id": "53",
           "name": "person",
           "type": {
             "id": "bigint",
@@ -1050,11 +655,11 @@
       ],
       "indexes": [
         {
-          "id": "86",
+          "id": "54",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "83"
+            "51"
           ],
           "createdAt": 1774431156084,
           "isPrimaryKey": true
@@ -1064,7 +669,402 @@
       "isView": false,
       "createdAt": 1774431156084,
       "order": 1,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "55",
+      "name": "station",
+      "schema": "public",
+      "x": 482.28197486237787,
+      "y": 912.3160444199632,
+      "fields": [
+        {
+          "id": "56",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431895106
+        },
+        {
+          "id": "57",
+          "name": "name",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774431903129
+        },
+        {
+          "id": "58",
+          "name": "department",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432005083
+        }
+      ],
+      "indexes": [
+        {
+          "id": "59",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "56"
+          ],
+          "createdAt": 1774431895106,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774431895106,
+      "order": 10,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "60",
+      "name": "dose",
+      "schema": "public",
+      "x": 1227.2518293980825,
+      "y": 221.3928809012738,
+      "fields": [
+        {
+          "id": "61",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431171354
+        },
+        {
+          "id": "62",
+          "name": "unit",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434514994
+        },
+        {
+          "id": "63",
+          "name": "amount",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434528399
+        },
+        {
+          "id": "64",
+          "name": "frequency",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434532606
+        },
+        {
+          "id": "65",
+          "name": "frequency_amount",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774514034808
+        }
+      ],
+      "indexes": [
+        {
+          "id": "66",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "61"
+          ],
+          "createdAt": 1774431171354,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774431171354,
+      "order": 4,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "67",
+      "name": "medication",
+      "schema": "public",
+      "x": 819.4536814703114,
+      "y": 335.90119980092936,
+      "fields": [
+        {
+          "id": "68",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431162389
+        },
+        {
+          "id": "69",
+          "name": "dosis",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774431700115
+        },
+        {
+          "id": "70",
+          "name": "drug",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774432076095
+        },
+        {
+          "id": "71",
+          "name": "started",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434620031
+        },
+        {
+          "id": "72",
+          "name": "ended",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434654608
+        }
+      ],
+      "indexes": [
+        {
+          "id": "73",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "68"
+          ],
+          "createdAt": 1774431162389,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774431162389,
+      "order": 3,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "74",
+      "name": "doctors",
+      "schema": "public",
+      "x": -60,
+      "y": 680,
+      "fields": [
+        {
+          "id": "75",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431456163
+        },
+        {
+          "id": "76",
+          "name": "work_phone",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774433373938
+        },
+        {
+          "id": "77",
+          "name": "type",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774433382356
+        }
+      ],
+      "indexes": [
+        {
+          "id": "78",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "75"
+          ],
+          "createdAt": 1774433178029,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774431456163,
+      "width": 224,
+      "order": 7,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "79",
+      "name": "bookings",
+      "schema": "public",
+      "x": 818.2467492961584,
+      "y": 30.965205338244967,
+      "fields": [
+        {
+          "id": "80",
+          "name": "id",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1774431180834
+        },
+        {
+          "id": "81",
+          "name": "from",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434848616
+        },
+        {
+          "id": "82",
+          "name": "until",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434866868
+        },
+        {
+          "id": "83",
+          "name": "state",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774434900566
+        },
+        {
+          "id": "84",
+          "name": "room",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774435041334
+        },
+        {
+          "id": "85",
+          "name": "patient",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1774435089620
+        }
+      ],
+      "indexes": [
+        {
+          "id": "86",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "80"
+          ],
+          "createdAt": 1774431180834,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1774431180834,
+      "order": 5,
+      "diagramId": "41ttlfmtrv5m"
     }
   ],
   "relationships": [
@@ -1072,209 +1072,211 @@
       "id": "87",
       "name": "bookings_patient_fk",
       "sourceSchema": "public",
-      "sourceTableId": "30",
+      "sourceTableId": "1",
       "targetSchema": "public",
-      "targetTableId": "67",
-      "sourceFieldId": "31",
-      "targetFieldId": "73",
+      "targetTableId": "79",
+      "sourceFieldId": "2",
+      "targetFieldId": "85",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774435095284,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "88",
       "name": "bookings_room_fk",
       "sourceSchema": "public",
-      "sourceTableId": "75",
+      "sourceTableId": "28",
       "targetSchema": "public",
-      "targetTableId": "67",
-      "sourceFieldId": "76",
-      "targetFieldId": "72",
+      "targetTableId": "79",
+      "sourceFieldId": "29",
+      "targetFieldId": "84",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774435047996,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "89",
-      "name": "diagnosis_doctor_fk",
+      "name": "diagnosis_diagnosed_patient_fk",
       "sourceSchema": "public",
-      "sourceTableId": "53",
-      "targetSchema": "public",
-      "targetTableId": "8",
-      "sourceFieldId": "54",
-      "targetFieldId": "12",
-      "sourceCardinality": "one",
-      "targetCardinality": "many",
-      "createdAt": 1774431682279,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "90",
-      "name": "diagnosis_medication_fk",
-      "sourceSchema": "public",
-      "sourceTableId": "8",
+      "sourceTableId": "42",
       "targetSchema": "public",
       "targetTableId": "1",
-      "sourceFieldId": "10",
+      "sourceFieldId": "48",
       "targetFieldId": "2",
       "sourceCardinality": "one",
       "targetCardinality": "many",
-      "createdAt": 1774431271316,
-      "diagramId": "3ccrm6x3sk3k"
+      "createdAt": 1775727584468,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "90",
+      "name": "diagnosis_doctor_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "74",
+      "targetSchema": "public",
+      "targetTableId": "42",
+      "sourceFieldId": "75",
+      "targetFieldId": "46",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1774431682279,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "91",
-      "name": "medication_dosis_fk",
+      "name": "diagnosis_medication_fk",
       "sourceSchema": "public",
-      "sourceTableId": "1",
+      "sourceTableId": "42",
       "targetSchema": "public",
-      "targetTableId": "34",
-      "sourceFieldId": "3",
-      "targetFieldId": "35",
+      "targetTableId": "67",
+      "sourceFieldId": "44",
+      "targetFieldId": "68",
       "sourceCardinality": "one",
-      "targetCardinality": "one",
-      "createdAt": 1774431709653,
-      "diagramId": "3ccrm6x3sk3k"
+      "targetCardinality": "many",
+      "createdAt": 1774431271316,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "92",
-      "name": "medication_drug_fk",
+      "name": "medication_dosis_fk",
       "sourceSchema": "public",
-      "sourceTableId": "46",
+      "sourceTableId": "67",
       "targetSchema": "public",
-      "targetTableId": "1",
-      "sourceFieldId": "47",
-      "targetFieldId": "4",
+      "targetTableId": "60",
+      "sourceFieldId": "69",
+      "targetFieldId": "61",
       "sourceCardinality": "one",
-      "targetCardinality": "many",
-      "createdAt": 1774432090187,
-      "diagramId": "3ccrm6x3sk3k"
+      "targetCardinality": "one",
+      "createdAt": 1774431709653,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "93",
+      "name": "medication_drug_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "35",
+      "targetSchema": "public",
+      "targetTableId": "67",
+      "sourceFieldId": "36",
+      "targetFieldId": "70",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1774432090187,
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "94",
       "name": "nurses_station_fk",
       "sourceSchema": "public",
-      "sourceTableId": "62",
+      "sourceTableId": "55",
       "targetSchema": "public",
-      "targetTableId": "58",
-      "sourceFieldId": "63",
-      "targetFieldId": "60",
+      "targetTableId": "5",
+      "sourceFieldId": "56",
+      "targetFieldId": "7",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774431919567,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "95",
       "name": "patient_person_fk",
       "sourceSchema": "public",
-      "sourceTableId": "30",
+      "sourceTableId": "1",
       "targetSchema": "public",
-      "targetTableId": "16",
-      "sourceFieldId": "32",
-      "targetFieldId": "17",
+      "targetTableId": "14",
+      "sourceFieldId": "3",
+      "targetFieldId": "15",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1774432778922,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "96",
       "name": "personal_department_fk",
       "sourceSchema": "public",
-      "sourceTableId": "41",
+      "sourceTableId": "9",
       "targetSchema": "public",
-      "targetTableId": "82",
-      "sourceFieldId": "42",
-      "targetFieldId": "84",
+      "targetTableId": "50",
+      "sourceFieldId": "10",
+      "targetFieldId": "52",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774431875484,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "97",
       "name": "personal_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "82",
+      "sourceTableId": "50",
       "targetSchema": "public",
-      "targetTableId": "53",
-      "sourceFieldId": "83",
-      "targetFieldId": "54",
+      "targetTableId": "74",
+      "sourceFieldId": "51",
+      "targetFieldId": "75",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1774431461830,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "98",
       "name": "personal_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "82",
+      "sourceTableId": "50",
       "targetSchema": "public",
-      "targetTableId": "58",
-      "sourceFieldId": "83",
-      "targetFieldId": "59",
+      "targetTableId": "5",
+      "sourceFieldId": "51",
+      "targetFieldId": "6",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1774431489138,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "99",
       "name": "personal_person_fk",
       "sourceSchema": "public",
-      "sourceTableId": "82",
+      "sourceTableId": "50",
       "targetSchema": "public",
-      "targetTableId": "16",
-      "sourceFieldId": "85",
-      "targetFieldId": "17",
+      "targetTableId": "14",
+      "sourceFieldId": "53",
+      "targetFieldId": "15",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1774432764173,
-      "diagramId": "3ccrm6x3sk3k"
+      "diagramId": "41ttlfmtrv5m"
+    },
+    {
+      "id": "100",
+      "name": "rooms_station_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "55",
+      "targetSchema": "public",
+      "targetTableId": "28",
+      "sourceFieldId": "56",
+      "targetFieldId": "30",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1775728007156,
+      "diagramId": "41ttlfmtrv5m"
     },
     {
       "id": "101",
       "name": "station_department_fk",
       "sourceSchema": "public",
-      "sourceTableId": "41",
+      "sourceTableId": "9",
       "targetSchema": "public",
-      "targetTableId": "62",
-      "sourceFieldId": "42",
-      "targetFieldId": "65",
+      "targetTableId": "55",
+      "sourceFieldId": "10",
+      "targetFieldId": "58",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774432012040,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "102",
-      "name": "diagnosis_diagnosed_patient_fk",
-      "sourceSchema": "public",
-      "sourceTableId": "8",
-      "targetSchema": "public",
-      "targetTableId": "30",
-      "sourceFieldId": "14",
-      "targetFieldId": "31",
-      "sourceCardinality": "one",
-      "targetCardinality": "many",
-      "createdAt": 1775727584468
-    },
-    {
-      "id": "103",
-      "name": "rooms_station_fk",
-      "sourceSchema": "public",
-      "sourceTableId": "62",
-      "targetSchema": "public",
-      "targetTableId": "75",
-      "sourceFieldId": "63",
-      "targetFieldId": "77",
-      "sourceCardinality": "one",
-      "targetCardinality": "many",
-      "createdAt": 1775728007156
+      "diagramId": "41ttlfmtrv5m"
     }
   ],
   "dependencies": [],
