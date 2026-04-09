@@ -1,5 +1,5 @@
 \section{Use Cases: Personenverwaltung (5123101)}
-	Im folgenden werden die Use Cases zur Personenverwaltung beschrieben. Darüber hinaus wird der Aufbau der zugehörigen Datenbanktabellen beschrieben.
+	Im folgenden werden die Use Cases zur Personenverwaltung beschrieben. Darüber hinaus wird auf den Aufbau der zugehörigen Datenbanktabellen eingegangen.
 
 \begin{table}[h]
 \centering
@@ -9,16 +9,10 @@
 \textbf{Titel} & \textbf{Patientenverwaltung} \\
 \hline
 \textbf{Kontext} & 
-Damit ein Patient stationär aufgenommen werden kann, muss dieser zuerst als Person in der Krankenhaus Datenbank angelegt werden und eine Zuordnung als Patient erfolgen \\
+Damit ein Patient stationär aufgenommen werden kann, muss dieser zuerst als Person in der Krankenhaus Datenbank angelegt werden und eine Zuordnung als Patient erfolgen. Hierbei übernimmt eine Pflegekraft oder Arzt die Daten in das System \\
 \hline
 \textbf{Beschreibung} & 
-Der Use Case beschreibt die Erfassung und Pflege aller personenbezogenen Daten. 
-Bei der Aufnahme eines neuen Patienten werden zunächst die allgemeinen Stammdaten 
-in der Tabelle \texttt{person} gespeichert. Anschließend erfolgt die Anlage eines 
-zugehörigen Eintrags in der Tabelle \texttt{patient}, wodurch die Person fachlich 
-als Patient klassifiziert wird. Bestehende Daten können jederzeit aktualisiert werden, 
-wobei Änderungen an allgemeinen Informationen in \texttt{person} und patientenspezifische 
-Anpassungen in \texttt{patient} erfolgen. \\
+Der Use Case beschreibt die Erfassung und Verwaltung aller Patienten. Bei der Aufnahme werden zunächst die grundlegenden persönlichen Daten erfasst. Anschließend wird die Person als Patient im System geführt, wodurch sie eindeutig als solcher zugeordnet ist. Bestehende Angaben können jederzeit aktualisiert und gepflegt werden \\
 \hline
 \end{tabularx}
 \caption{Use Case: Patientenverwaltung}
@@ -35,16 +29,10 @@ Anpassungen in \texttt{patient} erfolgen. \\
 \textbf{Titel} & \textbf{Mitarbeiterverwaltung} \\
 \hline
 \textbf{Kontext} & 
-Anlegen und verwalten eines Mitarbeiters durch die Administration \\
+Wenn ein neuer Mitarbeiter ins Krankenhaus kommt oder sich Daten von bestehenden Mitarbeitern ändern erfolgt die Pflege der Daten durch die Administration \\
 \hline
 \textbf{Beschreibung} & 
-Der Use Case umfasst die Erfassung und Pflege aller Mitarbeitenden im Krankenhaus. 
-Zunächst werden die allgemeinen Personendaten in der Tabelle \texttt{person} angelegt. 
-Darauf aufbauend wird ein Eintrag in \texttt{employee} erstellt, wodurch die Person 
-als Mitarbeitender geführt wird. Ein Mitarbeiter erhält hierbei noch die Zuordnung zu seinem Fachbereich mit einer Referenz auf einen Eintrag in der Tabelle \texttt{departement} in dem er arbeitet. Daraufhin erfolgt eine Spezialisierung als Arzt oder 
-Pflegekraft durch zusätzliche Einträge in den Tabellen \texttt{doctor} bzw. 
-\texttt{nurses}. Änderungen bestehender Daten werden je nach Art der Information 
-in den entsprechenden Tabellen vorgenommen. \\
+Der Use Case beschreibt die Erfassung und Verwaltung aller Mitarbeitenden im Krankenhaus. Zunächst werden die grundlegenden persönlichen Daten aufgenommen. Anschließend wird die Person als Mitarbeitender im System geführt und einem Fachbereich zugeordnet. Im nächsten Schritt erfolgt die Einteilung entweder als Arzt oder als Pflegekraft. Ärzte erhalten dabei zusätzlich eine genauere fachliche Einordnung sowie eine dienstliche Telefonnummer. Pflegekräfte werden hingegen der Station zugewiesen, auf der sie tätig sind \\
 \hline
 \end{tabularx}
 \caption{Use Case: Mitarbeiterverwaltung}
@@ -52,14 +40,49 @@ in den entsprechenden Tabellen vorgenommen. \\
 \end{table}
 
 \subsection*{Datenverwaltung}
-Bei der Datenverwaltung ist eine Besonderheit, dass die Daten zu allen Personen gesammelt in der Tabelle \texttt{person} gespeichert werden. 
-Darüber hinaus werden in den Tabellen \texttt{patient} und \texttt{employee} nur die Referenzen zum Eintrag in \texttt{person} angeführt. Dies hat den Vorteil, dass einige Spalten nicht doppelt aufgeführt werden müssen. Um mit diesem Vorgehen eine eindeutige Zuordung zu gewährleisten, besteht jeweils zwischen \textit{person} und \textit{patient} und \textit{person} und \textit{employee} eine 1:1 Beziehung.
-Die Tabelle \textit{employee} wird zudem in \texttt{nurses} und \texttt{doctors} aufgeteilt.
-Desweitern werden die personenbezogenen Daten in der Tabelle \texttt{person} verschlüsselt abgespeichert um die Sicherheit der Daten zu gewährleisten. Im nachfolgenden ist eine Graphik, die den Aufbau der benötigen Tabellen veranschaulicht. 
+Bei der Datenverwaltung besteht eine zentrale Besonderheit darin, dass sämtliche personenbezogenen Informationen gebündelt in der Tabelle \texttt{person} gespeichert werden.
+Die Tabellen \texttt{patient} und \texttt{employee} enthalten hingegen ausschließlich Referenzen auf die entsprechenden Einträge in \texttt{person}. Dadurch wird vermieden, dass identische Daten mehrfach gespeichert werden müssen.
 
+Um dennoch eine eindeutige Zuordnung sicherzustellen, besteht sowohl zwischen \texttt{person} und \texttt{patient} als auch zwischen \texttt{person} und \texttt{employee} jeweils eine 1:1-Beziehung.
+Zusätzlich zum Eintrag in der Tabelle \texttt{employee} wird für jede Person entweder ein Eintrag in \texttt{doctors} oder \texttt{nurses} angelegt. Diese Einträge referenzieren jeweils den zugehörigen \texttt{employee}-Datensatz und ermöglichen so eine eindeutige fachliche Zuordnung. Auch hier bestehen jeweils 1:1-Beziehungen.
+
+Der Enum \texttt{doctors\_type} definiert die möglichen Rollen von Ärzten innerhalb des Krankenhauses und bildet damit die hierarchische Struktur des medizinischen Personals ab.
+
+\newpage
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Typ} & \textbf{Beschreibung} \\
+\hline
+assistant\_physician & Assistenzarzt \\
+\hline
+resident & Arzt in fachärztlicher Ausbildung \\
+\hline
+attending\_physician & Facharzt mit eigenverantwortlicher Behandlung von Patienten \\
+\hline
+senior\_physician & Oberarzt mit zusätzlicher fachlicher und organisatorischer Verantwortung \\
+\hline
+consultant & Facharzt mit beratender Funktion, häufig spezialisiert \\
+\hline
+chief\_physician & Chefarzt mit leitender Funktion \\
+\hline
+head\_of\_department & Leiter einer Abteilung, verantwortlich für Organisation und Personal \\
+\hline
+\end{tabularx}
+\caption{Ärztliche Rollen und Hierarchiestufen}
+\end{table}
+
+Die Verwendung eines Enum-Typs stellt sicher, dass ausschließlich vordefinierte und gültige Rollen in der Datenbank gespeichert werden können.
+Dies erhöht die Datenintegrität und vereinfacht zugleich die Verarbeitung sowie Auswertung der Daten.
+
+Darüber hinaus werden die personenbezogenen Daten in der Tabelle \texttt{person} verschlüsselt gespeichert, um ein hohes Maß an Datensicherheit zu gewährleisten.
+
+Im Folgenden veranschaulicht eine Grafik den strukturellen Aufbau der benötigten Tabellen.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{Bereiche_Datenmodell/Personenverwaltung.png}
     \caption{Personenverwaltung}
 \end{figure}
-
