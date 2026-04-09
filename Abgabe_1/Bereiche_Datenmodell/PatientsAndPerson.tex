@@ -1,4 +1,6 @@
 \section{Use Cases: Personenverwaltung (5123101)}
+	Im folgenden werden die Use Cases zur Personenverwaltung beschrieben. Darüber hinaus wird der Aufbau der zugehörigen Datenbanktabellen beschrieben.
+
 \begin{table}[h]
 \centering
 \renewcommand{\arraystretch}{1.4}
@@ -23,6 +25,7 @@ Anpassungen in \texttt{patient} erfolgen. \\
 \label{tab:usecase_patient}
 \end{table}
 
+\newpage
 
 \begin{table}[h]
 \centering
@@ -44,6 +47,19 @@ Pflegekraft durch zusätzliche Einträge in den Tabellen \texttt{doctor} bzw.
 in den entsprechenden Tabellen vorgenommen. \\
 \hline
 \end{tabularx}
-\caption{Use Case: Mitarbeitende verwalten}
+\caption{Use Case: Mitarbeiterverwaltung}
 \label{tab:usecase_employee}
 \end{table}
+
+\subsection*{Datenverwaltung}
+Bei der Datenverwaltung ist eine Besonderheit, dass die Daten zu allen Personen gesammelt in der Tabelle \texttt{person} gespeichert werden. 
+Darüber hinaus werden in den Tabellen \texttt{patient} und \texttt{employee} nur die Referenzen zum Eintrag in \texttt{person} angeführt. Dies hat den Vorteil, dass einige Spalten nicht doppelt aufgeführt werden müssen. Um mit diesem Vorgehen eine eindeutige Zuordung zu gewährleisten, besteht jeweils zwischen \textit{person} und \textit{patient} und \textit{person} und \textit{employee} eine 1:1 Beziehung.
+Die Tabelle \textit{employee} wird zudem in \texttt{nurses} und \texttt{doctors} aufgeteilt.
+Desweitern werden die personenbezogenen Daten in der Tabelle \texttt{person} verschlüsselt abgespeichert um die Sicherheit der Daten zu gewährleisten. Im nachfolgenden ist eine Graphik, die den Aufbau der benötigen Tabellen veranschaulicht. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Bereiche_Datenmodell/Personenverwaltung.png}
+    \caption{Personenverwaltung}
+\end{figure}
+
