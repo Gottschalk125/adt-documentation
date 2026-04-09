@@ -2,7 +2,7 @@
   "id": "0",
   "name": "ADT1",
   "createdAt": "2026-03-26T07:20:24.451Z",
-  "updatedAt": "2026-04-09T09:39:48.707Z",
+  "updatedAt": "2026-04-09T09:47:06.874Z",
   "databaseType": "postgresql",
   "tables": [
     {
@@ -800,23 +800,11 @@
           "unique": false,
           "nullable": true,
           "createdAt": 1774432005083
-        },
-        {
-          "id": "66",
-          "name": "rooms",
-          "type": {
-            "id": "bigint",
-            "name": "bigint"
-          },
-          "primaryKey": false,
-          "unique": false,
-          "nullable": true,
-          "createdAt": 1774434999969
         }
       ],
       "indexes": [
         {
-          "id": "67",
+          "id": "66",
           "name": "",
           "unique": true,
           "fieldIds": [
@@ -833,14 +821,14 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "68",
+      "id": "67",
       "name": "bookings",
       "schema": "public",
       "x": 810.9129056711756,
       "y": -51.301741690621554,
       "fields": [
         {
-          "id": "69",
+          "id": "68",
           "name": "id",
           "type": {
             "id": "bigint",
@@ -852,7 +840,7 @@
           "createdAt": 1774431180834
         },
         {
-          "id": "70",
+          "id": "69",
           "name": "from",
           "type": {
             "id": "date",
@@ -864,7 +852,7 @@
           "createdAt": 1774434848616
         },
         {
-          "id": "71",
+          "id": "70",
           "name": "until",
           "type": {
             "id": "date",
@@ -876,7 +864,7 @@
           "createdAt": 1774434866868
         },
         {
-          "id": "72",
+          "id": "71",
           "name": "state",
           "type": {
             "id": "enum",
@@ -888,7 +876,7 @@
           "createdAt": 1774434900566
         },
         {
-          "id": "73",
+          "id": "72",
           "name": "room",
           "type": {
             "id": "bigint",
@@ -900,7 +888,7 @@
           "createdAt": 1774435041334
         },
         {
-          "id": "74",
+          "id": "73",
           "name": "patient",
           "type": {
             "id": "bigint",
@@ -914,11 +902,11 @@
       ],
       "indexes": [
         {
-          "id": "75",
+          "id": "74",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "69"
+            "68"
           ],
           "createdAt": 1774431180834,
           "isPrimaryKey": true
@@ -931,14 +919,14 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "76",
+      "id": "75",
       "name": "rooms",
       "schema": "public",
       "x": 922.4326051843537,
       "y": 976.3622802403751,
       "fields": [
         {
-          "id": "77",
+          "id": "76",
           "name": "id",
           "type": {
             "id": "bigint",
@@ -950,7 +938,7 @@
           "createdAt": 1774431160200
         },
         {
-          "id": "78",
+          "id": "77",
           "name": "station",
           "type": {
             "id": "bigint",
@@ -962,7 +950,7 @@
           "createdAt": 1774431956820
         },
         {
-          "id": "79",
+          "id": "78",
           "name": "number",
           "type": {
             "id": "bigint",
@@ -974,7 +962,7 @@
           "createdAt": 1774435207807
         },
         {
-          "id": "80",
+          "id": "79",
           "name": "floor",
           "type": {
             "id": "bigint",
@@ -986,7 +974,7 @@
           "createdAt": 1774435214399
         },
         {
-          "id": "81",
+          "id": "80",
           "name": "beds",
           "type": {
             "id": "bigint",
@@ -1000,11 +988,11 @@
       ],
       "indexes": [
         {
-          "id": "82",
+          "id": "81",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "77"
+            "76"
           ],
           "createdAt": 1774431160200,
           "isPrimaryKey": true
@@ -1017,14 +1005,14 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "83",
+      "id": "82",
       "name": "employee",
       "schema": "public",
       "x": -400,
       "y": 920,
       "fields": [
         {
-          "id": "84",
+          "id": "83",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -1036,7 +1024,7 @@
           "createdAt": 1774431156084
         },
         {
-          "id": "85",
+          "id": "84",
           "name": "department",
           "type": {
             "id": "bigint",
@@ -1048,7 +1036,7 @@
           "createdAt": 1774431865906
         },
         {
-          "id": "86",
+          "id": "85",
           "name": "person",
           "type": {
             "id": "bigint",
@@ -1062,11 +1050,11 @@
       ],
       "indexes": [
         {
-          "id": "87",
+          "id": "86",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "84"
+            "83"
           ],
           "createdAt": 1774431156084,
           "isPrimaryKey": true
@@ -1081,35 +1069,35 @@
   ],
   "relationships": [
     {
-      "id": "88",
+      "id": "87",
       "name": "bookings_patient_fk",
       "sourceSchema": "public",
       "sourceTableId": "30",
       "targetSchema": "public",
-      "targetTableId": "68",
+      "targetTableId": "67",
       "sourceFieldId": "31",
-      "targetFieldId": "74",
+      "targetFieldId": "73",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774435095284,
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "89",
+      "id": "88",
       "name": "bookings_room_fk",
       "sourceSchema": "public",
-      "sourceTableId": "76",
+      "sourceTableId": "75",
       "targetSchema": "public",
-      "targetTableId": "68",
-      "sourceFieldId": "77",
-      "targetFieldId": "73",
+      "targetTableId": "67",
+      "sourceFieldId": "76",
+      "targetFieldId": "72",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774435047996,
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "90",
+      "id": "89",
       "name": "diagnosis_doctor_fk",
       "sourceSchema": "public",
       "sourceTableId": "53",
@@ -1123,7 +1111,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "91",
+      "id": "90",
       "name": "diagnosis_medication_fk",
       "sourceSchema": "public",
       "sourceTableId": "8",
@@ -1137,7 +1125,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "92",
+      "id": "91",
       "name": "medication_dosis_fk",
       "sourceSchema": "public",
       "sourceTableId": "1",
@@ -1151,7 +1139,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "93",
+      "id": "92",
       "name": "medication_drug_fk",
       "sourceSchema": "public",
       "sourceTableId": "46",
@@ -1165,7 +1153,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "94",
+      "id": "93",
       "name": "nurses_station_fk",
       "sourceSchema": "public",
       "sourceTableId": "62",
@@ -1179,7 +1167,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "96",
+      "id": "95",
       "name": "patient_person_fk",
       "sourceSchema": "public",
       "sourceTableId": "30",
@@ -1193,27 +1181,27 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "97",
+      "id": "96",
       "name": "personal_department_fk",
       "sourceSchema": "public",
       "sourceTableId": "41",
       "targetSchema": "public",
-      "targetTableId": "83",
+      "targetTableId": "82",
       "sourceFieldId": "42",
-      "targetFieldId": "85",
+      "targetFieldId": "84",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1774431875484,
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "98",
+      "id": "97",
       "name": "personal_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "83",
+      "sourceTableId": "82",
       "targetSchema": "public",
       "targetTableId": "53",
-      "sourceFieldId": "84",
+      "sourceFieldId": "83",
       "targetFieldId": "54",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -1221,13 +1209,13 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "99",
+      "id": "98",
       "name": "personal_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "83",
+      "sourceTableId": "82",
       "targetSchema": "public",
       "targetTableId": "58",
-      "sourceFieldId": "84",
+      "sourceFieldId": "83",
       "targetFieldId": "59",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -1235,13 +1223,13 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "100",
+      "id": "99",
       "name": "personal_person_fk",
       "sourceSchema": "public",
-      "sourceTableId": "83",
+      "sourceTableId": "82",
       "targetSchema": "public",
       "targetTableId": "16",
-      "sourceFieldId": "86",
+      "sourceFieldId": "85",
       "targetFieldId": "17",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -1250,20 +1238,6 @@
     },
     {
       "id": "101",
-      "name": "rooms_station_fk",
-      "sourceSchema": "public",
-      "sourceTableId": "62",
-      "targetSchema": "public",
-      "targetTableId": "76",
-      "sourceFieldId": "66",
-      "targetFieldId": "78",
-      "sourceCardinality": "one",
-      "targetCardinality": "many",
-      "createdAt": 1774435007735,
-      "diagramId": "3ccrm6x3sk3k"
-    },
-    {
-      "id": "102",
       "name": "station_department_fk",
       "sourceSchema": "public",
       "sourceTableId": "41",
@@ -1277,7 +1251,7 @@
       "diagramId": "3ccrm6x3sk3k"
     },
     {
-      "id": "103",
+      "id": "102",
       "name": "diagnosis_diagnosed_patient_fk",
       "sourceSchema": "public",
       "sourceTableId": "8",
@@ -1288,6 +1262,19 @@
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1775727584468
+    },
+    {
+      "id": "103",
+      "name": "rooms_station_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "62",
+      "targetSchema": "public",
+      "targetTableId": "75",
+      "sourceFieldId": "63",
+      "targetFieldId": "77",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1775728007156
     }
   ],
   "dependencies": [],
