@@ -1,4 +1,4 @@
-\section{Use Cases: Patienten- und Raumverwaltung}
+\section{Use Cases: Patienten- und Raumverwaltung (5123097)}
 
 Die folgenden Tabellen beschreiben die funktionalen Anforderungen an die Patienten- und Raumverwaltung, um die entsprechenden Integritätsbedingungen des Datenmodells aufzuzeigen.
 
@@ -6,7 +6,7 @@ Die folgenden Tabellen beschreiben die funktionalen Anforderungen an die Patient
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
+\begin{tabularx}{\textwidth}{|p{4cm}|X|}
 \hline
 \textbf{Titel} & \textbf{Stationäre Aufnahme eines Patienten und initiale Zimmerzuweisung} \\ \hline
 
@@ -22,70 +22,102 @@ Dokumentiert wird hierbei zudem der Beginn des Aufenthalts. \\ \hline
 \textbf{Besonderheiten} &
 Das zugewiesene Zimmer darf noch nicht vollständig belegt sein, eine Überschreitung der Kapazität ist dementsprechend nicht möglich.\\ \hline
 
-\end{tabular}
+\end{tabularx}
 \caption{Use Case: Stationäre Aufnahme eines Patienten}
 \end{table}
 
-% Use Case 2: Patientenverlegung
+% Use Case 2: Patientenverlegung und -entlassung
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
+\begin{tabularx}{\textwidth}{|p{4cm}|X|}
 \hline
-\textbf{Titel} & \textbf{Interne Verlegung eines Patienten} \\ \hline
+\textbf{Titel} & \textbf{Interne Verlegung bzw. Entlassung eines Patienten} \\ \hline
 
 \textbf{Kontext} & 
 Eine Änderung der aktuellen Zimmerbelegung kann beispielsweise durch medizinische Anforderungen, organisatorische Umstrukturierungen oder eine optimierte Auslastung der Stationen erforderlich sein.
-Voraussetzung für eine solche interne Verlegung ist ein bereits bestehender stationärer Aufenthalt des Patienten sowie die Verfügbarkeit eines geeigneten Zielzimmers. \\ \hline
+Alternativ kann der stationäre Behandlungsaufenthalt auch abgeschlossen sein.
+Voraussetzung ist in beiden Fällen ein bereits bestehender stationärer Aufenthalt des Patienten sowie für eine interne Verlegung die Verfügbarkeit eines geeigneten Zielzimmers. \\ \hline
 
 \textbf{Beschreibung} & 
-Der Patient wird aus seinem aktuell zugewiesenen Zimmer in ein anderes Zimmer innerhalb des Krankenhauses verlegt.  \\ \hline
+Der Patient wird aus seinem aktuell zugewiesenen Zimmer in ein anderes Zimmer innerhalb des Krankenhauses verlegt bzw. der aktive stationäre Aufenthalt des Patienten wird beendet, indem der zugehörige Buchungseintrag abgeschlossen wird und die Entlassung mit dem entsprechenden Zeitstempel dokumentiert wird.
+In beiden Fällen wird das zuvor belegte Zimmer wieder für zukünftige Patienten frei.  \\ \hline
 
 \textbf{Besonderheiten} & 
 Der bestehende Buchungseintrag wird zur besseren Nachvollziehbarkeit mit dem entsprechenden Zeitstempel geschlossen und ein neuer Eintrag angelegt. 
 Zudem gelten weiterhin die Beschränkungen der Kapazität auch für das neu zugewiesene Zimmer.\\ \hline
 
-\end{tabular}
+\end{tabularx}
 \caption{Use Case: Zimmerverlegung}
 \end{table}
 
-% Use Case 3: Patientenentlassung
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
-\hline
-\textbf{Titel} & \textbf{Entlassung eines Patienten aus dem stationären Aufenthalt} \\ \hline
+\newpage
 
-\textbf{Kontext} & 
-Der Use Case wird durch medizinisches oder administratives Personal ausgelöst, sobald ein stationärer Behandlungsaufenthalt abgeschlossen ist. 
-Voraussetzung ist ein aktuell aktiver Aufenthalt des Patienten, der noch keinem Endzeitpunkt zugeordnet ist. \\ \hline
-
-\textbf{Beschreibung} & 
-Der aktive stationäre Aufenthalt des Patienten wird beendet, indem der zugehörige Buchungseintrag abgeschlossen wird und die Entlassung mit dem entsprechenden Zeitstempel dokumentiert wird.
-Das zuvor belegte Zimmer wird dadurch wieder für zukünftige Patienten frei. \\ \hline
-
-\end{tabular}
-\caption{Use Case: Entlassung eines Patienten}
-\end{table}
-
-%TODO dann unten Teil vom Klassendiagramm einfügen
 \subsection*{Resultierende Entitäten}
+%TODO NOCH IN FLIEßTEXT UMWANLDEN!
+%Aus den beschriebenen Anwendungsfällen lassen sich die notwendigen Entitäten und deren Beziehungen ableiten, wie sie im vorliegenden Datenbankschema implementiert wurden:
 
-Aus den beschriebenen Anwendungsfällen lassen sich die notwendigen Entitäten und deren Beziehungen ableiten, wie sie im vorliegenden Datenbankschema implementiert wurden:
+%\begin{itemize}
+%    \item \textbf{Department (Abteilung):} Bildet die oberste organisatorische Einheit und gruppiert medizinische Kompetenzen sowie die zugehörigen Stationen.
+%    \item \textbf{Station:} Repräsentiert eine Pflegeeinheit, die funktional fest einem \texttt{department} zugeordnet ist.
+%    \item \textbf{Rooms (Zimmer):} Jedes Zimmer ist über die \texttt{station\_id} eindeutig lokalisierbar und einer Station zugeordnet.
+%    \item \textbf{Patient:} Die zentrale Entität für alle medizinischen und administrativen Prozesse, verknüpft mit den Stammdaten der Relation \texttt{person}.
+%    \item \textbf{Bookings (Buchungen):} Fungiert als Auflösung der Relation \textit{Patient - Room}: Sie speichert die zeitliche Dimension (\texttt{from}/\texttt{until}) der Raumbelegung und verknüpft Patienten mit ihren jeweiligen Aufenthaltsorten.
+%\end{itemize}
 
-\begin{itemize}
-    \item \textbf{Department (Abteilung):} Bildet die oberste organisatorische Einheit und gruppiert medizinische Kompetenzen sowie die zugehörigen Stationen.
-    \item \textbf{Station:} Repräsentiert eine Pflegeeinheit, die funktional fest einem \texttt{department} zugeordnet ist.
-    \item \textbf{Rooms (Zimmer):} Jedes Zimmer ist über die \texttt{station\_id} eindeutig lokalisierbar und einer Station zugeordnet.
-    \item \textbf{Patient:} Die zentrale Entität für alle medizinischen und administrativen Prozesse, verknüpft mit den Stammdaten der Relation \texttt{person}.
-    \item \textbf{Bookings (Buchungen):} Fungiert als Auflösung der Relation \textit{Patient - Room}: Sie speichert die zeitliche Dimension (\texttt{from}/\texttt{until}) der Raumbelegung und verknüpft Patienten mit ihren jeweiligen Aufenthaltsorten.
-\end{itemize}
-
+Basierend auf den beschriebenen Anwendungsfällen wurde ein Datenbankschema entwickelt, das die organisatorischen und prozessualen Abläufe präzise abbildet. 
+Die strukturelle Basis bildet dabei die Abteilung (\texttt{Department}) als oberste organisatorische Einheit. 
+Sie dient dazu, medizinische Kompetenzen zu bündeln und die zugehörigen Stationen zu gruppieren. 
+Jede Station ist funktional fest einer Abteilung zugeordnet und fungiert als pflegerische Einheit, die wiederum eine Menge von Zimmern (Rooms) umfasst. 
+Diese Zimmer lassen sich über eine eindeutige Zuordnung zur jeweiligen Station lokalisieren und verwalten.\\\\
+%
+Im Mittelpunkt des Systems steht der Patient als zentrale Entität für sämtliche medizinischen und administrativen Prozesse. 
+Die operative Verbindung zwischen der räumlichen Infrastruktur und den Patienten wird dementsprechend über die Buchungen (Bookings) realisiert. 
+Diese Entität löst die n:m-Beziehung zwischen Patienten und Zimmern auf, indem sie die zeitliche Dimension der Raumbelegung über Start- und Endzeitpunkte abbildet. 
+Somit wird jederzeit nachvollziehbar, welcher Patient in welchem Zeitraum in welchem Raum untergebracht ist.
+%TODO: noch neues Diagramm einfügen ohne Rooms bei Station!
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Bereiche_Datenmodell/Entities_Patients_and_Rooms.png}
     \caption{Resultierende Klassen zur Patienten- und Raumverwaltung}
     \label{fig:patientsAndRoomsUseCases}
 \end{figure}
+
+Die meisten Attribute der Entitäten sind selbsterklärend. 
+Es sei jedoch darauf hingewiesen, dass das Attribut \texttt{until} der Entität \texttt{Booking} ein Optional darstellt, da das Ende der Behandlung häufig erst nach mehreren Untersuchungen prognostiziert werden kann und dementsprechend nachgetragen werden muss.
+
+\newpage
+
+\subsection*{Enum \texttt{booking\_state}}
+Der Enum \texttt{booking\_state} spiegelt den Lebenszyklus einer Buchung sowie den aktuellen Status eines Patientenaufenthalts im System wider.
+Er dient als Grundlage für die Prozesssteuerung von der initialen Terminierung bis hin zum Anbschluss oder einer Stornierung der Behandlung.
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Status} & \textbf{Beschreibung} \\
+\hline
+pending & Ausstehend; die Buchungsanfrage ist eingegangen, wurde aber noch nicht final bestätigt. \\
+\hline
+confirmed & Bestätigt; der Termin wurde geprüft und ist fest im System eingeplant. \\
+\hline
+checked\_in & Eingecheckt; der Patient ist im Krankenhaus erschienen und die Aufnahme wurde vollzogen. \\
+\hline
+completed & Abgeschlossen; die Behandlung oder der Aufenthalt wurde regulär beendet. \\
+\hline
+cancelled & Storniert; der Termin wurde entweder durch das Personal oder den Patienten abgesagt. \\
+\hline
+no\_show & Nicht erschienen; der Patient hat den Termin ohne vorherige Absage versäumt. \\
+\hline
+checked\_out\_early & Vorzeitig beendet; der Patient hat das Krankenhaus vor dem geplanten Behandlungsende verlassen (z. B. Entlassung gegen ärztlichen Rat). \\
+\hline
+\end{tabularx}
+\caption{Zustände des Buchungsprozesses (Booking States)}
+\end{table}
+
+Die Abbildung des Buchungsstatus über einen fest definierten Enum-Typ gewährleistet eine konsistente Prozesslogik innerhalb des Systems. Dies verhindert inkonsistente Zustandsübergänge in der Datenbank und ermöglicht eine präzise statistische Auswertung der Bettenbelegung sowie der Ausfallraten (No-Shows).
+
+Zusätzlich sorgt die strikte Typisierung dafür, dass die Geschäftslogik der Anwendung jederzeit auf validen Daten operiert, was die Fehleranfälligkeit bei der Statusverwaltung erheblich reduziert.
 
