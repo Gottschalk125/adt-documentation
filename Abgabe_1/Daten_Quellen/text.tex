@@ -1,10 +1,10 @@
 \section{Datenbeschaffung und Datenaufbereitung}
-
+%1
 \subsection{Zielsetzung}
 Ziel dieses Projektteils ist die strukturierte Beschaffung und Aufbereitung von Daten, um die Datenbank sowie 
 das darauf aufbauende System zu testen. Der Fokus liegt dabei insbesondere auf der Transformation von Rohdaten in 
 ein konsistentes und qualitätsgesichertes Format.
-
+%2
 \subsection{Datenquelle}
 Als primäre Datenquelle dienen öffentlich zugängliche Datensätze der Plattform Kaggle \cite{Kaggle_Synthetic_Person}. 
 Die Plattform bietet eine Vielzahl an Datensammlungen aus unterschiedlichen Anwendungsbereichen und ist daher gut 
@@ -14,7 +14,7 @@ Dennoch existiert kein Datensatz, der direkt auf unser Datenbankschema passt. Zu
 die Unstimmigkeiten, fehlende Werte oder uneinheitliche Formate enthalten.
 Ergänzend wurden weitere Datensätze von Mendeley \cite{Mendeley_Dataset} und Hugging Face \cite{HuggingFace_Dataset} 
 verwendet, um die Datenbasis zu erweitern.
-
+%3
 \subsection{Datenaufbereitung}
 Ein zentraler Schritt nach der Erstellung der Datenbank ist die Befüllung mit geeigneten Daten. Da 
 keine Datensätze existieren, die direkt dem Datenbankschema entsprechen, müssen die vorhandenen 
@@ -29,35 +29,33 @@ anzupassen. Hierbei werden Datentypen entsprechend konvertiert und Attribute geg
 zusammengeführt. Ziel dieses Schrittes ist es, eine einheitliche und logisch strukturierte Datenbasis zu schaffen.
 
 Vor der weiteren Verarbeitung werden die Daten abschließend validiert, um eine hohe Datenqualität sicherzustellen 
-und Probleme beim Einfügen in die Datenbank sowie bei späteren Analysen zu vermeiden.
+und Probleme beim Einfügen in die normalisierte Datenbank sowie bei späteren Analysen zu vermeiden.
+%4
+%\subsection{Vorbereitung für die Speicherung}
+%Nach der Aufbereitung werden die Daten in eine strukturierte Form überführt, die eine effiziente und 
+%möglichst einfache Integration in die Datenbank ermöglicht. Dabei wird bereits darauf geachtet, dass die 
+%Daten optimal an das zugrunde liegende Datenbankschema angepasst sind, um den Einfügeprozess zu vereinfachen.
+%5
+\section{Datenverarbeitung und technologischer Ansatz}
 
-\subsection{Vorbereitung für die Speicherung}
-Nach der Aufbereitung werden die Daten in eine strukturierte Form überführt, die eine effiziente und 
-möglichst einfache Integration in die Datenbank ermöglicht. Dabei wird bereits darauf geachtet, dass die 
-Daten optimal an das zugrunde liegende Datenbankschema angepasst sind, um den Einfügeprozess zu vereinfachen.
+Für die Umsetzung der Datenverarbeitung und -aufbereitung wurde Python verwendet. 
+Ausschlaggebend hierfür sind insbesondere die umfangreichen Bibliotheken im Bereich 
+der Datenverarbeitung, die einfache Erweiterbarkeit sowie die gute Eignung für 
+automatisierte Prozesse.
 
-\subsection{Datenimport}
-Für den Import der Daten in die Datenbank wurde ein automatisierter Ansatz mittels Python-Skripten gewählt. 
-Python eignet sich aufgrund seiner umfangreichen Bibliotheken im Bereich der Datenverarbeitung besonders gut 
-für diesen Anwendungsfall.
+Der Import der Daten in die Datenbank erfolgt über automatisierte Python-Skripte. 
+Dabei wird bewusst eine Trennung zwischen Datenaufbereitung und Datenimport 
+eingehalten, um eine klare Modularisierung zu gewährleisten.
 
-Der Importprozess gliedert sich in folgende Schritte:
-\begin{itemize}
-\item Einlesen der Quelldateien
-\item Erste Strukturprüfung der Daten
-\item Transformation in geeignete Datenstrukturen
-\end{itemize}
+Der Importprozess gliedert sich in mehrere Schritte. Zunächst werden die 
+Quelldateien eingelesen. Anschließend erfolgt eine erste Strukturprüfung der Daten, 
+um mögliche Inkonsistenzen frühzeitig zu erkennen. Im letzten Schritt werden die 
+Daten in geeignete Datenstrukturen überführt, sodass sie effizient weiterverarbeitet 
+und in die Datenbank importiert werden können.
 
-Dabei wird bewusst eine Trennung zwischen Datenaufbereitung und Datenimport eingehalten, um eine klare 
-Modularisierung zu gewährleisten.
-
-\subsection{Technologischer Ansatz}
-Für die Umsetzung der Datenverarbeitung und -aufbereitung wurde Python verwendet. Ausschlaggebend hierfür 
-sind die gute Unterstützung im Bereich der Datenverarbeitung, die große Auswahl an verfügbaren Bibliotheken 
-sowie die einfache Erweiterbarkeit.
-
-Konkrete Entscheidungen bezüglich der eingesetzten Datenbanktechnologien und weiterer Tools werden in einem 
-separaten Abschnitt erläutert.
+Konkrete Entscheidungen bezüglich der eingesetzten Datenbanktechnologien sowie 
+weiterer Tools werden in einem separaten Abschnitt erläutert.
+%6
 
 \subsection{Herausforderungen}
 Im Rahmen der Datenaufbereitung traten mehrere Herausforderungen auf. Eine der größten bestand darin, 
@@ -66,3 +64,9 @@ Datensätze mit Informationen zu realen Medikamenten oder Krankheiten benötigt.
 
 Solche spezifischen Datensätze sind jedoch nur begrenzt verfügbar, wodurch die Suche zeitaufwendig war 
 und teilweise Kompromisse bei der Auswahl getroffen werden mussten.
+
+Eine weitere Herausforderung bestand darin die Daten so aufzubereiten und so zu verbinden das die Verbindungen zwischen den 
+verschiedenen Tabellen der Datenbank weiterhin sinnhafte Verbindungen dartstellen. Ein Beispiel hierfür ist die Verbindung 
+zwischen den Medikamenten und den Dosierungen. Hier musste sichergestellt werden, dass die Angabe der Dosierung auch zu der 
+tatsächlichen Form der Medikamenten passt. So ist es beispielsweise nicht sinnvoll eine Dosierung in Form von Tropfen oder 
+Millilitern anzugeben, wenn es sich bei der Form des Medikaments um eine Tablette handelt. 
