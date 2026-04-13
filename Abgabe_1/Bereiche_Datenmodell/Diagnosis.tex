@@ -1,12 +1,12 @@
-\section{Use Cases: Medikamentenverwaltung}
+\section{Use Cases: Medikamentenverwaltung (5123060)}
 
-Die folgenden Tabellen beschreiben die funktionalen Anforderungen an die Medikamentenverwaltung. Dabei wird insbesondere die Beziehung zwischen Diagnosen, Medikationen und Arzneimitteln berücksichtigt, um die Integrität des Datenmodells sicherzustellen.
-
+Die folgenden Tabellen beschreiben die funktionalen Anforderungen an die Medikamentenverwaltung. Darüber hinaus wird auf den Aufbau der zugehörigen Datenbanktabellen
+eingegangen.
 % Use Case 1
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
+\begin{tabularx}{\textwidth}{|p{4cm}|X|}
 \hline
 \textbf{Titel} & \textbf{Anlage einer Medikation auf Basis einer Diagnose} \\
 \hline
@@ -19,122 +19,74 @@ Zur Behandlung einer diagnostizierten Erkrankung wird eine Medikation angelegt, 
 \textbf{Besonderheiten} &
 Die Medikation muss eindeutig einer bestehenden Diagnose zugeordnet sein. Zudem darf nur auf Medikamente zurückgegriffen werden, die im System als verfügbar geführt werden. \\
 \hline
-\end{tabular}
+\end{tabularx}
 \caption{Use Case: Medikation anlegen}
 \end{table}
-
 % Use Case 2
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
+\begin{tabularx}{\textwidth}{|p{4cm}|X|}
 \hline
-\textbf{Titel} & \textbf{Anpassung einer bestehenden Medikation} \\
+\textbf{Titel} & \textbf{Anpassung bzw. Beendigung einer Medikation} \\
 \hline
 \textbf{Kontext} &
-Eine Anpassung erfolgt durch einen Arzt während eines laufenden Behandlungsprozesses, beispielsweise aufgrund veränderter Symptome oder neuer medizinischer Erkenntnisse. Voraussetzung ist eine bereits bestehende aktive Medikation. \\
+Eine Änderung einer bestehenden Medikation kann während eines laufenden Behandlungsprozesses erforderlich sein, etwa aufgrund veränderter Symptome, unzureichender Wirksamkeit oder neuer medizinischer Erkenntnisse. Alternativ kann eine Medikation beendet werden, wenn die Behandlung abgeschlossen ist oder das Medikament nicht weiter verabreicht werden soll. Voraussetzung ist in beiden Fällen eine bereits bestehende aktive Medikation. \\
 \hline
 \textbf{Beschreibung} &
-Eine vorhandene Medikation wird hinsichtlich Dosierung, Medikament oder Einnahmefrequenz angepasst. Ziel ist es, die Behandlung optimal an den aktuellen Zustand des Patienten anzupassen. \\
+Eine bestehende Medikation wird hinsichtlich Dosierung, Medikament oder Einnahmefrequenz angepasst bzw. vollständig beendet, indem ein entsprechender Endzeitpunkt dokumentiert wird. Ziel ist es, die Behandlung entweder optimal an den aktuellen Zustand des Patienten anzupassen oder ordnungsgemäß abzuschließen und zeitlich vollständig zu erfassen. \\
 \hline
 \textbf{Besonderheiten} &
-Änderungen müssen nachvollziehbar bleiben, sodass der Behandlungsverlauf weiterhin rekonstruierbar ist. Inkonsistente Zustände, wie parallele widersprüchliche Medikationen, sind zu vermeiden. \\
+Beendete Medikationen dürfen nicht gelöscht werden, da sie weiterhin für die medizinische Historie relevant sind. Inkonsistente Zustände, wie sich widersprechende parallele Medikationen, sind zu vermeiden. \\
 \hline
-\end{tabular}
-\caption{Use Case: Medikation ändern}
+\end{tabularx}
+\caption{Use Case: Medikation ändern bzw. beenden}
 \end{table}
 
 % Use Case 3
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
+\begin{tabularx}{\textwidth}{|p{4cm}|X|}
 \hline
-\textbf{Titel} & \textbf{Beendigung einer Medikation} \\
-\hline
-\textbf{Kontext} &
-Die Beendigung wird durch einen Arzt ausgelöst, sobald eine Behandlung abgeschlossen ist oder ein Medikament nicht weiter verabreicht werden soll. Voraussetzung ist eine aktive Medikation ohne gesetztes Enddatum. \\
-\hline
-\textbf{Beschreibung} &
-Die Medikation wird abgeschlossen, indem ein Endzeitpunkt dokumentiert wird. Dadurch wird der Zeitraum der Behandlung vollständig erfasst. \\
-\hline
-\textbf{Besonderheiten} &
-Beendete Medikationen dürfen nicht gelöscht werden, da sie für die medizinische Historie und Nachvollziehbarkeit weiterhin relevant sind. \\
-\hline
-\end{tabular}
-\caption{Use Case: Medikation beenden}
-\end{table}
-
-% Use Case 4
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{4cm}|p{11cm}|}
-\hline
-\textbf{Titel} & \textbf{Verwaltung von Arzneimitteln} \\
+\textbf{Titel} & \textbf{Verwaltung und Verfügbarkeitsprüfung von Arzneimitteln} \\
 \hline
 \textbf{Kontext} &
-Dieser Use Case wird durch administratives Personal oder die Krankenhausapotheke ausgelöst, wenn neue Medikamente eingeführt oder bestehende Einträge aktualisiert werden müssen. Voraussetzung sind entsprechende Zugriffsrechte. \\
+Dieser Use Case wird durch administratives Personal, die Krankenhausapotheke oder medizinisches Personal ausgelöst. Einerseits erfolgt die Verwaltung von Arzneimitteln bei der Einführung neuer Medikamente oder der Aktualisierung bestehender Einträge. Andererseits wird vor der Verschreibung eines Medikaments dessen Verfügbarkeit geprüft. Voraussetzung sind entsprechende Zugriffsrechte sowie im System erfasste Arzneimittel. \\
 \hline
 \textbf{Beschreibung} &
-Arzneimittel werden im System angelegt, bearbeitet oder deaktiviert. Dabei werden relevante Informationen wie Name, Wirkstoff, Typ sowie der aktuelle Lagerbestand gepflegt. \\
+Arzneimittel werden im System angelegt, bearbeitet oder deaktiviert, wobei Informationen wie Name, Wirkstoff, Typ und Lagerbestand gepflegt werden. Zusätzlich wird im Rahmen der Nutzung eines Medikaments dessen aktueller Bestand überprüft, um sicherzustellen, dass eine ausreichende Menge für die Behandlung vorhanden ist oder gegebenenfalls eine Nachbestellung erforderlich wird. \\
 \hline
 \textbf{Besonderheiten} &
-Nur aktive Medikamente dürfen für neue Medikationen verwendet werden. Änderungen am Bestand müssen konsistent gehalten werden, um eine korrekte Verfügbarkeitsprüfung zu ermöglichen. \\
+Nur aktive und verfügbare Medikamente dürfen für neue Medikationen verwendet werden. Änderungen am Lagerbestand müssen konsistent gehalten werden, da sie directen Einfluss auf die Verfügbarkeitsprüfung und damit auf medizinische Entscheidungen haben. \\
 \hline
-\end{tabular}
-\caption{Use Case: Arzneimittel verwalten}
+\end{tabularx}
+\caption{Use Case: Arzneimittel verwalten und Verfügbarkeit prüfen}
 \end{table}
-
-% Use Case 5
-%\begin{table}[H]
-%\centering
-%\renewcommand{\arraystretch}{1.4}
-%\begin{tabular}{|p{4cm}|p{11cm}|}
-%\hline
-%\textbf{Titel} & \textbf{Prüfung der Verfügbarkeit eines Medikaments} \\
-%\hline
-%\textbf{Kontext} &
-%Vor der Verschreibung eines Medikaments wird durch medizinisches Personal geprüft, ob dieses im Krankenhaus verfügbar ist. Voraussetzung ist, dass das Medikament im System erfasst ist. \\ 
-%\hline
-%\textbf{Beschreibung} &
-%Das System überprüft den aktuellen Lagerbestand eines Medikaments und stellt fest, ob dieses in ausreichender Menge vorhanden ist oder eine Nachbestellung erforderlich wird. \\
-%\hline
-%\textbf{Besonderheiten} &
-%Die Verfügbarkeitsprüfung ist eine zentrale Voraussetzung für die sichere Versorgung und kann Einfluss auf die Auswahl alternativer Medikamente haben. \\
-%\hline
-%\end{tabular}
-%\caption{Use Case: Verfügbarkeit prüfen}
-%\end{table}
-
-% Use Case 6
-%\begin{table}[H]
-%\centering
-%\renewcommand{\arraystretch}{1.4}
-%\begin{tabular}{|p{4cm}|p{11cm}|}
-%\hline
-%\textbf{Titel} & \textbf{Einsicht in die Medikationshistorie eines Patienten} \\
-%\hline
-%\textbf{Kontext} &
-%Dieser Use Case wird durch Ärzte oder Pflegepersonal ausgelöst, wenn Informationen über vergangene oder aktuelle Medikationen benötigt werden. Voraussetzung ist, dass entsprechende Daten im System vorhanden sind. \\
-%\hline
-%\textbf{Beschreibung} &
-%Alle bisherigen Medikationen eines Patienten werden aus dem System geladen und chronologisch dargestellt, sodass ein vollständiger Überblick über den Behandlungsverlauf entsteht. \\
-%\hline
-%\textbf{Besonderheiten} &
-%Die Historie dient als Grundlage für medizinische Entscheidungen und zur Vermeidung von Wechselwirkungen zwischen Medikamenten. \\
-%\hline
-%\end{tabular}
-%\caption{Use Case: Medikationshistorie einsehen}
-%\end{table}
 
 \vspace{1em}
-
 \subsection*{Resultierende Entitäten}
 
-\begin{itemize}
-\item \textbf{Diagnosis (Diagnose):} Repräsentiert die medizinische Feststellung einer Erkrankung und bildet die Grundlage für therapeutische Maßnahmen.
-\item \textbf{Medication (Medikation):} Verknüpft eine Diagnose mit einem konkreten Medikament sowie zeitlichen und dosierungsbezogenen Informationen.
-\item \textbf{Drugs (Arzneimittel):} Enthält alle verfügbaren Medikamente inklusive Eigenschaften wie Name, Wirkstoff und Lagerbestand.
-\item \textbf{Dosis (Dosierung):} Definiert Menge, Einheit und Einnahmefrequenz und konkretisiert damit die Medikation.
-\end{itemize}
+Basierend auf den beschriebenen Anwendungsfällen wurde ein Datenbankschema entwickelt, das die Prozesse der Medikamentenverwaltung strukturiert abbildet. Im Zentrum steht die Diagnose (\texttt{diagnosis}), welche die medizinische Feststellung einer Erkrankung repräsentiert und als Grundlage für therapeutische Maßnahmen dient.
+
+Darauf aufbauend wird die Medikation (\texttt{medication}) modelliert, die eine Diagnose mit einem konkreten Arzneimittel verknüpft und durch zeitliche Angaben wie Beginn und Ende der Behandlung ergänzt wird. Dadurch bleibt der Behandlungsverlauf vollständig nachvollziehbar.
+
+Die Entität \texttt{drugs} umfasst alle verfügbaren Medikamente sowie deren Eigenschaften wie Name, Wirkstoff, Typ und Lagerbestand. Sie dient als zentrale Stammdatenbasis und ermöglicht gleichzeitig die Prüfung der Verfügbarkeit im Behandlungsprozess.
+
+Die Dosierung (\texttt{dose}) konkretisiert die Medikation, indem sie Menge, Einheit und Einnahmefrequenz festlegt. Durch die separate Modellierung dieser Entität wird eine flexible und konsistente Abbildung unterschiedlicher Dosierungsschemata erreicht.
+
+Insgesamt ergibt sich eine strukturierte Abfolge von der Diagnose über die Medikation bis hin zum Arzneimittel und dessen Dosierung, wodurch sowohl die medizinische Logik als auch die Anforderungen an Nachvollziehbarkeit im Datenmodell gewährleistet werden.
+
+\subsection*{Verwendete Enums}
+
+Die in der Medikamentenverwaltung verwendeten Enum-Typen dienen der Sicherstellung konsistenter und gültiger Werte innerhalb der Datenbank. Der Enum \texttt{drugs\_type} definiert die Darreichungsform eines Medikaments (z.\,B. Tablet, Kapsel oder Injektion), während \texttt{dose\_unit} die Maßeinheit der Dosierung (z.\,B. mg, ml oder Einheit) festlegt. Der Enum \texttt{dose\_frequency} beschreibt schließlich die Einnahmefrequenz eines Medikaments (z.\,B. mehrmals täglich oder in festen Zeitintervallen). Durch die Verwendung dieser vordefinierten Wertemengen wird die Datenintegrität erhöht und eine einheitliche Verarbeitung im System gewährleistet.
+
+Darüber hinaus werden die Daten in der Tabelle \texttt{diagnosis} verschlüsselt gespeichert, um ein hohes Maß an Datensicherheit und Privatsphäre zu gewährleisten.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Bereiche_Datenmodell/Entities_Medication.png}
+    \caption{Resultierende Klassen zur Medikamentenverwaltung}
+    \label{fig:medicationUseCases}
+\end{figure}
+
