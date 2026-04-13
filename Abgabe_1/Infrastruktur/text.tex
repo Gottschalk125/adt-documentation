@@ -1,3 +1,23 @@
 \section{Architektur und Infrastruktur}
-\subsection{Relationale Datenbank PostgreSQL}
-PostgreSQL weil cool
+
+\subsection{Wahl des Datenbanksystems}
+
+Bei der Planung der Architektur für das vorliegende Krankenhausinformationssystem war es zunächst erforderlich, unterschiedliche Datenbankmodelle für unseren hochspezifischen Kontext abzuwägen. Im direkten Vergleich standen dabei NoSQL-Datenbanken (z.\,B. dokumentenorientierte wie MongoDB) und klassische relationale Datenbanken (RDBMS). 
+
+Obwohl NoSQL-Datenbanken durch ihre Flexibilität bei variierenden oder unstrukturierten Daten glänzen, erfordert unser Anwendungsfall zwingend ein striktes Datenmodell. Das zugrundeliegende Domänenmodell beschreibt ein hochgradig und klar vernetztes Regelwerk aus Patienten (\textit{patient}), Diagnosen (\textit{diagnosis}), Raumbuchungen (\textit{bookings}) und differenzierten Medikationsplänen (Verknüpfung von \textit{medication}, \textit{drugs} und \textit{dose}). Eine Fehlzuweisung bei Betten oder eine Inkonsistenz in der Medikamentenvergabe kann im medizinischen Kontext gravierende Konsequenzen haben. Aufgrund dieser essenziellen Anforderungen an Korrektheit und der Vielzahl an strukturierten Fremdschlüssel-Abhängigkeiten haben wir uns für ein \textbf{relationales Datenbanksystem (PostgreSQL)} entschieden. Die ACID-Garantien von PostgreSQL sichern die relationale Integrität dieser sensiblen Stammdaten (wie Ärztetypen, Medikamenten-Stock, Raumkapazitäten und Mitarbeiter), während komplexe Auswertungen (z.\,B. Stationsbelegung über Joins von \textit{department}, \textit{station} und \textit{rooms}) konsistent und performant abgebildet werden können.
+
+\subsection{Bereitstellung und Hosting}
+
+Neben der Frage des Datenbanktyps mussten wir zudem über das Hosting entscheiden. Anstatt auf etablierte und pflegeleichte externe Cloud-Services (wie AWS RDS oder Azure SQL) zurückzugreifen, haben wir uns ganz bewusst für eine \textbf{Self-Hosted-Datenbank} entschieden. 
+
+Da es sich hierbei um ein praxisnahes Studien- bzw. Entwicklungsprojekt handelt, steht vor allem ein uneingeschränkter Zugang zu Hardware-Ressourcen im Vordergrund: Für das ausgiebige Testen, das Entwickeln und Optimieren von anspruchsvollen Datenbankabfragen über unsere vielen Tabellen sowie das Experimentieren mit sehr großen, simulierten Datenmengen benötigen wir extrem viel Rechenleistung. Bei externen Cloud-Anbietern würden diese ressourcenintensiven Operationen, Lasttests und das freie \glqq Rumprobieren\grqq{} sehr schnell immense und unberechenbare Kosten (Pay-per-Use) durch dauerhafte Compute- und Storage-Nutzung verursachen. Der Self-Hosted-Ansatz auf leistungsstarker, eigener Hardware bietet uns stattdessen eine völlig budgetneutrale Spielwiese. Wir können die enormen CPU- und RAM-Ressourcen nach Belieben ausreizen und die PostgreSQL-Konfiguration dediziert auf das Verarbeiten großer Datenmengen abstimmen, ohne an Preismodelle externer Cloud-Anbieter gebunden zu sein.
+
+\subsection{Aktueller Stand und Tooling}
+
+Konkret läuft die PostgreSQL-Instanz in einem \textbf{Docker-Container}\cite{Docker} auf einer dedizierten virtuellen Maschine (VM). Durch die Containerisierung ist die Datenbank isoliert, reproduzierbar und bei Bedarf schnell neu aufsetzbar.
+
+Für den schnellen, webbasierten Zugriff auf die Datenbank kommt \textbf{pgAdmin~4}\cite{pgAdmin} zum Einsatz. Über das browserbasierte Webpanel lassen sich Tabellen inspizieren, Ad-hoc-Abfragen ausführen und die Datenbankstruktur visuell überblicken -- ohne lokal zusätzliche Software installieren zu müssen. Für tiefergehende Entwicklungsarbeit, das Schreiben und Optimieren komplexer SQL-Abfragen sowie das gezielte Experimentieren mit Daten wird darüber hinaus \textbf{DataGrip}\cite{DataGrip} von JetBrains als vollwertige Datenbank-IDE verwendet. DataGrip bietet u.\,a. intelligente Autovervollständigung, Query-Analyse und einen komfortablen Schema-Navigator, was das freie Herumprobieren mit unterschiedlichen Abfragen und Datenmengen erheblich beschleunigt.
+
+\subsection{Ausblick}
+
+In einem nächsten Schritt ist geplant, die Datenbank über ein dediziertes \textbf{Backend} anzubinden, welches die Geschäftslogik kapselt und über eine API bereitstellt. Darauf aufbauend soll ein \textbf{Frontend} entwickelt werden, das eine benutzerfreundliche Oberfläche zur Interaktion mit dem System bietet. Durch diese vollständige Architektur aus Datenbank, Backend und Frontend wird es möglich sein, tatsächliche Anwendungsdaten realistisch zu simulieren, Abläufe wie Patientenaufnahmen oder Raumbuchungen end-to-end durchzuspielen und die Ergebnisse visuell aufzubereiten.
