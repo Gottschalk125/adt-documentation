@@ -1,0 +1,19 @@
+id,name,department,rooms
+1,Interdisziplinaere Intensivstation,1,9
+4,Augenstation,4,7
+5,HNO-Station,5,12
+6,Neurochirurgische Station,6,7
+7,Neurologische Station,7,17
+8,Onkologische und Palliativstation,8,14
+10,Frauenklinik Station,10,9
+11,Dermatologische Station,11,13
+12,Viszeralchirurgische Station,12,9
+13,Paediatrische Station,13,13
+14,Psychiatrische Akutstation,14,12
+15,Kinder- und Jugendpsychiatrie,15,16
+16,MKG-Station,16,7
+21,Unfallchirurgische Station,21,10
+22,Thorax- und Herzchirurgie Station,22,5
+23,Urologische Station,23,7
+24,Innere Medizin I Station,24,6
+25,Innere Medizin II Station,25,11

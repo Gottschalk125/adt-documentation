@@ -38,10 +38,13 @@ IMPORT_ORDER = [
 ]
 
 FILE_TO_TABLE_HINTS = {
+    "bookings.csv": "bookings",
     "persons_transformed.csv": "person",
     "patients.csv": "patient",
     "employees.csv": "employee",
     "departments.csv": "department",
+    "stations.csv": "station",
+    "rooms.csv": "rooms",
     "doctors.csv": "doctors",
     "nurses.csv": "nurses",
     "drugs.csv": "drugs",

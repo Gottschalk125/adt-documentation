@@ -10,9 +10,15 @@ else
 fi
 
 IMP="insertion/csv_importer.py"
+GEN="rooms_bookings.py"
 
 if [[ ! -f "$IMP" ]]; then
   echo "ERROR: importer not found: $IMP" >&2
+  exit 1
+fi
+
+if [[ ! -f "$GEN" ]]; then
+  echo "ERROR: generator not found: $GEN" >&2
   exit 1
 fi
 
@@ -47,8 +53,13 @@ run() {
   "$PY" "$IMP" import "$csv" --table "$table" --batch-size 2000 --drop
 }
 
+echo "=== Generating stations, rooms, bookings and nurse station assignments ==="
+"$PY" "$GEN"
+
 run person persons_transformed.csv
 run department departments.csv
+run station stations.csv
+run rooms rooms.csv
 run dose dose.csv
 run drugs drugs.csv
 run employee employees.csv
@@ -57,6 +68,7 @@ run nurses nurses.csv
 run medication medication.csv
 run patient patients.csv
 run diagnosis diagnosis.csv
+run bookings bookings.csv
 
 echo ""
 echo "All imports completed."
