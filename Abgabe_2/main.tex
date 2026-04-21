@@ -1,0 +1,50 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}   
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{csquotes}
+\usepackage{parskip}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{biblatex}
+\addbibresource{literature.bib}
+
+\title{Hospital Management System - Dokumentation Teil 2}
+\author{
+  {\Large Gruppe 1} \\[0.5em]
+  {\large \textit{THWS W\"urzburg Schweinfurt}} \\[1em]
+  Joshua Pfennig: 5123097\\
+  Tim Kn\"uttel: 5123101\\
+  Jasmin Wander: 5123060\\
+  David Heppenheimer: 5123026\\
+  Tom Knoblach: 5123034
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+
+\include{Einleitung/einleitung}
+\include{DatenquellenUndVerarbeitung/person}
+\include{DatenquellenUndVerarbeitung/facilities}
+\include{DatenquellenUndVerarbeitung/medication}
+\include{Dateneinlesen/text}
+\include{BackendUndAPI/person}
+\include{BackendUndAPI/facilities}
+\include{BackendUndAPI/medication}
+\include{Frontend/text}
+\include{KI_Nutzung/kiNutzung}
+
+\printbibliography
+
+\end{document}

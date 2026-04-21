@@ -1,0 +1,45 @@
+\usepackage{parskip}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{biblatex}
+\addbibresource{literature.bib}
+
+\title{Hospital Management System - Dokumentation }
+\author{
+  {\Large Gruppe 1} \\[0.5em]
+  {\large \textit{THWS W\"urzburg Schweinfurt}} \\[1em]
+  Joshua Pfennig: 5123097\\
+  Tim Kn\"uttel: 5123101\\
+  Jasmin Wander: 5123060\\
+  David Heppenheimer: 5123026\\
+  Tom Knoblach: 5123034
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+
+\include{../Abgabe_1/Einleitung/einleitung}
+\include{../Abgabe_1/Infrastruktur/text}
+\include{../Abgabe_1/Daten_Quellen/text}
+\include{../Abgabe_1/Bereiche_Datenmodell/Diagnosis}
+\include{../Abgabe_1/Bereiche_Datenmodell/PatientsAndPerson}
+\include{../Abgabe_1/Bereiche_Datenmodell/Rooms}
+\include{../Abgabe_1/Bereiche_Datenmodell/KomplettesDiagramm}
+\include{../Abgabe_2/DatenquellenUndVerarbeitung/person}
+\include{../Abgabe_2/DatenquellenUndVerarbeitung/facilities}
+\include{../Abgabe_2/DatenquellenUndVerarbeitung/medication}
+\include{../Abgabe_2/Dateneinlesen/text}
+\include{../Abgabe_2/BackendUndAPI/person}
+\include{../Abgabe_2/BackendUndAPI/facilities}
+\include{../Abgabe_2/BackendUndAPI/medication}
+\include{../Abgabe_2/Frontend/text}
+\include{../Abgabe_2/KI_Nutzung/kiNutzung}
+
+\printbibliography
+
+\end{document}
