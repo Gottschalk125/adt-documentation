@@ -7,7 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent
 DOSE_FILE = BASE_DIR / "dose.csv"
 DRUG_FILE = BASE_DIR / "drugs.csv"
 OUTPUT_FILE = BASE_DIR / "medication.csv"
-ROW_COUNT = 10000
+#also changed here to 10.000.000
+ROW_COUNT = 10000000
 
 TYPE_TO_UNITS = {
     "tablet": ["tablet"],

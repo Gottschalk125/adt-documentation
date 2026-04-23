@@ -9,22 +9,25 @@ DOCTORS_FILE = BASE_DIR / "doctors.csv"
 PATIENTS_FILE = BASE_DIR / "patients.csv"
 DISEASES_FILE = BASE_DIR / "diseases_unique.csv"
 OUTPUT_FILE = BASE_DIR / "diagnosis.csv"
-ROW_COUNT = 10000
+#CURRENTLY 10.000.000 Million Diagnosis, can be changed here
+ROW_COUNT = 10000000
 
 
-def load_medications() -> list[dict[str, datetime]]:
-    medications: list[dict[str, datetime]] = []
+def load_medications() -> list[dict[str, datetime, datetime]]:
+    medications: list[dict[str, datetime, datetime]] = []
     with MEDICATION_FILE.open(newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             med_id = (row.get("id") or "").strip()
             started = (row.get("started") or "").strip()
+            ended = (row.get("ended") or "").strip()
             if not med_id or not started:
                 continue
             medications.append(
                 {
                     "id": med_id,
                     "start_date": datetime.strptime(started, "%Y-%m-%d"),
+                    "end_date": datetime.strptime(ended, "%Y-%m-%d"), 
                 }
             )
     return medications
@@ -85,6 +88,7 @@ def main() -> None:
         doctor = random.choice(doctors)
         patient = random.choice(patients)
         diagnosed_at = med["start_date"] - timedelta(days=random.randint(0, 3))
+        diagnosed_end = med["end_date"] - timedelta(days = random.randint(-3, 5))
         diagnoses.append(
             {
                 "id": str(diagnosis_id),
@@ -93,11 +97,12 @@ def main() -> None:
                 "diagnosed_by": doctor,
                 "diagnosed_patient": patient,
                 "diagnosed_at": diagnosed_at.strftime("%Y-%m-%d"),
+                "diagnosed_end": diagnosed_end.strftime("%Y-%m-%d")
             }
         )
 
     with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f:
-        fieldnames = ["id", "medication", "disease", "diagnosed_by", "diagnosed_patient", "diagnosed_at"]
+        fieldnames = ["id", "medication", "disease", "diagnosed_by", "diagnosed_patient", "diagnosed_at", "diagnosed_end"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(diagnoses)

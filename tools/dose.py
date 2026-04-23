@@ -3,7 +3,8 @@ import random
 from pathlib import Path
 
 OUTPUT_FILE = Path(__file__).resolve().parent / "dose.csv"
-ROW_COUNT = 10000
+#Changed also to 10.000.000
+ROW_COUNT = 10000000
 
 UNITS = ["mg", "g", "mcg", "ml", "l", "tablet", "capsule", "drop", "puff", "unit"]
 FREQUENCIES = ["every_x_days", "x_daily", "every_x_hours", "x_weekly", "every_x_weeks"]
