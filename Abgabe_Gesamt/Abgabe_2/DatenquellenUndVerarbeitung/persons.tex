@@ -1,7 +1,7 @@
 \section{Datenquellen und Datenverarbeitung}
 
 \subsection{Personendaten (5123101)}
-\subsubsection*{Transformieren der Personendaten}
+\subsubsection{Transformieren der Personendaten}
 Als Grundlage aller Personendaten ist ein Dataset von Kaggle verwendet worden.\cite{swain_synthetic_person_data}
 
 Die zugrunde liegenden Daten haben wir zunächst mit einem Python Skript transformiert und vereinheitlicht, damit die Daten genau unseren Ansprüchen entsprechen. 
@@ -16,7 +16,7 @@ Abschließend hat nur noch der Wert für \texttt{Phonenumber} gefehlt. Hier wurd
 
 Damit lag uns nun eine passend formatierte csv Datei vor mit allen Personendaten vor.
 
-\subsubsection*{Aufteilen der Personendaten}
+\subsubsection{Aufteilen der Personendaten}
 Als nächsten Schritt galt es die Personen auf die einzelnen Tabellen aufzuteilen, bzw. die Referenzen in den anderen Tabellen dafür anzulegen, um jede Personen auf einen der Typen (\texttt{Patient}, \texttt{Doctors} und \texttt{Nurse}) zuzuordnen. Dabei haben wir ebenfalls Python Skripte eingesetzt.
 
 Hierbei haben wir uns wieder die Hilfe von Python Skripen bedient. Zunächst haben wir alle UUIDs der zuvor transformierten Personen.csv Datei herausgelesen und 95\% der Personen als \texttt{Patient} zugeordnet. Die restlichen 5\% wurden den \texttt{Employees} zugeordnet. Zu jeder UUId der Patienten wurde ein numerischer Wert zugewiesen, der als Id des Patienten gilt. Abschließend wurden die beiden Einträge in eine neue csv Datei geschrieben. Den UUIDs der Employees wurden ebenfalls jeweils eine eine neu generierte UUID als Id zugewiesen. Zusätzlich wurde noch jedem Eintrag zufällig ein Department zugewiesen. Die 3 Einträge wurden dann ebenfalls in eine neue csv Datei überführt.
