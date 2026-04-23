@@ -1,0 +1,114 @@
+\subsection{Raumverwaltung und Belegungsdaten}
+
+Die Daten der Raumverwaltung werden nicht manuell gepflegt, sondern mit einem Python-Skript aus
+bereits vorhandenen Stammdaten abgeleitet. Dadurch bleiben Stationen, Zimmer, Pflegepersonal und
+Buchungen konsistent zueinander. Das Skript erzeugt bzw. aktualisiert die CSV-Dateien für
+Stationen, Räume, Pflegekräfte und Buchungen. Bei dem zuletzt erzeugten Datensatz wurden
+18 Stationen, 184 Zimmer und 8918 Buchungseinträge generiert.
+
+\subsubsection*{Eingabedaten und Abhängigkeiten}
+
+Als Grundlage verwendet das Skript vier CSV-Dateien:
+
+\begin{itemize}
+    \item \texttt{departments.csv}: enthält die medizinischen Abteilungen sowie das Gebäude, aus dem später die Etage der Räume abgeleitet wird.
+    \item \texttt{employees.csv}: ordnet Mitarbeitende ihren Abteilungen zu.
+    \item \texttt{nurses.csv}: liefert die Menge der Pflegekräfte, die anschließend einer Station zugeordnet werden.
+    \item \texttt{patients.csv}: enthält die Patienten-IDs, die für die späteren Buchungen benötigt werden.
+\end{itemize}
+
+Wichtig ist, dass diese Dateien vor der Ausführung bereits vollständig und zueinander passend
+vorliegen. Besonders relevant sind dabei die Fremdschlüsselbeziehungen aus dem Datenbankschema:
+\texttt{station.department} verweist auf \texttt{department.id}, \texttt{rooms.station} verweist
+auf \texttt{station.id}, \texttt{nurses.station} verweist auf \texttt{station.id} und
+\texttt{bookings.room} sowie \texttt{bookings.patient} verweisen auf \texttt{rooms.id} bzw.
+\texttt{patient.id}. Deshalb müssen die Abteilungs-IDs, Mitarbeiter-IDs, Stations-IDs, Raum-IDs
+und Patienten-IDs in den erzeugten CSV-Dateien exakt mit den referenzierten Tabellen übereinstimmen.
+
+\subsubsection*{Erzeugung der Stationen und Räume}
+
+Im Skript ist mit \texttt{INPATIENT\_PROFILES} festgelegt, welche Abteilungen stationäre
+Einheiten erhalten. Nicht jede Abteilung wird automatisch zu einer Station, sondern nur die dort
+aufgeführten Abteilungen. Für jede dieser Abteilungen wird ein Stationsprofil definiert. Dieses
+Profil enthält den Stationsnamen, den Stationstyp und einen Faktor \texttt{beds\_per\_nurse}.
+Der Stationstyp unterscheidet beispielsweise Intensivstation, Allgemeinstation, Chirurgie,
+Innere Medizin, Onkologie, Pädiatrie und Psychiatrie.
+
+Die Anzahl der Betten wird aus der Anzahl der Pflegekräfte einer Abteilung berechnet:
+Die Mitarbeitenden werden zuerst über \texttt{employees.csv} ihrer Abteilung zugeordnet.
+Anschließend zählt das Skript, wie viele Einträge aus \texttt{nurses.csv} zu jeder Abteilung
+gehören. Aus dieser Anzahl und dem Profilfaktor entsteht die Bettenzahl der Station. Damit keine
+Station unrealistisch klein wird, wird mindestens mit sechs Betten gerechnet.
+
+Aus der Bettenzahl werden anschließend konkrete Zimmer erzeugt. Die Funktion
+\texttt{build\_room\_sizes()} verteilt die Betten auf Ein- und Zweibettzimmer. Das Verhältnis ist
+pro Stationstyp unterschiedlich festgelegt. Intensivstationen bestehen vollständig aus
+Einbettzimmern, während andere Stationstypen überwiegend Zweibettzimmer enthalten und nur einen
+definierten Anteil an Einzelzimmern haben. Dieses Verhältnis ist wichtig, weil es später bestimmt,
+wie viele Patienten parallel einem Raum zugeordnet sein können.
+
+Jeder Raum erhält eine technische \texttt{id}, eine \texttt{station}, eine sichtbare
+\texttt{number}, eine \texttt{floor}-Angabe und die Anzahl der \texttt{beds}. Die Etage wird aus
+dem ersten Zahlenzeichen des Gebäudefeldes der Abteilung abgeleitet, z.\,B. aus \texttt{4B} die
+Etage \texttt{4}. Für Verknüpfungen ist jedoch nicht die Raumnummer entscheidend, sondern die
+technische Raum-ID. Die Raumnummer dient vor allem der Anzeige, während \texttt{rooms.id} der
+Primärschlüssel ist und in \texttt{bookings.room} referenziert wird.
+
+\subsubsection*{Zuordnung der Pflegekräfte}
+
+Neben den Stationen und Räumen schreibt das Skript auch \texttt{nurses.csv} neu. Dabei bleibt die
+ID der Pflegekraft erhalten, die Spalte \texttt{station} wird jedoch aus der Abteilung des
+zugehörigen Employee-Eintrags bestimmt. Dadurch entsteht eine direkte Beziehung zwischen
+Pflegekraft und Station. Dieser Schritt ist notwendig, weil die Datenbank für Pflegekräfte einen
+Fremdschlüssel auf \texttt{station.id} vorsieht. Pflegekräfte aus Abteilungen ohne stationäres
+Profil erhalten keine Stationszuordnung.
+
+\subsubsection*{Generierung der Buchungen}
+
+Die Buchungen werden aus den erzeugten Zimmern und der Patientenliste aufgebaut. Zuerst werden alle
+Patienten-IDs zufällig gemischt. Danach wird für jedes Bett eines Raums eine eigene Zeitachse
+simuliert. Dadurch kann ein Zweibettzimmer zwei parallele Buchungen haben, aber nicht beliebig viele.
+Die Aufenthaltsdauer wird abhängig vom Stationstyp aus einer Dreiecksverteilung bestimmt. Eine
+psychiatrische Station erzeugt dadurch längere Aufenthalte als beispielsweise eine Allgemeinstation
+oder eine chirurgische Station.
+
+Der betrachtete Zeitraum umfasst im Skript 180 Tage in der Vergangenheit und 14 Tage in der Zukunft.
+Zwischen zwei Aufenthalten werden zusätzlich kleine Lücken eingefügt, die ebenfalls vom Stationstyp
+abhängen. Für jeden erzeugten Aufenthalt wird ein Patient aus dem Patientenpool entnommen und nur
+einmal verwendet. Dadurch werden doppelte oder zeitlich überlappende Buchungen desselben Patienten
+vermieden. Falls nicht genug Patienten vorhanden sind, bricht das Skript mit einer Fehlermeldung ab.
+Diese Prüfung ist wichtig, weil sonst Buchungen entstehen könnten, deren \texttt{patient}-Wert nicht
+mehr sauber auf die Patiententabelle verweist.
+
+Der Status einer Buchung wird anhand des Aufnahme- und Entlassdatums relativ zum Ausführungsdatum
+des Skripts bestimmt. Aktuelle Aufenthalte erhalten \texttt{checked\_in}, zukünftige Aufenthalte
+\texttt{confirmed} oder \texttt{pending}. Bereits vergangene Aufenthalte werden überwiegend als
+\texttt{completed} markiert, ein kleiner Anteil als \texttt{checked\_out\_early}. Zusätzlich werden
+separate Ereignisse für \texttt{cancelled} und \texttt{no\_show} erzeugt. Diese Ereignisse zählen
+nicht als reale Belegung, bilden aber typische Sonderfälle für die API und das Frontend ab.
+
+\subsubsection*{Integritätsregeln beim Import}
+
+Beim Import der CSV-Dateien muss die Reihenfolge der Tabellen beachtet werden. Zuerst müssen
+\texttt{department}, \texttt{person}, \texttt{patient} und \texttt{employee} vorhanden sein. Danach
+können \texttt{station} und \texttt{rooms} importiert werden. Erst anschließend sind
+\texttt{nurses} und \texttt{bookings} sicher importierbar, weil ihre Fremdschlüssel dann bereits
+existieren.
+
+Außerdem müssen folgende Bedingungen eingehalten werden:
+
+\begin{itemize}
+    \item Jede \texttt{station.department}-ID muss in \texttt{department.id} existieren.
+    \item Jede \texttt{rooms.station}-ID muss in \texttt{station.id} existieren.
+    \item Jede \texttt{nurses.station}-ID muss entweder leer sein oder auf eine vorhandene Station zeigen.
+    \item Jede \texttt{bookings.room}-ID muss auf einen vorhandenen Raum zeigen.
+    \item Jede \texttt{bookings.patient}-ID muss auf einen vorhandenen Patienten zeigen.
+    \item Pro belegungsrelevantem Zeitraum darf die Anzahl paralleler Buchungen eines Raums die Bettenzahl des Raums nicht überschreiten.
+    \item Die Werte in \texttt{bookings.state} müssen zum Booking-State-Enum der Datenbank passen.
+\end{itemize}
+
+Durch den festen Zufallsseed \texttt{RANDOM\_SEED = 42} bleiben die generierten Daten bei gleichen
+Eingabedateien reproduzierbar. Das ist für Tests und Dokumentation hilfreich, weil die Raumstruktur
+und die erzeugten Buchungen nicht bei jedem Durchlauf unkontrolliert variieren. Gleichzeitig bilden
+die Zufallsverteilungen genug Varianz ab, um realistische Belegungszustände, freie Betten,
+abgeschlossene Aufenthalte und Sonderfälle wie Stornierungen testen zu können.
