@@ -1,0 +1,89 @@
+\section{Dateneinlesen und Datenbankimport}
+
+Das Einlesen der CSV-Dateien erfolgt über ein seperates Batch Skript, welches Python Skripte aufruft. Der Ablauf generiert zuerst die
+abhängigen Stations-, Raum- und Buchungsdaten und importiert anschließend alle CSV-Dateien in einer
+festen Reihenfolge. Diese Reihenfolge folgt den Fremdschlüsselabhängigkeiten des relationalen
+Modells: unabhängige Stammdaten wie \texttt{person} und \texttt{department} werden vor abhängigen
+Tabellen wie \texttt{employee}, \texttt{patient}, \texttt{diagnosis} und \texttt{bookings}
+geschrieben. Dadurch existieren referenzierte Datensätze bereits, bevor Tabellen mit
+Fremdschlüsseln geladen werden.
+
+\subsection{Neuaufbau der Tabellen}
+
+Jeder Import wird mit \texttt{--drop} ausgeführt. Vor dem Einfügen neuer Datensätze wird die
+Zieltabelle zurückgesetzt:
+
+\begin{lstlisting}[style=sqlstyle]
+TRUNCATE TABLE "public"."<table>" RESTART IDENTITY CASCADE;
+\end{lstlisting}
+
+\texttt{TRUNCATE} ist für den Massenimport geeigneter als ein zeilenweises \texttt{DELETE}, weil
+die Tabelle als Ganzes geleert wird. \texttt{RESTART IDENTITY} sorgt für reproduzierbare IDs,
+\texttt{CASCADE} entfernt abhängige Datensätze mit. So kann der komplette Testdatenbestand
+wiederholt sauber neu aufgebaut werden.
+
+\subsection{Schema- und Fremdschlüsselprüfung}
+
+Der Importer liest das aktuelle PostgreSQL-Schema direkt aus den Metadaten. Dafür werden u.\,a. die
+Tabellenspalten, Datentypen und benutzerdefinierten Typen abgefragt:
+
+\begin{lstlisting}[style=sqlstyle]
+SELECT table_name, column_name, ordinal_position,
+       data_type, udt_name, is_nullable
+FROM information_schema.columns
+WHERE table_schema = %s
+ORDER BY table_name, ordinal_position;
+\end{lstlisting}
+
+Auf dieser Basis wird das Mapping zwischen CSV-Spalten und Datenbankspalten geprüft. Zusätzlich
+werden Enum-Werte, z.\,B. für Buchungsstatus oder Dosierungsfrequenzen, gegen die in PostgreSQL
+definierten Werte validiert. Dadurch werden Format- und Typfehler vor dem eigentlichen Insert
+sichtbar.
+
+Für die referenzielle Integrität fragt der Importer die Fremdschlüsselbeziehungen des Schemas ab
+und prüft anschließend, ob die in der CSV enthaltenen Referenzen bereits in den Elterntabellen
+existieren:
+
+\begin{lstlisting}[style=sqlstyle]
+SELECT "<foreign_column>"::text
+FROM "public"."<foreign_table>"
+WHERE "<foreign_column>"::text = ANY(%s);
+\end{lstlisting}
+
+Fehlende Referenzen führen zu einem Abbruch vor dem Import. Das ist bei den Krankenhausdaten
+besonders wichtig: Buchungen dürfen nur auf vorhandene Patienten und Räume zeigen, Diagnosen nur
+auf vorhandene Patienten, Ärzte und Medikationsdaten. Die Vorprüfung verhindert, dass große Batches
+erst während des Schreibens an einzelnen Fremdschlüsselverletzungen scheitern.
+
+\subsection{Batch-Inserts und Transaktionen}
+
+Die CSV-Zeilen werden in Paketen von 2.000 Datensätzen importiert. Pro Paket wird ein
+Multi-Row-\texttt{INSERT} mit parametrisierten Platzhaltern erzeugt:
+
+\begin{lstlisting}[style=sqlstyle]
+INSERT INTO "public"."<table>" ("col_1", "col_2", "col_3")
+VALUES (%s, %s, %s), (%s, %s, %s), ...;
+\end{lstlisting}
+
+Dadurch werden viele Zeilen mit einer SQL-Anweisung geschrieben, statt für jede CSV-Zeile einen
+eigenen Datenbank-Roundtrip auszuführen. Das ist für Tabellen wie \texttt{person}, \texttt{patient},
+\texttt{diagnosis} und \texttt{bookings} relevant, da hier mehrere tausend Datensätze verarbeitet
+werden.
+
+Jeder Batch läuft in einer Transaktion. Schlägt ein Batch fehl, wird ein Rollback ausgeführt. Zur
+Fehleranalyse kann der Importer anschließend auf einzelne Zeilen zurückfallen und Savepoints
+verwenden:
+
+\begin{lstlisting}[style=sqlstyle]
+SAVEPOINT csv_import_row;
+-- einzelner Insert
+RELEASE SAVEPOINT csv_import_row;
+
+ROLLBACK TO SAVEPOINT csv_import_row;
+\end{lstlisting}
+
+Damit kombiniert der Importprozess zwei Ziele: Im Normalfall werden Massendaten schnell über
+Batch-Inserts geschrieben, im Fehlerfall kann trotzdem die konkrete problematische Zeile ermittelt
+werden. Für den Use Case der Abgabe ist diese Kombination aus Performance, Transaktionen und
+referenzieller Integrität zentral, weil viele voneinander abhängige Tabellen regelmäßig vollständig
+neu aufgebaut werden müssen.
