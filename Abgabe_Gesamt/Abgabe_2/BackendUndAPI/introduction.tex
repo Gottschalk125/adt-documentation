@@ -1,0 +1,49 @@
+\section{Backend und API}
+\subsection{Technologieentscheidung (5123097)}
+
+Die Architektur des Backends sowie die Gestaltung der Schnittstellen sind entscheidend für die Wartbarkeit, Sicherheit und Skalierbarkeit eines Hospital Management Systems (HMS). 
+Für dieses Projekt wurde eine Kombination aus der Programmiersprache \textbf{Kotlin} und dem Architekturstil \textbf{REST} gewählt.
+
+\subsubsection{Programmiersprache: Kotlin}
+Obwohl Java der traditionelle Standard im Enterprise-Umfeld ist, bietet Kotlin moderne Sprachfeatures, die insbesondere in einem sensiblen Bereich wie dem Gesundheitswesen von Vorteil sind:
+
+\begin{itemize}
+    \item \textbf{Null-Safety (Typsicherheit):} Einer der häufigsten Fehler in der Softwareentwicklung sind \texttt{NullPointerExceptions}. 
+    Kotlin integriert die Prüfung auf Null-Werte direkt in das Typsystem. 
+    Da medizinische Daten (z. B. Allergien oder Vorerkrankungen) oft optional sind, zwingt Kotlin den Entwickler dazu, diese Fälle explizit zu behandeln, was die Systemstabilität massiv erhöht. \\
+    Durch diesen Aspekt wurde auch bewusst auf eine Umsetzung mit Python in Kombination mit der FastAPI verzichtet, da Python dynamisch typisiert ist. 
+    Fehler bei der Datentyp-Zuweisung (z.B. ein String, bei dem eine Zahl für eine Medikamentendosis erwartet wird) fallen oft erst zur Laufzeit beim Endnutzer auf. 
+    Kotlin hingegen ist statisch typisiert, sodass der Compiler vorab die Datenflüsse validiert. Dies ist in einem Hospital Management System essenziell, um lebenskritische Datenfehler zu minimieren, wodurch auf eine komfortablere Entwicklung in Python bewusst verzichtet wurde.
+    \item \textbf{Prägnanz und Wartbarkeit:} Durch Features wie \textit{Data Classes}, \textit{Extension Functions} und \textit{Type Inference} reduziert Kotlin den sogenannten Boilerplate-Code um bis zu 40 \% im Vergleich zu Java. Dies macht den Code lesbarer und weniger anfällig für Implementierungsfehler in der Geschäftslogik.
+    \item \textbf{Volle Interoperabilität:} Kotlin läuft auf der Java Virtual Machine (JVM) und ist zu 100 \% mit Java kompatibel. Dies erlaubt den Zugriff auf etablierte Frameworks wie \textit{Spring Boot}, das für die Anbindung der PostgreSQL-Datenbank und die Absicherung des Systems essenziell ist.
+\end{itemize}
+
+\subsubsection{Schnittstellenarchitektur: REST-API}
+Für die Kommunikation zwischen dem Backend und den Client-Anwendungen wurde das Paradigma des \textbf{Representational State Transfer (REST)} gewählt. Die Entscheidung basiert auf folgenden strategischen Überlegungen:
+
+\begin{itemize}
+    \item \textbf{Zustandslosigkeit (Statelessness):} Jede REST-Anfrage enthält alle Informationen, die für die Verarbeitung notwendig sind. Dies vereinfacht die Skalierbarkeit des Servers und verbessert die Zuverlässigkeit, da keine komplexen Session-Zustände auf dem Server verwaltet werden müssen.
+    \item \textbf{Plattformunabhängigkeit:} Die API liefert Daten standardmäßig im JSON-Format. Dies ermöglicht eine strikte Trennung von Geschäftslogik und Benutzeroberfläche. So kann dasselbe Backend problemlos ein Web-Dashboard für die Verwaltung, eine mobile App für Ärzte oder externe Laborsysteme bedienen und ermöglicht somit effiziente Erweiterungsmöglichkeiten des Projekts.
+    \item \textbf{Standardisierte Kommunikation:} Durch die Nutzung der HTTP-Verben (\texttt{GET} zum Abrufen von Patientenakten, \texttt{POST} für Neuaufnahmen und Änderungen) wird eine intuitive und konsistente Schnittstelle geschaffen, die die Einarbeitungszeit für neue Entwickler minimiert.
+    %TODO wirklich Caching mit reinbringen? nutzen wir das?
+    \item \textbf{Caching-Effizienz:} Medizinische Stammdaten, wie Medikamentenlisten, ändern sich selten. REST unterstützt natives HTTP-Caching, wodurch die Netzwerklast reduziert und die Antwortzeiten für das medizinische Personal optimiert werden.
+\end{itemize}
+
+Neben REST wurden auch modernere Ansätze wie GraphQL und gRPC in Betracht gezogen. Basierend auf den Anforderungen des Systems wurde sich jedoch bewusst für eine REST-API entschieden:
+
+\begin{itemize}
+    \item \textbf{REST vs. GraphQL:} 
+    Während GraphQL es Clients ermöglicht, passgenaue Datenstrukturen abzufragen, erhöht es die Komplexität im Backend (Query-Parsing, N+1-Problematik) und erschwert effizientes Caching auf HTTP-Ebene. Da die Datenmodelle im Krankenhauswesen (z. B. HL7-Standards) oft klar definiert sind, bietet REST eine robustere Performance und ist einfacher abzusichern, da Zugriffsrechte auf Endpunkt-Ebene definiert werden können.
+    
+    \item \textbf{REST vs. gRPC:} 
+    gRPC bietet zwar durch die Verwendung von Protocol Buffers (Binary-Format) eine höhere Performance und geringere Latenz, erfordert aber spezialisierte Client-Bibliotheken und ist für Browser-Anwendungen schwerer zu konsumieren (erfordert oft Proxys wie gRPC-Web). REST hingegen nutzt Standard-JSON über HTTP/1.1 oder HTTP/2, was die Integration von Web-Frontends und Drittanbietersystemen ohne zusätzliche Komplexität sicherstellt.
+\end{itemize}
+
+\subsubsection{Fazit}
+Die Kombination aus Kotlin und REST bietet ein robustes Fundament für das Projekt. Während Kotlin die interne Datenintegrität und Typsicherheit garantiert, stellt REST eine flexible und standardisierte Kommunikation nach außen sicher. Dies gewährleistet, dass das Hospital Management System sowohl sicher im Betrieb als auch offen für zukünftige Erweiterungen bleibt.
+
+%TODO auf Besonderheit eingehen, dass in Backend nicht nur IDs sondern ganze Objekte, für geringen Network Traffic dann wieder IDs
+%TODO in API auf eigene RequestObjects eingehen
+
+%bei API: 404 statt null
+%bei API: auf combined search functions mit parametern eingehen
