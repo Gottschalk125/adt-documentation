@@ -1,0 +1,120 @@
+\subsection{Implementierung der Medikamentenverwaltung (5123060)}
+
+Auch die Medikamentenverwaltung bildet eine zentrale fachliche Komponente innerhalb des Hospital Management Systems.
+Sie umfasst die Verwaltung von Diagnosen (\textit{Diagnoses}), sowie darauf aufbauende konkrete Medikationsverläufe (\textit{Medications}), Medikamentenstammdaten (\textit{Drugs}) und Dosierungen (\textit{Doses}).
+Durch diese Aufteilung wird eine klare Trennung zwischen statischen Informationen (z. B. Wirkstoffe), parametrisierten Verabreichungen und patientenspezifischen Behandlungsverläufen erreicht.
+
+\subsubsection{Domänenmodell und Objektbeziehungen}
+Innerhalb des Backends werden die Entitäten als logisch verknüpfte Objekte modelliert:
+
+\begin{itemize}
+\item \textbf{Drugs:} Beschreiben grundlegende Medikamente mit Eigenschaften wie Name, Wirkstoff, Typ und Lagerbestand.
+\item \textbf{Doses:} Definieren standardisierte Dosierungsschemata (z. B. Menge, Einheit, Einnahmefrequenz).
+\item \textbf{Medications:} Verknüpfen konkrete Medikamente mit einer Dosierung und einem zeitlichen Verlauf (Start- und Enddatum).
+\item \textbf{Diagnoses:} Stellen die medizinische Diagnose dar und referenzieren eine zugehörige Medikation sowie Arzt und Patient.
+\end{itemize}
+
+Diese Struktur ermöglicht eine hohe Wiederverwendbarkeit: Ein Medikament (\textit{Drug}) kann in mehreren Medikationen verwendet werden, während Dosierungen flexibel kombiniert werden können.
+
+\subsubsection{API-Design und Datenübertragung}
+Die REST-API folgt einer konsistenten Struktur entlang der Ressourcen:
+
+\begin{itemize}
+\item \textbf{Lesende Zugriffe (GET):}
+Die API liefert bei komplexeren Entitäten (z. B. \textit{Medications} oder \textit{Diagnoses}) verschachtelte Objekte zurück, um kontextrelevante Informationen direkt verfügbar zu machen.
+Dadurch werden zusätzliche Requests reduziert, was insbesondere bei der Anzeige medizinischer Verläufe von Vorteil ist.
+
+\item \textbf{Schreibzugriffe (POST/PUT):}
+Für schreibende Operationen werden bewusst schlanke Request-Objekte verwendet, die ausschließlich auf ID-Referenzen basieren (z. B. \texttt{drugId}, \texttt{doseId}). 
+Dies reduziert die Payload-Größe und verhindert Inkonsistenzen durch redundante Datenübertragung.
+
+\end{itemize}
+
+\textbf{Beispiel für eine Response (\texttt{\detokenize{GET /api/medications/{MEDICATION_ID}}}):}
+
+\begin{lstlisting}
+{
+"(*\color{keyblue}id*)": (*\color{numorange}1*),
+"(*\color{keyblue}dose*)": {
+"(*\color{keyblue}id*)": (*\color{numorange}1*),
+"(*\color{keyblue}unit*)": "(*\color{valgreen}MG*)",
+"(*\color{keyblue}amount*)": (*\color{numorange}500*),
+"(*\color{keyblue}frequency*)": "(*\color{valgreen}DAILY*)",
+"(*\color{keyblue}frequencyAmount*)": (*\color{numorange}2*)
+},
+"(*\color{keyblue}drug*)": {
+"(*\color{keyblue}id*)": (*\color{numorange}1*),
+"(*\color{keyblue}stock*)": (*\color{numorange}2013*),
+"(*\color{keyblue}name*)": "(*\color{valgreen}Paracetamol*)",
+"(*\color{keyblue}activeIngredient*)": "(*\color{valgreen}Paracetamol*)",
+"(*\color{keyblue}type*)": "(*\color{valgreen}SYRUP*)"
+},
+"(*\color{keyblue}started*)": "(*\color{valgreen}2024-03-01*)",
+"(*\color{keyblue}ended*)": null
+}
+\end{lstlisting}
+
+\subsubsection{Filter- und Suchmechanismen}
+Alle Ressourcen unterstützen flexible Filtermechanismen über Query-Parameter.
+Diese erlauben eine präzise und performante Einschränkung der Datenmengen:
+
+\begin{itemize}
+\item \textbf{Drugs:} Filter nach Name, Namensbestandteilen, Wirkstoff und Typ.
+\item \textbf{Doses:} Filter nach Einheit, Frequenz sowie Mengenangaben.
+\item \textbf{Medications:} Filter nach Medikament, Typ, Dosierungseinheit sowie zeitlichen Einschränkungen (Startdatum).
+\item \textbf{Diagnoses:} Erweiterte Filtermöglichkeiten inkl. Krankheit, behandelndem Arzt, Patient sowie Zeitraum.
+\end{itemize}
+
+Zur Sicherstellung konsistenter Suchlogik werden bestimmte Parameterkombinationen bewusst ausgeschlossen.
+Beispielsweise ist die gleichzeitige Verwendung von exakter und unscharfer Suche (z. B. \texttt{name} und \texttt{nameContains}) nicht erlaubt und führt zu einem \texttt{400 BAD REQUEST}.
+
+\subsubsection{Fehlerbehandlung und Validierung}
+Die API implementiert eine klare und konsistente Fehlerbehandlung:
+
+\begin{itemize}
+\item \textbf{Nicht gefundene Ressourcen:}
+Zugriffe auf nicht existierende Entitäten führen zu einer \texttt{404 NOT FOUND}-Antwort.
+
+\item \textbf{Validierungsfehler:}
+Ungültige oder widersprüchliche Parameterkombinationen werden frühzeitig erkannt und mit \texttt{400 BAD REQUEST} beantwortet.
+
+\item \textbf{Datumslogik:}
+Bei Medikationen wird sichergestellt, dass das Enddatum nicht vor dem Startdatum liegt.
+
+\end{itemize}
+
+\subsubsection{Paginierung und Performance}
+Alle Listen-Endpunkte sind paginiert implementiert (\texttt{page}, \texttt{size}), um auch bei großen Datenmengen eine stabile Performance sicherzustellen.
+Die serverseitige Filterung erfolgt über dynamisch aufgebaute Abfragen (z. B. mittels \textit{Specifications}), sodass nur tatsächlich benötigte Kriterien in die Datenbankabfrage einfließen.
+
+\subsubsection{Fachliche Besonderheiten}
+Ein zentrales fachliches Konzept ist die Trennung zwischen \textbf{aktiven} und \textbf{beendeten} Medikationen.
+Eine Medikation gilt als aktiv, solange kein Enddatum gesetzt ist.
+Diese Logik wird direkt durch den API-Parameter \texttt{active} abgebildet und ermöglicht eine effiziente Abfrage aktuell laufender Behandlungen.
+
+Darüber hinaus wird perspektivisch eine Erweiterung der Medikamentenlogik angestrebt, bei der der Lagerbestand (\textit{stock}) in Relation zu aktiven Medikationen gesetzt wird, um kritische Bestände frühzeitig zu erkennen.
+
+\subsubsection{Beispielhafte API-Nutzung}
+Die folgenden Beispiele verdeutlichen typische Anwendungsfälle:
+
+\begin{itemize}
+    \item \textbf{Abruf von Daten:}
+    \begin{itemize}
+        \item \texttt{GET /api/drugs?activeIngredient=Insulin}: Filterung nach Wirkstoff.
+        \item \texttt{GET /api/medications?drugType=SYRUP\&startedAfter=2024-01-01}: Abruf aller Medikationen mit einem Medikament des Typs SYRUP, die nach dem angegebenen Datum begonnen haben.
+        \item \texttt{GET /api/diagnoses?diseaseContains=Diabetes}: Suche nach Diagnosen anhand eines Teilstrings.
+    \end{itemize}
+
+    \item \textbf{Erstellung neuer Einträge:}
+    \begin{itemize}
+        \item \texttt{POST /api/medications}: Erstellung einer neuen Medikation unter Verwendung von \texttt{doseId} und \texttt{drugId}.
+    \end{itemize}
+
+    \item \textbf{Aktualisierung bestehender Daten:}
+    \begin{itemize}
+        \item \texttt{PUT \detokenize{/api/medications/{MEDICATION_ID}}}: Setzen eines Enddatums zur Beendigung einer Medikation.
+    \end{itemize}
+\end{itemize}
+
+
+Die gewählte Architektur stellt sicher, dass sowohl einfache als auch komplexe medizinische Zusammenhänge effizient abgebildet werden können, ohne die Performance oder Wartbarkeit des Systems zu beeinträchtigen.
