@@ -1,9 +1,27 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}   
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{csquotes}
 \usepackage{parskip}
 \usepackage{lmodern}
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{biblatex}
-\addbibresource{literature.bib}
+\addbibresource{Abgabe_1/literature.bib}
+\addbibresource{Abgabe_2/literature.bib}
+
+\graphicspath{
+    {./Abgabe_1/}
+    {./Abgabe_1/Bereiche_Datenmodell/}
+    {./Abgabe_2/}
+}
 
 \title{Hospital Management System - Dokumentation }
 \author{
@@ -23,22 +41,24 @@
 \newpage
 \tableofcontents
 
-\include{../Abgabe_1/Einleitung/einleitung}
-\include{../Abgabe_1/Infrastruktur/text}
-\include{../Abgabe_1/Daten_Quellen/text}
-\include{../Abgabe_1/Bereiche_Datenmodell/Diagnosis}
-\include{../Abgabe_1/Bereiche_Datenmodell/PatientsAndPerson}
-\include{../Abgabe_1/Bereiche_Datenmodell/Rooms}
-\include{../Abgabe_1/Bereiche_Datenmodell/KomplettesDiagramm}
-\include{../Abgabe_2/DatenquellenUndVerarbeitung/person}
-\include{../Abgabe_2/DatenquellenUndVerarbeitung/facilities}
-\include{../Abgabe_2/DatenquellenUndVerarbeitung/medication}
-\include{../Abgabe_2/Dateneinlesen/text}
-\include{../Abgabe_2/BackendUndAPI/person}
-\include{../Abgabe_2/BackendUndAPI/facilities}
-\include{../Abgabe_2/BackendUndAPI/medication}
-\include{../Abgabe_2/Frontend/text}
-\include{../Abgabe_2/KI_Nutzung/kiNutzung}
+%TODO think about using Abgabe 1, ... as "supersections"
+
+\include{Abgabe_1/Einleitung/einleitung}
+\include{Abgabe_1/Infrastruktur/text}
+\include{Abgabe_1/Daten_Quellen/text}
+\include{Abgabe_1/Bereiche_Datenmodell/Diagnosis}
+\include{Abgabe_1/Bereiche_Datenmodell/PatientsAndPerson}
+\include{Abgabe_1/Bereiche_Datenmodell/Rooms}
+\include{Abgabe_1/Bereiche_Datenmodell/KomplettesDiagramm}
+\include{Abgabe_2/DatenquellenUndVerarbeitung/person}
+\include{Abgabe_2/DatenquellenUndVerarbeitung/facilities}
+\include{Abgabe_2/DatenquellenUndVerarbeitung/medication}
+\include{Abgabe_2/Dateneinlesen/text}
+\include{Abgabe_2/BackendUndAPI/person}
+\include{Abgabe_2/BackendUndAPI/facilities}
+\include{Abgabe_2/BackendUndAPI/medication}
+\include{Abgabe_2/Frontend/text}
+\include{Abgabe_2/KI_Nutzung/kiNutzung}
 
 \printbibliography
 
