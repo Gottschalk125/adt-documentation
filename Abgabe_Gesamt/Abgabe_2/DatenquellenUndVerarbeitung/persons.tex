@@ -1,5 +1,29 @@
 \section{Datenquellen und Datenverarbeitung}
 
 \subsection{Personendaten (5123101)}
+\subsubsection*{Transformieren der Personendaten}
+Als Grundlage aller Personendaten ist ein Dataset von Kaggle verwendet worden.\cite{swain_synthetic_person_data}
 
-Grundlage aller Personendaten ist ein Dataset von Kaggle \cite{swain_synthetic_person_data}
+Die zugrunde liegenden Daten haben wir zunächst mit einem Python Skript transformiert und vereinheitlicht, damit die Daten genau unseren Ansprüchen entsprechen. 
+Dabei haben wir folgende Änderungen vorgenommen:
+
+Zunächst haben wir zu jedem Eintrag eine \texttt{UUID} generiert und den vorherigen numerischen Wert damit ersetzt. Dies hat den Vorteil, dass wie die Einträge in verschiedenen Tabellen leichter verknüpfen können und es zu keinen Unstimmigkeiten kommt. 
+Als nächstes haben wir den \texttt{Gender} Eintrag der Person von einem ausgeschriebenen Wort auf eine verkürzte und standardisierte Werte (m,f,d) überführt.
+Die Werte \texttt{Vorname, Nachname, PLZ, City, Street, StreetNo und Email} wurden, nachdem eventuelle unnötige Leerzeichen entfernt wurden, einfach vom Datenset übernommen.
+Als \texttt{Country} wert wurde bei jeder Person "USA" eingetragen, da die Adressen alle aus der USA stammen.
+Da anstatt eines Geburtstags im Datenset nur das Alter vorkam haben wir einfach daraus das Geburtsjahr hergeleitet und zusätzlich ein zufälliges Datum im Jahr generiert. Damit konnte man dann den \texttt{Birthdate} wert jedem Eintrag zuweisen.
+Abschließend hat nur noch der Wert für \texttt{Phonenumber} gefehlt. Hier wurden einfach eine Auswahl an bestehenden und gültigen Vorwahlen herangekommen und eine zufällig generierte Zahl dahinter gehängt.
+
+Damit lag uns nun eine passend formatierte csv Datei vor mit allen Personendaten vor.
+
+\subsubsection*{Aufteilen der Personendaten}
+Als nächsten Schritt galt es die Personen auf die einzelnen Tabellen aufzuteilen, bzw. die Referenzen in den anderen Tabellen dafür anzulegen, um jede Personen auf einen der Typen (\texttt{Patient}, \texttt{Doctors} und \texttt{Nurse}) zuzuordnen. Dabei haben wir ebenfalls Python Skripte eingesetzt.
+
+Hierbei haben wir uns wieder die Hilfe von Python Skripen bedient. Zunächst haben wir alle UUIDs der zuvor transformierten Personen.csv Datei herausgelesen und 95\% der Personen als \texttt{Patient} zugeordnet. Die restlichen 5\% wurden den \texttt{Employees} zugeordnet. Zu jeder UUId der Patienten wurde ein numerischer Wert zugewiesen, der als Id des Patienten gilt. Abschließend wurden die beiden Einträge in eine neue csv Datei geschrieben. Den UUIDs der Employees wurden ebenfalls jeweils eine eine neu generierte UUID als Id zugewiesen. Zusätzlich wurde noch jedem Eintrag zufällig ein Department zugewiesen. Die 3 Einträge wurden dann ebenfalls in eine neue csv Datei überführt.
+
+Die Patientendaten war nun auch vollständig. 
+
+Abschließend mussten noch die Employee Einträge auf Doctors und Nurses aufgeteilt werden.
+Dafür wurden 30\% der Employees als Doktor zugewiesen. Hierbei wurden ebenfalls die UUIDs aus der Employee Datei herausgenommen und zu jedem Eintrag eine zufällige Telefonnummer mit einer Festen Vorwahl für alle generiert. Anschließend wurde jedem Doktor noch zufällig ein Type zugeordnet, wobei sicherzustellen war, dass jedes Department einen $head_of_department$ erhält. Anschließend wurden die Daten in eine neue csv Datei übertragen. 
+
+Die Übrigen UUIDs aus der Employee Datei wurden dann den Nurses zugeordnet und ebenfalls in eine neue Datei geschrieben.
