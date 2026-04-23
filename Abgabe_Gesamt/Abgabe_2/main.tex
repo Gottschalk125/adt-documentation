@@ -14,7 +14,6 @@
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{biblatex}
-\usepackage[utf8]{inputenc}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -29,6 +28,18 @@
     breaklines=true,
     frame=single,
     escapeinside={(*}{*)} 
+}
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyblue}\bfseries,
+    stringstyle=\color{valgreen},
+    commentstyle=\color{gray}\itshape,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    showstringspaces=false
 }
 
 \addbibresource{literature.bib}
@@ -55,7 +66,7 @@
 	\include{DatenquellenUndVerarbeitung/persons}
 	\include{DatenquellenUndVerarbeitung/facilities}
 	\include{DatenquellenUndVerarbeitung/medication}
-\include{Dateneinlesen/text}
+\include{Dateneinlesen/Dateneinlesen}
 \include{BackendUndAPI/introduction}
 \include{BackendUndAPI/person}
 \include{BackendUndAPI/facilities}

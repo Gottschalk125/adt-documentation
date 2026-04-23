@@ -17,26 +17,11 @@ Um jedoch den \textbf{Network Traffic} zwischen Backend und Frontend zu minimier
 \end{itemize}
 
 
-\newpage
-\textbf{Beispiel für eine Response (\texttt{\detokenize{GET /api/stations/{STATION_ID}}}):}
-
-\begin{lstlisting}
-{
-  "(*\color{keyblue}id*)": (*\color{numorange}1*),
-  "(*\color{keyblue}name*)": "(*\color{valgreen}Interdisziplinaere Intensivstation*)",
-  "(*\color{keyblue}department*)": {
-    "(*\color{keyblue}id*)": (*\color{numorange}1*),
-    "(*\color{keyblue}name*)": "(*\color{valgreen}Klinik fuer Anaesthesiologie*)",
-    "(*\color{keyblue}building*)": "(*\color{valgreen}4B*)"
-  }
-}
-\end{lstlisting}
-
 
 \subsubsection{Request-Objekte bei Schreibzugriffen}
 Im Gegensatz dazu werden für Schreiboperationen (\texttt{POST}) dedizierte \textbf{Request-Objects} (z. B. \texttt{BookingRequest}) verwendet. 
 Diese enthalten zur Reduktion der Komplexität und Payload-Größe lediglich die Primärschlüssel (\textit{IDs}) der verknüpften Entitäten. 
-Dies entkoppelt die API von der internen Datenbankstruktur und verhindert, dass Clients fälschlicherweise versuchen, Sub-Ressourcen (wie Abteilungsnamen) über einen Belegungsendpunkt zu ändern.
+Dies entkoppelt die API von der internen Datenbankstruktur und verhindert, dass Clients fälschlicherweise versuchen, Sub-Ressourcen wie Abteilungsnamen über einen \texttt{Bookings}-Endpunkt zu ändern.
 
 \subsubsection{API-Design und Fehlerbehandlung}
 Bei der Gestaltung der REST-Endpunkte wurde streng auf Konformität und Robustheit geachtet:
@@ -77,9 +62,23 @@ Die folgenden Beispiele illustrieren die Verwendung der Endpunkte für Abfragen 
     \end{itemize}
 \end{itemize}
 
+
+\textbf{Beispiel für eine Response (\texttt{\detokenize{GET /api/stations/{STATION_ID}}}):}
+
+\begin{lstlisting}
+{
+  "(*\color{keyblue}id*)": (*\color{numorange}1*),
+  "(*\color{keyblue}name*)": "(*\color{valgreen}Interdisziplinaere Intensivstation*)",
+  "(*\color{keyblue}department*)": {
+    "(*\color{keyblue}id*)": (*\color{numorange}1*),
+    "(*\color{keyblue}name*)": "(*\color{valgreen}Klinik fuer Anaesthesiologie*)",
+    "(*\color{keyblue}building*)": "(*\color{valgreen}4B*)"
+  }
+}
+\end{lstlisting}
+
 Im Zuge der Architekturentwicklung wurde die Struktur der Endpunkte kritisch hinterfragt.\\
 In einer ersten Version befanden sich die Funktionen zur Verlegung und Entlassung eines Patienten innerhalb des \texttt{bookings}-Endpunkts (u.a. \texttt{POST /api/bookings/relocate?patientId=\detokenize{PATIENT_ID}}). \\
-Um die REST-Architektur jedoch möglichst logisch und konsistent aufzubauen, wurde dieser Use Case in den \texttt{patient}-Endpunkt verschoben. 
-Die Begründung hierfür liegt in der semantischen Bedeutung: Eine Verlegung oder Entlassung ist primär ein Ereignis im Lebenszyklus eines Patienten. 
+Um die REST-Architektur jedoch möglichst logisch und konsistent aufzubauen, wurde dieser Use Case in den \texttt{patient}-Endpunkt verschoben, da eine Verlegung bzw. Entlassung primär ein Ereignis im Lebenszyklus eines Patienten ist. 
 Durch diese Verschiebung wird der \texttt{bookings}-Endpunkt auf die reine Verwaltung von Raumreservierungen reduziert, während patientenzentrierte Aktionen konsistent an der Patienten-Ressource gebündelt werden. 
 %Dies verbessert die Intuitivität der API für Entwickler und folgt dem Prinzip der \textit{Separation of Concerns}.
