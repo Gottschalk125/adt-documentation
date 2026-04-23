@@ -14,6 +14,21 @@
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{biblatex}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{keyblue}{RGB}{20,105,176}
+\definecolor{valgreen}{RGB}{0,128,0}
+\definecolor{numorange}{RGB}{255,102,0}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    % Hier definieren wir zwei Zeichen, zwischen denen wir LaTeX-Code schreiben:
+    escapeinside={(*}{*)} 
+}
 \addbibresource{Abgabe_1/literature.bib}
 \addbibresource{Abgabe_2/literature.bib}
 
