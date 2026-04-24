@@ -41,6 +41,25 @@ Neben REST wurden auch modernere Ansätze wie GraphQL und gRPC in Betracht gezog
     REST hingegen nutzt Standard-JSON über HTTP/1.1 oder HTTP/2, was die Integration von Web-Frontends und Drittanbietersystemen ohne zusätzliche Komplexität sicherstellt.
 \end{itemize}
 
+\textbf{Design der Endpunkte}
+
+Bei der Gestaltung der REST-Endpunkte wurde streng auf Konformität und Robustheit geachtet:
+
+\begin{itemize}
+    \item \textbf{Explizite Fehlerzustände:} Anstatt bei nicht vorhandenen Ressourcen \texttt{null} oder leere Listen zurückzugeben, wirft das Backend konsequent eine \texttt{ResponseStatusException} mit dem Status \texttt{404 NOT FOUND}. 
+    Dies ermöglicht dem Frontend eine klare Unterscheidung zwischen einer erfolgreichen leeren Suche und einem ungültigen Zugriff.
+    \item \textbf{Kombinierte Suchfunktionen:} Alle Endpunkte unterstützen komplexe Filteroperationen. 
+    Über Query-Parameter können Suchen nach exakten Namen, Namensbestandteilen (\texttt{nameContains}) oder Zugehörigkeiten (z. B. \texttt{departmentId}) kombiniert werden.
+    Diese serverseitige Filterung erfolgt über dynamische \texttt{Specifications}. 
+    \item \textbf{Validierungslogik:} Um inkonsistente Zustände zu vermeiden, implementiert das Backend eine Validierung der Parameterkombinationen. 
+    So ist beispielsweise die gleichzeitige Verwendung von exakter Suche und Teilstring-Suche untersagt und führt zu einem \texttt{400 BAD REQUEST}.
+    \item \textbf{Dynamische Spezifikationen und Paginierung:}
+    Um die Abfragen auch bei großen Datenmengen performant zu halten, sind alle Listen-Endpunkte standardmäßig paginiert. 
+    Dies wird durch die Integration von \texttt{Spring Data Pageable} realisiert. 
+   
+
+\end{itemize}
+
 \subsubsection*{Fazit}
 Die Kombination aus Kotlin und REST bietet eine robuste Grundlage für das Projekt. 
 Während Kotlin die interne Datenintegrität und Typsicherheit garantiert, stellt REST eine flexible und standardisierte Kommunikation nach außen sicher,

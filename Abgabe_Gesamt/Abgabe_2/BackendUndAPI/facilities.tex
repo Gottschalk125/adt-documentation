@@ -2,19 +2,20 @@
 
 Die Raumverwaltung stellt eine zentrale Komponente des Hospital Management Systems dar. 
 Sie umfasst die hierarchische Struktur von Abteilungen (\textit{Departments}), Stationen (\textit{Stations}) und Zimmern (\textit{Rooms}) sowie die darauf aufbauenden Belegungen (\textit{Bookings}). 
-Bei der Umsetzung wurden spezifische Entwurfsmuster gewählt, um die Netzwerklast zu optimieren und gleichzeitig eine hohe Datenkonsistenz zu gewährleisten.
+Bei der Umsetzung wurde darauf geachtet, die Netzwerklast zu optimieren und gleichzeitig eine hohe Datenkonsistenz zu gewährleisten.
 
 \subsubsection{Interne Objektverknüpfung vs. API-Effizienz}
 Innerhalb des Backends werden die Entitäten als vollständig verknüpfte Objektgraphen verwaltet. 
 Dies ermöglicht es der Geschäftslogik, effizient auf Relationen zuzugreifen (z. B. von einer Buchung direkt auf das Zimmer-Objekt und dessen Kapazitäten zuzugreifen), ohne manuelle Datenbank-Joins im Code formulieren zu müssen.
 
-Um jedoch den \textbf{Network Traffic} zwischen Backend und Frontend zu minimieren, folgt die API einer bedarfsorientierten Strategie:
-\begin{itemize}
-    \item \textbf{ID-Referenzierung:} In der API-Antwort werden tieferliegende oder für den aktuellen Kontext nicht unmittelbar relevante Relationen primär als IDs übertragen. 
-    Dies verhindert das Übertragen massiver Datenmengen (z. B. vollständige Abteilungsdetails bei jeder einzelnen Zimmerabfrage), wenn der Client diese Informationen bereits lokal hält oder nicht benötigt.
-    \item \textbf{Gezielte Payload-Reduktion:} Durch den Einsatz dedizierter Transferstrukturen wird sichergestellt, dass nur die für die jeweilige Ansicht essenziellen Datenfelder serialisiert werden. 
-    Dies führt zu einer performanten Schnittstelle, die besonders bei instabilen Netzwerkverbindungen im Krankenhausalltag (z. B. auf mobilen Visiten-Tablets) zuverlässig arbeitet.
-\end{itemize}
+%TODO evtl im dritten Portfolio mit einbeziehen falls das dann umgesetzt
+%Um jedoch den \textbf{Network Traffic} zwischen Backend und Frontend zu minimieren, folgt die API einer bedarfsorientierten Strategie:
+%\begin{itemize}
+%    \item \textbf{ID-Referenzierung:} In der API-Antwort werden tieferliegende oder für den aktuellen Kontext nicht unmittelbar relevante Relationen primär als IDs übertragen. 
+%    Dies verhindert das Übertragen massiver Datenmengen (z. B. vollständige Abteilungsdetails bei jeder einzelnen Zimmerabfrage), wenn der Client diese Informationen bereits lokal hält oder nicht benötigt.
+%    \item \textbf{Gezielte Payload-Reduktion:} Durch den Einsatz dedizierter Transferstrukturen wird sichergestellt, dass nur die für die jeweilige Ansicht essenziellen Datenfelder serialisiert werden. 
+%    Dies führt zu einer performanten Schnittstelle, die besonders bei instabilen Netzwerkverbindungen im Krankenhausalltag (z. B. auf mobilen Visiten-Tablets) zuverlässig arbeitet.
+%\end{itemize}
 
 
 
@@ -23,24 +24,7 @@ Im Gegensatz dazu werden für Schreiboperationen (\texttt{POST}) dedizierte \tex
 Diese enthalten zur Reduktion der Komplexität und Payload-Größe lediglich die Primärschlüssel (\textit{IDs}) der verknüpften Entitäten. 
 Dies entkoppelt die API von der internen Datenbankstruktur und verhindert, dass Clients fälschlicherweise versuchen, Sub-Ressourcen wie Abteilungsnamen über einen \texttt{Bookings}-Endpunkt zu ändern.
 
-\subsubsection{API-Design und Fehlerbehandlung}
-Bei der Gestaltung der REST-Endpunkte wurde streng auf Konformität und Robustheit geachtet:
-
-\begin{itemize}
-    \item \textbf{Explizite Fehlerzustände:} Anstatt bei nicht vorhandenen Ressourcen \texttt{null} oder leere Listen zurückzugeben, wirft das Backend konsequent eine \texttt{ResponseStatusException} mit dem Status \texttt{404 NOT FOUND}. 
-    Dies ermöglicht dem Frontend eine klare Unterscheidung zwischen einer erfolgreichen leeren Suche und einem ungültigen Zugriff.
-    \item \textbf{Kombinierte Suchfunktionen:} Die Endpunkte für Abteilungen und Stationen unterstützen komplexe Filteroperationen. 
-    Über Query-Parameter können Suchen nach exakten Namen, Namensbestandteilen (\texttt{nameContains}) oder Zugehörigkeiten (z. B. \texttt{departmentId}) kombiniert werden.
-    \item \textbf{Validierungslogik:} Um inkonsistente Zustände zu vermeiden, implementiert das Backend eine Validierung der Parameterkombinationen. 
-    So ist beispielsweise die gleichzeitige Verwendung von exakter Suche und Teilstring-Suche untersagt und führt zu einem \texttt{400 BAD REQUEST}.
-\end{itemize}
-
-\subsubsection{Dynamische Spezifikationen und Paginierung}
-Um die Raumverwaltung auch bei großen Datenmengen performant zu halten, sind alle Listen-Endpunkte standardmäßig \textbf{paginiert}. 
-Dies wird durch die Integration von Spring Data Pageable realisiert. 
-Die serverseitige Filterung erfolgt über dynamische \textit{Specifications}. 
-Dies erlaubt es, SQL-Abfragen zur Laufzeit nur mit den Parametern aufzubauen, die tatsächlich vom Client gesendet wurden, was die Effizienz der PostgreSQL-Abfragen maximiert und die Last auf dem Datenbankserver minimiert.
-
+\subsubsection{Endpoints}
 Die folgenden Beispiele illustrieren die Verwendung der Endpunkte für Abfragen und Ressourcen-Erstellung:
 
 \begin{itemize}
