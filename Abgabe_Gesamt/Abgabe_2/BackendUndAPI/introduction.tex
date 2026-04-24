@@ -59,6 +59,66 @@ Bei der Gestaltung der REST-Endpunkte wurde streng auf Konformität und Robusthe
    
 
 \end{itemize}
+\newpage
+\subsubsection{Verarbeitung von Entitäten und Generierung von SQL-Statements durch das \texttt{Spring} - Framework}
+Die Umwandlung von Klassen in SQL-Statements erfolgt in mehreren Schritten zur Laufzeit durch den \texttt{JPA}-Provider \texttt{Hibernate}, der vom \texttt{Spring}-Framework integriert wird.
+Dabei dienen die Annotationen in der Entitätsklasse primär als Metadaten, die beschreiben, wie Objekte auf relationale Strukturen abgebildet werden sollen (siehe \ref{lst:bookingEntity}).
+\\
+Beim Start der Anwendung scannt das Framework alle Klassen, die mit \texttt{@Entity} annotiert sind. 
+Diese werden als persistente Entitäten registriert. 
+Ergänzende Annotationen wie \texttt{@Table}, \texttt{@Id} oder \texttt{@ManyToOne} liefern zusätzliche Informationen über Tabellenname, Primärschlüssel und Beziehungen.
+\\
+Aus diesen Informationen erstellt der \texttt{JPA}-Provider ein internes Metamodell, das die Struktur der Datenbank aus Sicht der Anwendung beschreibt.
+Dabei werden unter anderem folgende Zuordnungen definiert:
+
+\begin{itemize}
+\item Klassen werden Tabellen zugeordnet (durch \texttt{@Entity} und \texttt{@Table})
+\item Attribute werden Spalten zugeordnet (durch \texttt{@Column}, \texttt{@Temporal})
+\item Beziehungen werden als Fremdschlüssel modelliert (durch \texttt{@ManyToOne} und \texttt{@JoinColumn})
+\end{itemize}
+
+Dieses Mapping existiert vollständig im Speicher und bildet die Grundlage für alle weiteren Datenbankoperationen.
+\\
+Zur Laufzeit verwaltet das Framework alle geladenen und zu speichernden Objekte in einem sogenannten Persistenzkontext. 
+Dieser fungiert als Zwischenschicht zwischen Anwendung und Datenbank.
+Wird eine Entität geladen oder gespeichert, wird sie in diesen Kontext aufgenommen. 
+Änderungen an Objekten werden dabei automatisch erkannt, ohne dass explizit SQL formuliert werden muss.
+\\
+Erst bei konkreten Datenbankoperationen erzeugt das Framework die benötigten SQL-Statements. 
+Dies geschieht dynamisch auf Basis des Mapping-Modells und des aktuellen Objektzustands.
+\\So wird beispielsweise beim Speichern einer neuen Entität ein \texttt{INSERT}-Statement erzeugt, wobei Annotationen wie \texttt{@GeneratedValue} die Behandlung des Primärschlüssels beeinflussen.
+Auch beim Abrufen und den generierten \texttt{SELECT}-Statements können Konfigurationen wie das verzögerte Laden von Beziehungen (durch \texttt{@ManyToOne} und \texttt{LAZY}) zur Netzwerkoptimierung mit einbezogen werden.
+
+\newpage
+\begin{lstlisting}[language=Kotlin, caption={Booking-Entität mit Spring Annotations in Kotlin}, label={lst:bookingEntity}]
+@Entity
+@Table(name = "bookings")
+data class Booking(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "\"from\"")
+    val from: Date,
+
+    @Temporal(TemporalType.DATE)
+    val until: Date?,
+
+    @Convert(converter = BookingState.BookingStateConverter::class)
+    val state: BookingState,
+
+    @ManyToOne
+    @JoinColumn(name = "room")
+    val room: Room,
+
+    @ManyToOne
+    @JoinColumn(name = "patient")
+    val patient: Patient
+)
+
+\end{lstlisting}
+
 
 \subsubsection*{Fazit}
 Die Kombination aus Kotlin und REST bietet eine robuste Grundlage für das Projekt. 

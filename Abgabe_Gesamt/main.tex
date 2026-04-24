@@ -28,6 +28,29 @@
     frame=single,
     escapeinside={(*}{*)} 
 }
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyblue}\bfseries,
+    stringstyle=\color{valgreen},
+    commentstyle=\color{gray}\itshape,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    showstringspaces=false
+}
+
+\lstdefinelanguage{Kotlin}{
+  keywords={data, class, val, var, fun, null, true, false},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"
+}
+
 \addbibresource{Abgabe_1/literature.bib}
 \addbibresource{Abgabe_2/literature.bib}
 

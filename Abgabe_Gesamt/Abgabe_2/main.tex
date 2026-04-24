@@ -42,6 +42,16 @@
     showstringspaces=false
 }
 
+\lstdefinelanguage{Kotlin}{
+  keywords={data, class, val, var, fun, null, true, false},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"
+}
+
 \addbibresource{literature.bib}
 
 \title{Hospital Management System - Dokumentation Teil 2}
@@ -68,9 +78,9 @@
 	\include{DatenquellenUndVerarbeitung/medication}
 \include{Dateneinlesen/Dateneinlesen}
 \include{BackendUndAPI/introduction}
-\include{BackendUndAPI/person}
-\include{BackendUndAPI/facilities}
-\include{BackendUndAPI/medication}
+  \include{BackendUndAPI/person}
+  \include{BackendUndAPI/facilities}
+  \include{BackendUndAPI/medication}
 \include{Frontend/frontend}
 \include{KI_Nutzung/kiNutzung}
 
