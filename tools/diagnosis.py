@@ -9,27 +9,37 @@ DOCTORS_FILE = BASE_DIR / "doctors.csv"
 PATIENTS_FILE = BASE_DIR / "patients.csv"
 DISEASES_FILE = BASE_DIR / "diseases_unique.csv"
 OUTPUT_FILE = BASE_DIR / "diagnosis.csv"
-#CURRENTLY 10.000.000 Million Diagnosis, can be changed here
+
 ROW_COUNT = 10000000
 
 
-def load_medications() -> list[dict[str, datetime, datetime]]:
-    medications: list[dict[str, datetime, datetime]] = []
+def load_medications() -> list[dict[str, datetime | None]]:
+    medications: list[dict[str, datetime | None]] = []
+
     with MEDICATION_FILE.open(newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             med_id = (row.get("id") or "").strip()
             started = (row.get("started") or "").strip()
             ended = (row.get("ended") or "").strip()
+
             if not med_id or not started:
                 continue
+
+            start_date = datetime.strptime(started, "%Y-%m-%d")
+
+            end_date = None
+            if ended:
+                end_date = datetime.strptime(ended, "%Y-%m-%d")
+
             medications.append(
                 {
                     "id": med_id,
-                    "start_date": datetime.strptime(started, "%Y-%m-%d"),
-                    "end_date": datetime.strptime(ended, "%Y-%m-%d"), 
+                    "start_date": start_date,
+                    "end_date": end_date,
                 }
             )
+
     return medications
 
 
@@ -81,31 +91,49 @@ def main() -> None:
     if not diseases:
         raise RuntimeError(f"No diseases found in {DISEASES_FILE}.")
 
-    diagnoses: list[dict[str, str]] = []
-    for diagnosis_id in range(1, ROW_COUNT + 1):
-        med = random.choice(medications)
-        disease = random.choice(diseases)
-        doctor = random.choice(doctors)
-        patient = random.choice(patients)
-        diagnosed_at = med["start_date"] - timedelta(days=random.randint(0, 3))
-        diagnosed_end = med["end_date"] - timedelta(days = random.randint(-3, 5))
-        diagnoses.append(
-            {
+    with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f:
+        fieldnames = [
+            "id",
+            "medication",
+            "disease",
+            "diagnosed_by",
+            "diagnosed_patient",
+            "diagnosed_at",
+            "diagnosed_end",
+        ]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for diagnosis_id in range(1, ROW_COUNT + 1):
+            med = random.choice(medications)
+            disease = random.choice(diseases)
+            doctor = random.choice(doctors)
+            patient = random.choice(patients)
+
+            diagnosed_at = med["start_date"] - timedelta(days=random.randint(0, 3))
+
+            # Behandlung von optionalem Enddatum
+            if med["end_date"] is None:
+                if random.random() < 0.7:
+                    diagnosed_end = None
+                else:
+                    diagnosed_end = diagnosed_at + timedelta(days=random.randint(1, 180))
+            else:
+                diagnosed_end = med["end_date"] - timedelta(days=random.randint(-3, 5))
+
+            writer.writerow({
                 "id": str(diagnosis_id),
                 "medication": med["id"],
                 "disease": disease,
                 "diagnosed_by": doctor,
                 "diagnosed_patient": patient,
                 "diagnosed_at": diagnosed_at.strftime("%Y-%m-%d"),
-                "diagnosed_end": diagnosed_end.strftime("%Y-%m-%d")
-            }
-        )
+                "diagnosed_end": diagnosed_end.strftime("%Y-%m-%d") if diagnosed_end else ""
+            })
 
-    with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f:
-        fieldnames = ["id", "medication", "disease", "diagnosed_by", "diagnosed_patient", "diagnosed_at", "diagnosed_end"]
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(diagnoses)
+            # Fortschritt anzeigen (wichtig bei 10 Mio)
+            if diagnosis_id % 100_000 == 0:
+                print(f"{diagnosis_id} rows written...")
 
     print(
         f"{OUTPUT_FILE.name} created with {ROW_COUNT} rows "

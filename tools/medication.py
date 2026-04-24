@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DOSE_FILE = BASE_DIR / "dose.csv"
 DRUG_FILE = BASE_DIR / "drugs.csv"
 OUTPUT_FILE = BASE_DIR / "medication.csv"
-#also changed here to 10.000.000
+
 ROW_COUNT = 10000000
 
 TYPE_TO_UNITS = {
@@ -46,20 +46,33 @@ def load_drugs() -> list[dict[str, str]]:
     return drugs
 
 
-def random_date_range() -> tuple[str, str]:
-    start = datetime(2020, 1, 1) + timedelta(days=random.randint(0, 2000))
+def random_date_range() -> tuple[str, str | None]:
+    base_start = datetime(2020, 1, 1)
+    today = datetime.today()
+
+    # zufälliges Startdatum (nicht in der Zukunft)
+    start = base_start + timedelta(days=random.randint(0, (today - base_start).days))
+
+    # 20% Wahrscheinlichkeit: kein Enddatum (laufende Medikation)
+    if random.random() < 0.2:
+        return start.date().isoformat(), None
+
     duration_days = random.randint(1, 180)
     end = start + timedelta(days=duration_days)
+
     return start.date().isoformat(), end.date().isoformat()
 
 
 def get_matching_dose(drug_type: str, doses_by_unit: dict[str, list[str]]) -> str | None:
     valid_units = TYPE_TO_UNITS.get(drug_type, [])
     possible_doses: list[str] = []
+
     for unit in valid_units:
         possible_doses.extend(doses_by_unit.get(unit, []))
+
     if not possible_doses:
         return None
+
     return random.choice(possible_doses)
 
 
@@ -86,7 +99,13 @@ def main() -> None:
             dose_id = get_matching_dose(drug_type, doses_by_unit) or random.choice(all_doses)
             started, ended = random_date_range()
 
-            writer.writerow([medication_id, dose_id, drug_id, started, ended])
+            writer.writerow([
+                medication_id,
+                dose_id,
+                drug_id,
+                started,
+                ended or ""  # None wird als leerer String gespeichert
+            ])
 
     print(f"{OUTPUT_FILE.name} created with {ROW_COUNT} rows.")
 
