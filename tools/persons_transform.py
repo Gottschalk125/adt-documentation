@@ -28,6 +28,30 @@ def generate_birthdate_from_age(age_value: str) -> str:
     birthdate = start_of_year + timedelta(days=random_offset)
     return birthdate.strftime("%Y-%m-%d")
 
+def generate_fake_email(first_name: str, last_name: str) -> str:
+    domains = [
+        "@pronton.me",
+        "@freenet.de",
+        "@telekom.de",
+        "@gmx.net",
+        "@mail.de",
+        "@google.com",
+        "@microsoft.com",
+        "@yahoo.com",
+        "@icloud.com",
+    ]
+
+    domain = random.choice(domains)
+
+    first = (first_name or "").strip().lower()
+    last = (last_name or "").strip().lower()
+
+    if first and last:
+        local_part = f"{first}.{last}"
+    else:
+        local_part = f"user{random.randint(1000,9999)}"
+
+    return local_part + domain
 
 def parse_int(value: str):
     if value is None:
@@ -86,7 +110,7 @@ def main():
                 "country": "USA",
                 "birthdate": generate_birthdate_from_age(row.get("age")),
                 "phone": generate_fake_phone_number(),
-                "email": (row.get("email") or "").strip(),
+                "email": generate_fake_email(row.get("firstname"), row.get("lastname")),
             }
             transformed_rows.append(transformed_row)
 
