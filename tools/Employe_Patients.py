@@ -47,10 +47,16 @@ def main():
 
     with open(EMPLOYEES_OUTPUT_FILE, "w", newline="", encoding="utf-8") as employees_file:
         writer = csv.writer(employees_file)
-        writer.writerow(["id", "department_id", "person_id"])
+        writer.writerow(["id", "department_id", "person_id", "currently_working"])
 
         for person_uuid in employee_uuids:
-            writer.writerow([str(uuid.uuid4()), random.randint(1, 27), person_uuid])
+            currently_working = random.random() < 0.85
+            writer.writerow([
+                str(uuid.uuid4()),
+                random.randint(1, 27),
+                person_uuid,
+                str(currently_working).lower(),
+            ])
 
     print(f"Patienten-Datei erstellt: {PATIENTS_OUTPUT_FILE}")
     print(f"Mitarbeiter-Datei erstellt: {EMPLOYEES_OUTPUT_FILE}")
