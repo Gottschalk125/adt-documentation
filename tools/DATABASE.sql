@@ -1,5 +1,6 @@
 DROP SCHEMA IF EXISTS "public" CASCADE;
 CREATE SCHEMA "public";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Enums
 CREATE TYPE "public"."doctors_type" AS ENUM (
@@ -57,7 +58,7 @@ CREATE TYPE "public"."booking_state_enum" AS ENUM (
 );
 
 CREATE TABLE "public"."medication" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "dosis" bigint,
     "drug" bigint,
     "started" date,
@@ -66,7 +67,7 @@ CREATE TABLE "public"."medication" (
 );
 
 CREATE TABLE "public"."diagnosis" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "medication" bigint,
     "disease" text,
     "diagnosed_by" uuid,
@@ -76,7 +77,7 @@ CREATE TABLE "public"."diagnosis" (
 );
 
 CREATE TABLE "public"."person" (
-    "id" uuid NOT NULL,
+    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
     "gender" text,
     "first_name" text,
     "last_name" text,
@@ -92,13 +93,13 @@ CREATE TABLE "public"."person" (
 );
 
 CREATE TABLE "public"."patient" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "person" uuid,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."dose" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "unit" "public"."dose_unit",
     "amount" bigint,
     "frequency" "public"."dose_frequency",
@@ -107,14 +108,14 @@ CREATE TABLE "public"."dose" (
 );
 
 CREATE TABLE "public"."department" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "name" text,
     "building" text,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."drugs" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "stock" bigint,
     "name" text,
     "active_ingredient" text,
@@ -123,20 +124,20 @@ CREATE TABLE "public"."drugs" (
 );
 
 CREATE TABLE "public"."doctors" (
-    "id" uuid NOT NULL,
+    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
     "work_phone" text,
     "type" "public"."doctors_type",
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."nurses" (
-    "id" uuid NOT NULL,
+    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
     "station" bigint,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."station" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "name" text,
     "department" bigint,
     "rooms" bigint,
@@ -144,7 +145,7 @@ CREATE TABLE "public"."station" (
 );
 
 CREATE TABLE "public"."bookings" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "from" date,
     "until" date,
     "state" "public"."booking_state_enum",
@@ -154,7 +155,7 @@ CREATE TABLE "public"."bookings" (
 );
 
 CREATE TABLE "public"."rooms" (
-    "id" bigint NOT NULL,
+    "id" bigserial NOT NULL,
     "station" bigint,
     "number" bigint,
     "floor" bigint,
@@ -163,7 +164,7 @@ CREATE TABLE "public"."rooms" (
 );
 
 CREATE TABLE "public"."employee" (
-    "id" uuid NOT NULL,
+    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
     "department" bigint,
     "person" uuid,
     PRIMARY KEY ("id")
