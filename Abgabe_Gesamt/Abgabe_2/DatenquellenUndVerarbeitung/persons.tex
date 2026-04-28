@@ -1,29 +1,28 @@
 \section{Datenquellen und Datenverarbeitung}
 
 \subsection{Personendaten (5123101)}
-\subsubsection{Transformieren der Personendaten}
-Als Grundlage aller Personendaten ist ein Dataset von Kaggle verwendet worden.\cite{swain_synthetic_person_data}
+\subsubsection{Transformation der Personendaten}
+Als Grundlage für die Personendaten wurde ein Datensatz von Kaggle verwendet.\cite{swain_synthetic_person_data}
 
-Die zugrunde liegenden Daten haben wir zunächst mit einem Python Skript transformiert und vereinheitlicht, damit die Daten genau unseren Ansprüchen entsprechen. 
-Dabei haben wir folgende Änderungen vorgenommen:
+Die Rohdaten wurden zunächst mithilfe eines Python-Skripts transformiert und vereinheitlicht, um sie an die spezifischen Anforderungen des Projekts anzupassen. Im Zuge dieser Verarbeitung wurden folgende Anpassungen vorgenommen:
 
-Zunächst haben wir zu jedem Eintrag eine \texttt{UUID} generiert und den vorherigen numerischen Wert damit ersetzt. Dies hat den Vorteil, dass wie die Einträge in verschiedenen Tabellen leichter verknüpfen können und es zu keinen Unstimmigkeiten kommt. 
-Als nächstes haben wir den \texttt{Gender} Eintrag der Person von einem ausgeschriebenen Wort auf eine verkürzte und standardisierte Werte (m,f,d) überführt.
-Die Werte \texttt{Vorname, Nachname, PLZ, City, Street, StreetNo und Email} wurden, nachdem eventuelle unnötige Leerzeichen entfernt wurden, einfach vom Datenset übernommen.
-Als \texttt{Country} wert wurde bei jeder Person "USA" eingetragen, da die Adressen alle aus der USA stammen.
-Da anstatt eines Geburtstags im Datenset nur das Alter vorkam haben wir einfach daraus das Geburtsjahr hergeleitet und zusätzlich ein zufälliges Datum im Jahr generiert. Damit konnte man dann den \texttt{Birthdate} wert jedem Eintrag zuweisen.
-Abschließend hat nur noch der Wert für \texttt{Phonenumber} gefehlt. Hier wurden einfach eine Auswahl an bestehenden und gültigen Vorwahlen herangekommen und eine zufällig generierte Zahl dahinter gehängt.
+Zunächst wurde für jeden Datensatz eine \texttt{UUID} generiert, welche die ursprünglich verwendeten numerischen Identifikatoren ersetzt. Dadurch wird eine eindeutige Identifikation gewährleistet und die Verknüpfung von Einträgen über verschiedene Tabellen hinweg vereinfacht.
 
-Damit lag uns nun eine passend formatierte csv Datei vor mit allen Personendaten vor.
+Der \texttt{Gender}-Wert wurde von ausgeschriebenen Bezeichnungen in eine standardisierte Kurzform (m, f, d) überführt. Die Attribute \texttt{Vorname, Nachname, PLZ, City, Street} und \texttt{StreetNo} wurden nach Bereinigung von überflüssigen Leerzeichen unverändert aus dem Datensatz übernommen. Für das Attribut \texttt{Country} wurde einheitlich der Wert „USA“ gesetzt, da sämtliche Adressdaten aus den Vereinigten Staaten stammen.
 
-\subsubsection{Aufteilen der Personendaten}
-Als nächsten Schritt galt es die Personen auf die einzelnen Tabellen aufzuteilen, bzw. die Referenzen in den anderen Tabellen dafür anzulegen, um jede Personen auf einen der Typen (\texttt{Patient}, \texttt{Doctors} und \texttt{Nurse}) zuzuordnen. Dabei haben wir ebenfalls Python Skripte eingesetzt.
+Da im Ausgangsdatensatz kein konkretes Geburtsdatum, sondern lediglich das Alter enthalten war, wurde zunächst das Geburtsjahr berechnet und anschließend durch ein zufällig generiertes Datum innerhalb dieses Jahres ergänzt. Auf diese Weise konnte für jeden Eintrag ein konsistenter \texttt{Birthdate}-Wert erzeugt werden.
 
-Hierbei haben wir uns wieder die Hilfe von Python Skripen bedient. Zunächst haben wir alle UUIDs der zuvor transformierten Personen.csv Datei herausgelesen und 95\% der Personen als \texttt{Patient} zugeordnet. Die restlichen 5\% wurden den \texttt{Employees} zugeordnet. Zu jeder UUId der Patienten wurde ein numerischer Wert zugewiesen, der als Id des Patienten gilt. Abschließend wurden die beiden Einträge in eine neue csv Datei geschrieben. Den UUIDs der Employees wurden ebenfalls jeweils eine eine neu generierte UUID als Id zugewiesen. Zusätzlich wurde noch jedem Eintrag zufällig ein Department zugewiesen. Die 3 Einträge wurden dann ebenfalls in eine neue csv Datei überführt.
+Die vorhandenen E-Mail-Adressen entsprachen nicht den Anforderungen und wurden daher neu generiert. Hierfür wurden Kombinationen aus Vor- und Nachnamen sowie gängigen E-Mail-Domains verwendet. Abschließend wurden für das Attribut \texttt{Phonenumber} gültige Vorwahlen herangezogen und durch zufällig generierte Nummern ergänzt.
 
-Die Patientendaten war nun auch vollständig. 
+Das Ergebnis dieser Verarbeitung ist eine konsistent strukturierte und den Anforderungen entsprechende CSV-Datei, die als Grundlage für alle weiteren Verarbeitungsschritte dient.
 
-Abschließend mussten noch die Employee Einträge auf Doctors und Nurses aufgeteilt werden.
-Dafür wurden 30\% der Employees als Doktor zugewiesen. Hierbei wurden ebenfalls die UUIDs aus der Employee Datei herausgenommen und zu jedem Eintrag eine zufällige Telefonnummer mit einer Festen Vorwahl für alle generiert. Anschließend wurde jedem Doktor noch zufällig ein Type zugeordnet, wobei sicherzustellen war, dass jedes Department einen $head_of_department$ erhält. Anschließend wurden die Daten in eine neue csv Datei übertragen. 
+\subsubsection{Aufteilung der Personendaten}
+Im nächsten Schritt wurden die zuvor transformierten Personendaten auf die vorgesehenen Entitäten \texttt{Patient}, \texttt{Doctor} und \texttt{Nurse} verteilt beziehungsweise entsprechende Referenzen für die jeweiligen Tabellen erzeugt. Auch hierfür kamen Python-Skripte zum Einsatz.
 
-Die Übrigen UUIDs aus der Employee Datei wurden dann den Nurses zugeordnet und ebenfalls in eine neue Datei geschrieben.
+Zunächst wurden alle \texttt{UUIDs} aus der transformierten \texttt{persons.csv} extrahiert. Anschließend wurden 95\,\% der Einträge der Entität \texttt{Patient} zugeordnet, während die verbleibenden 5\,\% als \texttt{Employees} klassifiziert wurden. Für jeden Patienteneintrag wurde zusätzlich eine numerische ID generiert, die als Primärschlüssel dient. Die entsprechenden Zuordnungen wurden anschließend in einer separaten CSV-Datei gespeichert.
+
+Für die \texttt{Employees} wurde ebenfalls eine neue eindeutige ID in Form einer \texttt{UUID} erzeugt. Darüber hinaus erhielt jeder Eintrag ein zufällig zugewiesenes Department. Zusätzlich wurde das Attribut \texttt{currently\_working} eingeführt, welches bei 85\,\% der Einträge auf \texttt{true} gesetzt wurde, um aktive Mitarbeiter zu kennzeichnen. Diese Daten wurden ebenfalls in eine eigene CSV-Datei überführt.
+
+Damit waren die Patientendaten vollständig aufbereitet. Im letzten Schritt erfolgte die weitere Differenzierung der \texttt{Employees} in \texttt{Doctors} und \texttt{Nurses}. Hierbei wurden 30\,\% der Mitarbeitenden als \texttt{Doctors} klassifiziert. Für diese Einträge wurden zusätzlich Telefonnummern mit einheitlicher Vorwahl generiert sowie ein spezifischer \texttt{Type} zugewiesen. Dabei wurde sichergestellt, dass jedes Department mindestens einen \texttt{head\_of\_department} enthält.
+
+Die verbleibenden Mitarbeitenden wurden der Entität \texttt{Nurse} zugeordnet. Sowohl die Daten der \texttt{Doctors} als auch der \texttt{Nurses} wurden abschließend jeweils in separaten CSV-Dateien gespeichert.
