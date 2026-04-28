@@ -124,14 +124,14 @@ CREATE TABLE "public"."drugs" (
 );
 
 CREATE TABLE "public"."doctors" (
-    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
+    "id" uuid NOT NULL,
     "work_phone" text,
     "type" "public"."doctors_type",
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."nurses" (
-    "id" uuid NOT NULL DEFAULT gen_random_uuid(),
+    "id" uuid NOT NULL,
     "station" bigint,
     PRIMARY KEY ("id")
 );
