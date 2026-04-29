@@ -95,18 +95,6 @@ können \texttt{station} und \texttt{rooms} importiert werden. Erst anschließen
 \texttt{nurses} und \texttt{bookings} sicher importierbar, weil ihre Fremdschlüssel dann bereits
 existieren.
 
-Außerdem müssen folgende Bedingungen eingehalten werden:
-
-\begin{itemize}
-    \item Jede \texttt{station.department}-ID muss in \texttt{department.id} existieren.
-    \item Jede \texttt{rooms.station}-ID muss in \texttt{station.id} existieren.
-    \item Jede \texttt{nurses.station}-ID muss entweder leer sein oder auf eine vorhandene Station zeigen.
-    \item Jede \texttt{bookings.room}-ID muss auf einen vorhandenen Raum zeigen.
-    \item Jede \texttt{bookings.patient}-ID muss auf einen vorhandenen Patienten zeigen.
-    \item Pro belegungsrelevantem Zeitraum darf die Anzahl paralleler Buchungen eines Raums die Bettenzahl des Raums nicht überschreiten.
-    \item Die Werte in \texttt{bookings.state} müssen zum Booking-State-Enum der Datenbank passen.
-\end{itemize}
-
 Durch den festen Zufallsseed \texttt{RANDOM\_SEED = 42} bleiben die generierten Daten bei gleichen
 Eingabedateien reproduzierbar. Das ist für Tests und Dokumentation hilfreich, weil die Raumstruktur
 und die erzeugten Buchungen nicht bei jedem Durchlauf unkontrolliert variieren. Gleichzeitig bilden
