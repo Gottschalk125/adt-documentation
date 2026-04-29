@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import os
 import sys
@@ -69,6 +70,9 @@ VALUE_TRANSFORMS = {
         "x_weekly": "x weekly",
     }
 }
+
+COPY_NULL_SENTINEL = "__CSV_IMPORT_NULL__"
+IMPORT_PROGRESS_EVERY = 100_000
 
 
 @dataclass
@@ -932,6 +936,38 @@ def flatten_rows(rows: list[list[Any]]) -> list[Any]:
     return params
 
 
+def make_copy_sql(schema: str, table: str, target_columns: list[str]) -> str:
+    quoted_columns = ", ".join(quote_ident(col) for col in target_columns)
+    return (
+        f"COPY {quote_ident(schema)}.{quote_ident(table)} "
+        f"({quoted_columns}) FROM STDIN WITH (FORMAT csv, NULL '{COPY_NULL_SENTINEL}')"
+    )
+
+
+def build_copy_buffer(rows: list[list[Any]]) -> io.StringIO:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    for row in rows:
+        writer.writerow([COPY_NULL_SENTINEL if value is None else value for value in row])
+    buffer.seek(0)
+    return buffer
+
+
+def execute_copy_batch(conn, copy_sql: str, rows: list[list[Any]]) -> None:
+    payload = build_copy_buffer(rows)
+    with conn.cursor() as cur:
+        if hasattr(cur, "copy_expert"):
+            cur.copy_expert(copy_sql, payload)
+            return
+
+        with cur.copy(copy_sql) as copy:
+            while True:
+                chunk = payload.read(1024 * 1024)
+                if not chunk:
+                    break
+                copy.write(chunk)
+
+
 def execute_import(
     conn,
     schema: str,
@@ -953,6 +989,7 @@ def execute_import(
         return total, 0, []
 
     insert_prefix = make_insert_prefix(schema, table, target_columns)
+    copy_sql = make_copy_sql(schema, table, target_columns)
     single_row_sql = make_insert_sql(
         insert_prefix=insert_prefix,
         row_count=1,
@@ -962,6 +999,7 @@ def execute_import(
     inserted = 0
     failed = 0
     errors: list[tuple[int, str]] = []
+    next_progress_report = IMPORT_PROGRESS_EVERY
 
     batch: list[tuple[int, list[Any]]] = []
 
@@ -973,15 +1011,18 @@ def execute_import(
         success = 0
         failed_local = 0
         payload = [values for _, values in current_batch]
-        batch_sql = make_insert_sql(
-            insert_prefix=insert_prefix,
-            row_count=len(payload),
-            column_count=len(target_columns),
-            on_conflict_do_nothing=on_conflict_do_nothing,
-        )
         try:
-            with conn.cursor() as cur:
-                cur.execute(batch_sql, flatten_rows(payload))
+            if on_conflict_do_nothing:
+                batch_sql = make_insert_sql(
+                    insert_prefix=insert_prefix,
+                    row_count=len(payload),
+                    column_count=len(target_columns),
+                    on_conflict_do_nothing=on_conflict_do_nothing,
+                )
+                with conn.cursor() as cur:
+                    cur.execute(batch_sql, flatten_rows(payload))
+            else:
+                execute_copy_batch(conn, copy_sql, payload)
             conn.commit()
             return len(current_batch), 0
         except Exception as batch_exc:
@@ -1026,12 +1067,18 @@ def execute_import(
             success, failed_local = flush(batch)
             inserted += success
             failed += failed_local
+            while inserted >= next_progress_report:
+                print(f"{inserted} rows imported into {table}...")
+                next_progress_report += IMPORT_PROGRESS_EVERY
             batch.clear()
 
     if batch:
         success, failed_local = flush(batch)
         inserted += success
         failed += failed_local
+        while inserted >= next_progress_report:
+            print(f"{inserted} rows imported into {table}...")
+            next_progress_report += IMPORT_PROGRESS_EVERY
 
     return inserted, failed, errors
 

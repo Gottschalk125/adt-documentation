@@ -13,6 +13,7 @@ DEPARTMENTS_CSV = BASE_DIR / "departments.csv"
 EMPLOYEES_CSV = BASE_DIR / "employees.csv"
 NURSES_CSV = BASE_DIR / "nurses.csv"
 PATIENTS_CSV = BASE_DIR / "patients.csv"
+PATIENTS_SAMPLE_CSV = BASE_DIR / "patients_sample.csv"
 STATIONS_CSV = BASE_DIR / "stations.csv"
 ROOMS_CSV = BASE_DIR / "rooms.csv"
 BOOKINGS_CSV = BASE_DIR / "bookings.csv"
@@ -20,6 +21,8 @@ BOOKINGS_CSV = BASE_DIR / "bookings.csv"
 RANDOM_SEED = 42
 LOOKBACK_DAYS = 180
 LOOKAHEAD_DAYS = 14
+ROOM_PROGRESS_EVERY = 25
+BOOKING_PROGRESS_EVERY = 100_000
 
 
 @dataclass(frozen=True)
@@ -145,7 +148,7 @@ def build_hospital_layout(
     list[dict[str, object]],
     dict[int, str],
 ]:
-    employee_department = {row["id"]: int(row["department_id"]) for row in employees}
+    employee_department = {row["id"]: int(row["department"]) for row in employees}
     nurse_counts = Counter(employee_department[row["id"]] for row in nurses if row["id"] in employee_department)
     departments_by_id = {int(row["id"]): row for row in departments}
 
@@ -207,6 +210,12 @@ def build_patient_pool(patients: list[dict[str, str]], rng: random.Random) -> li
     return patient_ids
 
 
+def choose_patient_id(patient_pool: list[int], rng: random.Random) -> int:
+    if not patient_pool:
+        raise RuntimeError("No patients available to build bookings.")
+    return int(rng.choice(patient_pool))
+
+
 def generate_occupied_bookings(
     rooms: list[dict[str, object]],
     room_types: dict[int, str],
@@ -217,8 +226,9 @@ def generate_occupied_bookings(
     booking_rows: list[dict[str, object]] = []
     horizon_start = today - timedelta(days=LOOKBACK_DAYS)
     horizon_end = today + timedelta(days=LOOKAHEAD_DAYS)
+    total_rooms = len(rooms)
 
-    for room in rooms:
+    for room_index, room in enumerate(rooms, start=1):
         room_id = int(room["id"])
         room_beds = int(room["beds"])
         ward_type = room_types[room_id]
@@ -238,19 +248,21 @@ def generate_occupied_bookings(
                     cursor = discharge
                     continue
 
-                if not patient_pool:
-                    raise RuntimeError("Not enough patients available to build bookings.")
-
                 booking_rows.append(
                     {
                         "from": admission.isoformat(),
                         "until": discharge.isoformat(),
                         "state": choose_state(admission, discharge, today, rng),
                         "room": room_id,
-                        "patient": patient_pool.pop(),
+                        "patient": choose_patient_id(patient_pool, rng),
                     }
                 )
+                if len(booking_rows) % BOOKING_PROGRESS_EVERY == 0:
+                    print(f"{len(booking_rows)} occupied bookings generated...")
                 cursor = discharge
+
+        if room_index % ROOM_PROGRESS_EVERY == 0 or room_index == total_rooms:
+            print(f"Processed {room_index}/{total_rooms} rooms for occupied bookings...")
 
     return booking_rows
 
@@ -266,9 +278,6 @@ def generate_non_occupancy_events(
     event_count = max(24, round(occupied_booking_count * 0.03))
 
     for _ in range(event_count):
-        if not patient_pool:
-            break
-
         room_id = int(rng.choice(rooms)["id"])
         if rng.random() < 0.55:
             admission = today + timedelta(days=rng.randint(1, LOOKAHEAD_DAYS + 21))
@@ -284,7 +293,7 @@ def generate_non_occupancy_events(
                 "until": discharge.isoformat(),
                 "state": state,
                 "room": room_id,
-                "patient": patient_pool.pop(),
+                "patient": choose_patient_id(patient_pool, rng),
             }
         )
 
@@ -292,6 +301,7 @@ def generate_non_occupancy_events(
 
 
 def add_booking_ids(bookings: list[dict[str, object]]) -> list[dict[str, object]]:
+    print(f"Sorting and numbering {len(bookings)} bookings...")
     sorted_rows = sorted(
         bookings,
         key=lambda row: (
@@ -306,6 +316,8 @@ def add_booking_ids(bookings: list[dict[str, object]]) -> list[dict[str, object]
         payload = {"id": booking_id}
         payload.update(row)
         with_ids.append(payload)
+        if booking_id % BOOKING_PROGRESS_EVERY == 0:
+            print(f"{booking_id} bookings assigned IDs...")
     return with_ids
 
 
@@ -343,11 +355,15 @@ def main() -> None:
     rng = random.Random(RANDOM_SEED)
     today = date.today()
 
+    print("Loading source CSVs...")
     departments = read_rows(DEPARTMENTS_CSV)
     employees = read_rows(EMPLOYEES_CSV)
     nurses = read_rows(NURSES_CSV)
-    patients = read_rows(PATIENTS_CSV)
+    patient_source = PATIENTS_SAMPLE_CSV if PATIENTS_SAMPLE_CSV.exists() else PATIENTS_CSV
+    patients = read_rows(patient_source)
+    print(f"Loaded patient pool source from {patient_source.name}.")
 
+    print("Building hospital layout...")
     stations, rooms, nurses_with_station, room_types = build_hospital_layout(
         departments=departments,
         employees=employees,
@@ -355,7 +371,9 @@ def main() -> None:
         rng=rng,
     )
 
+    print("Preparing patient pool...")
     patient_pool = build_patient_pool(patients, rng)
+    print("Generating occupied bookings...")
     occupied_bookings = generate_occupied_bookings(
         rooms=rooms,
         room_types=room_types,
@@ -363,6 +381,7 @@ def main() -> None:
         today=today,
         rng=rng,
     )
+    print("Generating non-occupancy booking events...")
     event_bookings = generate_non_occupancy_events(
         rooms=rooms,
         patient_pool=patient_pool,
@@ -372,6 +391,7 @@ def main() -> None:
     )
     bookings = add_booking_ids(occupied_bookings + event_bookings)
 
+    print("Writing generated CSVs...")
     write_rows(STATIONS_CSV, ["id", "name", "department", "rooms"], stations)
     write_rows(ROOMS_CSV, ["id", "station", "number", "floor", "beds"], rooms)
     write_rows(NURSES_CSV, ["id", "station"], nurses_with_station)

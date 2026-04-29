@@ -3,11 +3,13 @@ import random
 from pathlib import Path
 
 OUTPUT_FILE = Path(__file__).resolve().parent / "dose.csv"
-#Changed also to 10.000.000
+LOOKUP_FILE = Path(__file__).resolve().parent / "dose_lookup.csv"
 ROW_COUNT = 10000000
+PROGRESS_EVERY = 100_000
+SAMPLE_PER_UNIT = 50_000
 
 UNITS = ["mg", "g", "mcg", "ml", "l", "tablet", "capsule", "drop", "puff", "unit"]
-FREQUENCIES = ["every_x_days", "x_daily", "every_x_hours", "x_weekly", "every_x_weeks"]
+FREQUENCIES = ["every_x_days", "x daily", "every_x_hours", "x weekly", "every_x_weeks"]
 
 
 def generate_amount(unit: str) -> int:
@@ -35,18 +37,49 @@ def generate_amount(unit: str) -> int:
 def generate_frequency_amount(freq: str) -> int:
     if freq == "every_x_days":
         return random.randint(1, 30)
-    if freq == "x_daily":
+    if freq == "x daily":
         return random.randint(1, 4)
     if freq == "every_x_hours":
         return random.randint(4, 24)
-    if freq == "x_weekly":
+    if freq == "x weekly":
         return random.randint(1, 7)
     if freq == "every_x_weeks":
         return random.randint(1, 12)
     return 1
 
 
+def add_reservoir_sample(
+    samples: dict[str, list[int]],
+    seen_counts: dict[str, int],
+    unit: str,
+    dose_id: int,
+) -> None:
+    current_sample = samples.setdefault(unit, [])
+    current_seen = seen_counts.get(unit, 0) + 1
+    seen_counts[unit] = current_seen
+
+    if len(current_sample) < SAMPLE_PER_UNIT:
+        current_sample.append(dose_id)
+        return
+
+    replace_index = random.randint(1, current_seen)
+    if replace_index <= SAMPLE_PER_UNIT:
+        current_sample[replace_index - 1] = dose_id
+
+
+def write_lookup_file(samples: dict[str, list[int]]) -> None:
+    with LOOKUP_FILE.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["unit", "id"])
+        for unit in UNITS:
+            for dose_id in samples.get(unit, []):
+                writer.writerow([unit, dose_id])
+
+
 def main() -> None:
+    samples: dict[str, list[int]] = {}
+    seen_counts: dict[str, int] = {}
+
     with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["id", "unit", "amount", "frequency", "frequency_amount"])
@@ -54,6 +87,7 @@ def main() -> None:
         for dose_id in range(1, ROW_COUNT + 1):
             unit = random.choice(UNITS)
             freq = random.choice(FREQUENCIES)
+            add_reservoir_sample(samples, seen_counts, unit, dose_id)
             writer.writerow(
                 [
                     dose_id,
@@ -64,6 +98,11 @@ def main() -> None:
                 ]
             )
 
+            if dose_id % PROGRESS_EVERY == 0:
+                print(f"{dose_id} rows written...")
+
+    write_lookup_file(samples)
+    print(f"{LOOKUP_FILE.name} created with up to {SAMPLE_PER_UNIT} sampled dose IDs per unit.")
     print(f"{OUTPUT_FILE.name} created with {ROW_COUNT} rows.")
 
 

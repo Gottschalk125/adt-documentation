@@ -5,63 +5,86 @@ import uuid
 INPUT_FILE = "persons_transformed.csv"
 PATIENTS_OUTPUT_FILE = "patients.csv"
 EMPLOYEES_OUTPUT_FILE = "employees.csv"
+PATIENTS_SAMPLE_FILE = "patients_sample.csv"
+PROGRESS_EVERY = 100_000
+EMPLOYEE_RATIO = 0.05
+PATIENT_SAMPLE_SIZE = 200_000
 
 random.seed(42)
 
+def add_patient_sample(
+    samples: list[tuple[int, str]],
+    seen_count: int,
+    patient_id: int,
+    person_uuid: str,
+) -> None:
+    if len(samples) < PATIENT_SAMPLE_SIZE:
+        samples.append((patient_id, person_uuid))
+        return
 
-def read_first_column_uuids(file_path):
-    uuids = []
+    replace_index = random.randint(1, seen_count)
+    if replace_index <= PATIENT_SAMPLE_SIZE:
+        samples[replace_index - 1] = (patient_id, person_uuid)
 
-    with open(file_path, "r", newline="", encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile)
 
-        for row in reader:
-            if not row:
-                continue
-
-            first_value = row[0].strip()
-
-            if not first_value or first_value.lower() == "id":
-                continue
-
-            uuids.append(first_value)
-
-    return uuids
+def write_patient_samples(samples: list[tuple[int, str]]) -> None:
+    with open(PATIENTS_SAMPLE_FILE, "w", newline="", encoding="utf-8") as patients_file:
+        writer = csv.writer(patients_file)
+        writer.writerow(["id", "person"])
+        for patient_id, person_uuid in samples:
+            writer.writerow([patient_id, person_uuid])
 
 
 def main():
-    source_uuids = read_first_column_uuids(INPUT_FILE)
-    random.shuffle(source_uuids)
+    patient_count = 0
+    employee_count = 0
+    samples: list[tuple[int, str]] = []
 
-    split_index = int(len(source_uuids) * 0.95)
+    with open(INPUT_FILE, "r", newline="", encoding="utf-8") as source_file, open(
+        PATIENTS_OUTPUT_FILE, "w", newline="", encoding="utf-8"
+    ) as patients_file, open(
+        EMPLOYEES_OUTPUT_FILE, "w", newline="", encoding="utf-8"
+    ) as employees_file:
+        reader = csv.DictReader(source_file)
+        patient_writer = csv.writer(patients_file)
+        employee_writer = csv.writer(employees_file)
 
-    patient_uuids = source_uuids[:split_index]
-    employee_uuids = source_uuids[split_index:]
+        patient_writer.writerow(["id", "person"])
+        employee_writer.writerow(["id", "department", "person"])
 
-    with open(PATIENTS_OUTPUT_FILE, "w", newline="", encoding="utf-8") as patients_file:
-        writer = csv.writer(patients_file)
-        writer.writerow(["id", "person_id"])
+        for row_index, row in enumerate(reader, start=1):
+            person_uuid = (row.get("id") or "").strip()
+            if not person_uuid:
+                continue
 
-        for patient_id, person_uuid in enumerate(patient_uuids, start=1):
-            writer.writerow([patient_id, person_uuid])
+            if random.random() < EMPLOYEE_RATIO:
+                employee_count += 1
+                employee_writer.writerow([
+                    str(uuid.uuid4()),
+                    random.randint(1, 27),
+                    person_uuid,
+                ])
 
-    with open(EMPLOYEES_OUTPUT_FILE, "w", newline="", encoding="utf-8") as employees_file:
-        writer = csv.writer(employees_file)
-        writer.writerow(["id", "department_id", "person_id", "currently_working"])
+                if employee_count % PROGRESS_EVERY == 0:
+                    print(f"{employee_count} employee rows written...")
+            else:
+                patient_count += 1
+                patient_writer.writerow([patient_count, person_uuid])
+                add_patient_sample(samples, patient_count, patient_count, person_uuid)
 
-        for person_uuid in employee_uuids:
-            currently_working = random.random() < 0.85
-            writer.writerow([
-                str(uuid.uuid4()),
-                random.randint(1, 27),
-                person_uuid,
-                str(currently_working).lower(),
-            ])
+                if patient_count % PROGRESS_EVERY == 0:
+                    print(f"{patient_count} patient rows written...")
+
+            if row_index % PROGRESS_EVERY == 0:
+                print(f"{row_index} person rows processed...")
+
+    write_patient_samples(samples)
 
     print(f"Patienten-Datei erstellt: {PATIENTS_OUTPUT_FILE}")
     print(f"Mitarbeiter-Datei erstellt: {EMPLOYEES_OUTPUT_FILE}")
-    print(f"Anzahl Patients: {len(patient_uuids)}")
-    print(f"Anzahl Employees: {len(employee_uuids)}")
+    print(f"Patienten-Sample erstellt: {PATIENTS_SAMPLE_FILE} ({len(samples)} Eintraege)")
+    print(f"Anzahl Patients: {patient_count}")
+    print(f"Anzahl Employees: {employee_count}")
 
 
 if __name__ == "__main__":

@@ -3,8 +3,9 @@ import random
 import uuid
 from datetime import date, timedelta
 
-INPUT_FILE = "PersonsCSV.csv"
+INPUT_FILE = "person_10000000.csv"
 OUTPUT_FILE = "persons_transformed.csv"
+PROGRESS_EVERY = 100_000
 
 random.seed(42)
 
@@ -92,29 +93,11 @@ def generate_fake_phone_number() -> str:
 
 
 def main():
-    transformed_rows = []
+    written_rows = 0
 
-    with open(INPUT_FILE, "r", encoding="utf-8-sig", newline="") as infile:
-        reader = csv.DictReader(infile)
-
-        for row in reader:
-            transformed_row = {
-                "id": str(uuid.uuid4()),
-                "gender": map_gender(row.get("gender")),
-                "first_name": (row.get("firstname") or "").strip(),
-                "last_name": (row.get("lastname") or "").strip(),
-                "plz": parse_int(row.get("postalcode")),
-                "city": (row.get("city") or "").strip(),
-                "street": (row.get("street") or "").strip(),
-                "street_no": parse_int(row.get("streetnumber")),
-                "country": "USA",
-                "birthdate": generate_birthdate_from_age(row.get("age")),
-                "phone": generate_fake_phone_number(),
-                "email": generate_fake_email(row.get("firstname"), row.get("lastname")),
-            }
-            transformed_rows.append(transformed_row)
-
-    with open(OUTPUT_FILE, "w", encoding="utf-8", newline="") as outfile:
+    with open(INPUT_FILE, "r", encoding="utf-8-sig", newline="") as infile, open(
+        OUTPUT_FILE, "w", encoding="utf-8", newline=""
+    ) as outfile:
         fieldnames = [
             "id",
             "gender",
@@ -125,15 +108,35 @@ def main():
             "street",
             "street_no",
             "country",
-            "birthdate",
+            "birthday",
             "phone",
             "email",
         ]
+        reader = csv.DictReader(infile)
         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(transformed_rows)
+        for written_rows, row in enumerate(reader, start=1):
+            writer.writerow(
+                {
+                    "id": str(uuid.uuid4()),
+                    "gender": map_gender(row.get("gender")),
+                    "first_name": (row.get("firstname") or "").strip(),
+                    "last_name": (row.get("lastname") or "").strip(),
+                    "plz": parse_int(row.get("postalcode")),
+                    "city": (row.get("city") or "").strip(),
+                    "street": (row.get("street") or "").strip(),
+                    "street_no": parse_int(row.get("streetnumber")),
+                    "country": "USA",
+                    "birthday": generate_birthdate_from_age(row.get("age")),
+                    "phone": generate_fake_phone_number(),
+                    "email": generate_fake_email(row.get("firstname"), row.get("lastname")),
+                }
+            )
 
-    print(f"{len(transformed_rows)} Datensätze wurden nach '{OUTPUT_FILE}' exportiert.")
+            if written_rows % PROGRESS_EVERY == 0:
+                print(f"{written_rows} rows transformed...")
+
+    print(f"{written_rows} Datensätze wurden nach '{OUTPUT_FILE}' exportiert.")
 
 
 if __name__ == "__main__":
