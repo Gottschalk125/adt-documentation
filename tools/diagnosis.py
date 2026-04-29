@@ -76,9 +76,9 @@ def load_patients() -> list[str]:
     with source_file.open(newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row_index, row in enumerate(reader, start=1):
-            patient_person = (row.get("person") or "").strip()
-            if patient_person:
-                patients.append(patient_person)
+            patient_id = (row.get("id") or "").strip()
+            if patient_id:
+                patients.append(patient_id)
             if row_index % PROGRESS_EVERY == 0:
                 print(f"{row_index} patient rows loaded for diagnosis...")
     return patients
