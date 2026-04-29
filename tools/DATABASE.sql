@@ -71,7 +71,7 @@ CREATE TABLE "public"."diagnosis" (
     "medication" bigint,
     "disease" text,
     "diagnosed_by" uuid,
-    "diagnosed_patient" uuid,
+    "diagnosed_patient" bigint,
     "diagnosed_at" date,
     PRIMARY KEY ("id")
 );
@@ -204,8 +204,8 @@ ALTER TABLE "public"."patient"
     UNIQUE ("person");
 
 ALTER TABLE "public"."diagnosis"
-    ADD CONSTRAINT "fk_diagnosis_diagnosed_patient_patient_person"
-    FOREIGN KEY ("diagnosed_patient") REFERENCES "public"."patient" ("person");
+    ADD CONSTRAINT "fk_diagnosis_diagnosed_patient_patient_id"
+    FOREIGN KEY ("diagnosed_patient") REFERENCES "public"."patient" ("id");
 
 ALTER TABLE "public"."employee"
     ADD CONSTRAINT "fk_employee_department_department_id"

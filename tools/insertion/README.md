@@ -126,7 +126,7 @@ Limit rows during iteration:
 
 ## Notes
 
-- Relationship model: `diagnosis` now carries patient link (`diagnosed_patient` UUID), so one patient can have many diagnoses.
+- Relationship model: `diagnosis` now carries patient link (`diagnosed_patient` -> `patient.id` bigint), so one patient can have many diagnoses.
 - `patients_with_diagnosis.csv` is an aggregated helper/report file and should not be imported into `patient`.
 - The script auto-maps common aliases (for example `person_id -> person`, `birthdate -> birthday`, `dose -> dosis`, `uuid -> id`).
 - Explicit links in `insertion/table_links.json` override auto-inference.
