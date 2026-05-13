@@ -242,22 +242,249 @@ batch_size_for_table() {
   esac
 }
 
+drop_performance_index_lines() {
+cat <<'EOF'
+\echo Dropping non-constraint performance indexes before bulk import...
+DROP INDEX IF EXISTS public.idx_medication_dosis;
+DROP INDEX IF EXISTS public.idx_medication_drug_started;
+DROP INDEX IF EXISTS public.idx_medication_started_id;
+DROP INDEX IF EXISTS public.idx_diagnosis_patient_date_id;
+DROP INDEX IF EXISTS public.idx_diagnosis_doctor_date_id;
+DROP INDEX IF EXISTS public.idx_diagnosis_medication;
+DROP INDEX IF EXISTS public.idx_diagnosis_date_id;
+DROP INDEX IF EXISTS public.idx_diagnosis_disease_date;
+DROP INDEX IF EXISTS public.idx_person_last_first_id;
+DROP INDEX IF EXISTS public.idx_person_city_id;
+DROP INDEX IF EXISTS public.idx_employee_department_id;
+DROP INDEX IF EXISTS public.idx_doctors_type_id;
+DROP INDEX IF EXISTS public.idx_doctors_work_phone;
+DROP INDEX IF EXISTS public.idx_nurses_station_id;
+DROP INDEX IF EXISTS public.idx_station_department_id;
+DROP INDEX IF EXISTS public.idx_rooms_station_id;
+DROP INDEX IF EXISTS public.idx_rooms_station_number;
+DROP INDEX IF EXISTS public.idx_bookings_patient_from_id;
+DROP INDEX IF EXISTS public.idx_bookings_room_from_until;
+DROP INDEX IF EXISTS public.idx_bookings_state_from_id;
+DROP INDEX IF EXISTS public.idx_bookings_from_id;
+DROP INDEX IF EXISTS public.idx_dose_unit_frequency;
+DROP INDEX IF EXISTS public.idx_drugs_type_id;
+DROP INDEX IF EXISTS public.idx_drugs_name;
+EOF
+}
+
+drop_foreign_key_lines() {
+cat <<'EOF'
+\echo Dropping foreign keys before bulk import...
+ALTER TABLE public.bookings DROP CONSTRAINT IF EXISTS fk_bookings_patient_patient_id;
+ALTER TABLE public.bookings DROP CONSTRAINT IF EXISTS fk_bookings_room_rooms_id;
+ALTER TABLE public.diagnosis DROP CONSTRAINT IF EXISTS fk_diagnosis_diagnosed_by_doctors_id;
+ALTER TABLE public.diagnosis DROP CONSTRAINT IF EXISTS fk_diagnosis_medication_medication_id;
+ALTER TABLE public.diagnosis DROP CONSTRAINT IF EXISTS fk_diagnosis_diagnosed_patient_patient_id;
+ALTER TABLE public.medication DROP CONSTRAINT IF EXISTS fk_medication_dosis_dose_id;
+ALTER TABLE public.medication DROP CONSTRAINT IF EXISTS fk_medication_drug_drugs_id;
+ALTER TABLE public.patient DROP CONSTRAINT IF EXISTS fk_patient_person_person_id;
+ALTER TABLE public.employee DROP CONSTRAINT IF EXISTS fk_employee_department_department_id;
+ALTER TABLE public.employee DROP CONSTRAINT IF EXISTS fk_employee_person_person_id;
+ALTER TABLE public.doctors DROP CONSTRAINT IF EXISTS fk_doctors_id_employee_id;
+ALTER TABLE public.nurses DROP CONSTRAINT IF EXISTS fk_nurses_id_employee_id;
+ALTER TABLE public.nurses DROP CONSTRAINT IF EXISTS fk_nurses_station_station_id;
+ALTER TABLE public.rooms DROP CONSTRAINT IF EXISTS fk_rooms_station_station_id;
+ALTER TABLE public.station DROP CONSTRAINT IF EXISTS fk_station_department_department_id;
+EOF
+}
+
 copy_table_lines() {
   local root_dir="$1"
 cat <<EOF
+\echo Importing person...
 \\copy public.person (gender, first_name, last_name, plz, city, street, street_no, country, birthday, phone, email) FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing department...
 \\copy public.department (id, name, building) FROM '${root_dir}/departments.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing station...
 \\copy public.station (id, name, department, rooms) FROM '${root_dir}/stations.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing rooms...
 \\copy public.rooms (id, station, number, floor, beds) FROM '${root_dir}/rooms.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing dose...
 \\copy public.dose (id, unit, amount, frequency, frequency_amount) FROM '${root_dir}/dose.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing drugs...
 \\copy public.drugs (id, stock, name, active_ingredient, type) FROM '${root_dir}/drugs.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing employee...
 \\copy public.employee (id, department, person) FROM '${root_dir}/employees.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing doctors...
 \\copy public.doctors (id, work_phone, type) FROM '${root_dir}/doctors.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing nurses...
 \\copy public.nurses (id, station) FROM '${root_dir}/nurses.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing medication...
 \\copy public.medication (id, dosis, drug, started, ended) FROM '${root_dir}/medication.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing patient...
 \\copy public.patient (id, person) FROM '${root_dir}/patients.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing diagnosis...
 \\copy public.diagnosis (id, medication, disease, diagnosed_by, diagnosed_patient, diagnosed_at) FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
+\echo Importing bookings...
 \\copy public.bookings (id, "from", until, state, room, patient) FROM '${root_dir}/bookings.csv' WITH (FORMAT csv, HEADER true)
+EOF
+}
+
+create_foreign_key_lines() {
+cat <<'EOF'
+\echo Recreating foreign keys after bulk import...
+ALTER TABLE public.bookings
+    ADD CONSTRAINT fk_bookings_patient_patient_id
+    FOREIGN KEY (patient) REFERENCES public.patient (id) NOT VALID;
+
+ALTER TABLE public.bookings
+    ADD CONSTRAINT fk_bookings_room_rooms_id
+    FOREIGN KEY (room) REFERENCES public.rooms (id) NOT VALID;
+
+ALTER TABLE public.diagnosis
+    ADD CONSTRAINT fk_diagnosis_diagnosed_by_doctors_id
+    FOREIGN KEY (diagnosed_by) REFERENCES public.doctors (id) NOT VALID;
+
+ALTER TABLE public.diagnosis
+    ADD CONSTRAINT fk_diagnosis_medication_medication_id
+    FOREIGN KEY (medication) REFERENCES public.medication (id) NOT VALID;
+
+ALTER TABLE public.medication
+    ADD CONSTRAINT fk_medication_dosis_dose_id
+    FOREIGN KEY (dosis) REFERENCES public.dose (id) NOT VALID;
+
+ALTER TABLE public.medication
+    ADD CONSTRAINT fk_medication_drug_drugs_id
+    FOREIGN KEY (drug) REFERENCES public.drugs (id) NOT VALID;
+
+ALTER TABLE public.patient
+    ADD CONSTRAINT fk_patient_person_person_id
+    FOREIGN KEY (person) REFERENCES public.person (id) NOT VALID;
+
+ALTER TABLE public.diagnosis
+    ADD CONSTRAINT fk_diagnosis_diagnosed_patient_patient_id
+    FOREIGN KEY (diagnosed_patient) REFERENCES public.patient (id) NOT VALID;
+
+ALTER TABLE public.employee
+    ADD CONSTRAINT fk_employee_department_department_id
+    FOREIGN KEY (department) REFERENCES public.department (id) NOT VALID;
+
+ALTER TABLE public.employee
+    ADD CONSTRAINT fk_employee_person_person_id
+    FOREIGN KEY (person) REFERENCES public.person (id) NOT VALID;
+
+ALTER TABLE public.doctors
+    ADD CONSTRAINT fk_doctors_id_employee_id
+    FOREIGN KEY (id) REFERENCES public.employee (id) NOT VALID;
+
+ALTER TABLE public.nurses
+    ADD CONSTRAINT fk_nurses_id_employee_id
+    FOREIGN KEY (id) REFERENCES public.employee (id) NOT VALID;
+
+ALTER TABLE public.nurses
+    ADD CONSTRAINT fk_nurses_station_station_id
+    FOREIGN KEY (station) REFERENCES public.station (id) NOT VALID;
+
+ALTER TABLE public.rooms
+    ADD CONSTRAINT fk_rooms_station_station_id
+    FOREIGN KEY (station) REFERENCES public.station (id) NOT VALID;
+
+ALTER TABLE public.station
+    ADD CONSTRAINT fk_station_department_department_id
+    FOREIGN KEY (department) REFERENCES public.department (id) NOT VALID;
+EOF
+}
+
+validate_foreign_key_lines() {
+cat <<'EOF'
+\echo Validating foreign keys...
+ALTER TABLE public.bookings VALIDATE CONSTRAINT fk_bookings_patient_patient_id;
+ALTER TABLE public.bookings VALIDATE CONSTRAINT fk_bookings_room_rooms_id;
+ALTER TABLE public.diagnosis VALIDATE CONSTRAINT fk_diagnosis_diagnosed_by_doctors_id;
+ALTER TABLE public.diagnosis VALIDATE CONSTRAINT fk_diagnosis_medication_medication_id;
+ALTER TABLE public.diagnosis VALIDATE CONSTRAINT fk_diagnosis_diagnosed_patient_patient_id;
+ALTER TABLE public.medication VALIDATE CONSTRAINT fk_medication_dosis_dose_id;
+ALTER TABLE public.medication VALIDATE CONSTRAINT fk_medication_drug_drugs_id;
+ALTER TABLE public.patient VALIDATE CONSTRAINT fk_patient_person_person_id;
+ALTER TABLE public.employee VALIDATE CONSTRAINT fk_employee_department_department_id;
+ALTER TABLE public.employee VALIDATE CONSTRAINT fk_employee_person_person_id;
+ALTER TABLE public.doctors VALIDATE CONSTRAINT fk_doctors_id_employee_id;
+ALTER TABLE public.nurses VALIDATE CONSTRAINT fk_nurses_id_employee_id;
+ALTER TABLE public.nurses VALIDATE CONSTRAINT fk_nurses_station_station_id;
+ALTER TABLE public.rooms VALIDATE CONSTRAINT fk_rooms_station_station_id;
+ALTER TABLE public.station VALIDATE CONSTRAINT fk_station_department_department_id;
+EOF
+}
+
+create_performance_index_lines() {
+cat <<'EOF'
+\echo Recreating performance indexes after bulk import...
+CREATE INDEX "idx_medication_dosis"
+    ON "public"."medication" ("dosis");
+
+CREATE INDEX "idx_medication_drug_started"
+    ON "public"."medication" ("drug", "started", "id");
+
+CREATE INDEX "idx_medication_started_id"
+    ON "public"."medication" ("started", "id");
+
+CREATE INDEX "idx_diagnosis_patient_date_id"
+    ON "public"."diagnosis" ("diagnosed_patient", "diagnosed_at" DESC, "id" DESC);
+
+CREATE INDEX "idx_diagnosis_doctor_date_id"
+    ON "public"."diagnosis" ("diagnosed_by", "diagnosed_at" DESC, "id" DESC);
+
+CREATE INDEX "idx_diagnosis_medication"
+    ON "public"."diagnosis" ("medication");
+
+CREATE INDEX "idx_diagnosis_date_id"
+    ON "public"."diagnosis" ("diagnosed_at", "id");
+
+CREATE INDEX "idx_diagnosis_disease_date"
+    ON "public"."diagnosis" ("disease", "diagnosed_at");
+
+CREATE INDEX "idx_person_last_first_id"
+    ON "public"."person" ("last_name", "first_name", "id");
+
+CREATE INDEX "idx_person_city_id"
+    ON "public"."person" ("city", "id");
+
+CREATE INDEX "idx_employee_department_id"
+    ON "public"."employee" ("department", "id");
+
+CREATE INDEX "idx_doctors_type_id"
+    ON "public"."doctors" ("type", "id");
+
+CREATE UNIQUE INDEX "idx_doctors_work_phone"
+    ON "public"."doctors" ("work_phone");
+
+CREATE INDEX "idx_nurses_station_id"
+    ON "public"."nurses" ("station", "id");
+
+CREATE INDEX "idx_station_department_id"
+    ON "public"."station" ("department", "id");
+
+CREATE INDEX "idx_rooms_station_id"
+    ON "public"."rooms" ("station", "id");
+
+CREATE UNIQUE INDEX "idx_rooms_station_number"
+    ON "public"."rooms" ("station", "number");
+
+CREATE INDEX "idx_bookings_patient_from_id"
+    ON "public"."bookings" ("patient", "from" DESC, "id" DESC);
+
+CREATE INDEX "idx_bookings_room_from_until"
+    ON "public"."bookings" ("room", "from", "until");
+
+CREATE INDEX "idx_bookings_state_from_id"
+    ON "public"."bookings" ("state", "from", "id");
+
+CREATE INDEX "idx_bookings_from_id"
+    ON "public"."bookings" ("from", "id");
+
+CREATE INDEX "idx_dose_unit_frequency"
+    ON "public"."dose" ("unit", "frequency");
+
+CREATE INDEX "idx_drugs_type_id"
+    ON "public"."drugs" ("type", "id");
+
+CREATE INDEX "idx_drugs_name"
+    ON "public"."drugs" ("name");
 EOF
 }
 
@@ -274,6 +501,12 @@ fast_import_all() {
 \set ON_ERROR_STOP on
 SET synchronous_commit = off;
 SET statement_timeout = 0;
+EOF
+
+  drop_performance_index_lines >>"$sql_file"
+  drop_foreign_key_lines >>"$sql_file"
+
+  cat >>"$sql_file" <<EOF
 TRUNCATE TABLE
   public.bookings,
   public.diagnosis,
@@ -292,6 +525,11 @@ RESTART IDENTITY CASCADE;
 EOF
 
   copy_table_lines "$root_dir" >>"$sql_file"
+  create_foreign_key_lines >>"$sql_file"
+  if [[ "${VALIDATE_IMPORTED_FKS:-0}" == "1" ]]; then
+    validate_foreign_key_lines >>"$sql_file"
+  fi
+  create_performance_index_lines >>"$sql_file"
 
   echo ""
   echo "=== Fast importing all tables with psql \\copy ==="
