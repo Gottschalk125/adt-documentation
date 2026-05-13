@@ -1,6 +1,5 @@
 import csv
 import random
-import uuid
 from datetime import date, timedelta
 
 INPUT_FILE = "person_10000000.csv"
@@ -99,7 +98,6 @@ def main():
         OUTPUT_FILE, "w", encoding="utf-8", newline=""
     ) as outfile:
         fieldnames = [
-            "id",
             "gender",
             "first_name",
             "last_name",
@@ -118,7 +116,6 @@ def main():
         for written_rows, row in enumerate(reader, start=1):
             writer.writerow(
                 {
-                    "id": str(uuid.uuid4()),
                     "gender": map_gender(row.get("gender")),
                     "first_name": (row.get("firstname") or "").strip(),
                     "last_name": (row.get("lastname") or "").strip(),

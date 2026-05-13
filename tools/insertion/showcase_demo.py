@@ -114,7 +114,7 @@ def render_ascii_table(headers: list[str], rows: list[list[str]], max_col_width:
     return "\n".join(out)
 
 
-def fetch_patient(conn, schema: str, patient_id: int | None, person_id: str | None):
+def fetch_patient(conn, schema: str, patient_id: int | None, person_id: int | None):
     if patient_id is not None:
         sql = f"""
             SELECT p.id, p.person, per.first_name, per.last_name, per.gender, per.birthday,
@@ -131,7 +131,7 @@ def fetch_patient(conn, schema: str, patient_id: int | None, person_id: str | No
                    per.city, per.street, per.street_no
             FROM {schema}.patient p
             JOIN {schema}.person per ON per.id = p.person
-            WHERE p.person::text = %s
+            WHERE p.person = %s
             LIMIT 1
         """
         params = (person_id,)
@@ -206,7 +206,7 @@ def as_text(value: Any) -> str:
 def print_showcase(patient_row, diagnosis_rows: list[tuple[Any, ...]]) -> None:
     (
         patient_id,
-        patient_person_uuid,
+        patient_person_id,
         first_name,
         last_name,
         gender,
@@ -221,7 +221,7 @@ def print_showcase(patient_row, diagnosis_rows: list[tuple[Any, ...]]) -> None:
         f"Patient #{patient_id}: {first_name} {last_name} "
         f"({gender}, born {as_text(birthday)})"
     )
-    print(f"Person UUID: {patient_person_uuid}")
+    print(f"Person ID: {patient_person_id}")
     print(f"Address: {street} {street_no}, {city}")
 
     if not diagnosis_rows:
@@ -277,7 +277,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--env-file", default=str(DEFAULT_ENV_FILE), help="Path to .env file.")
     parser.add_argument("--schema", default=DEFAULT_SCHEMA, help="Target PostgreSQL schema.")
     parser.add_argument("--patient-id", type=int, help="Explicit patient.id to showcase.")
-    parser.add_argument("--person-id", help="Explicit patient.person UUID to resolve and showcase.")
+    parser.add_argument("--person-id", type=int, help="Explicit patient.person ID to resolve and showcase.")
     parser.add_argument("--max-diagnoses", type=int, default=6, help="Max diagnosis rows to show.")
     return parser
 

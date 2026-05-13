@@ -82,7 +82,7 @@ Shows exactly where matches are lost:
 
 - unmapped CSV columns
 - missing table columns
-- sampled value/type issues (`invalid_uuid`, `invalid_date_iso`, enum mismatches, etc.)
+- sampled value/type issues (`invalid_integer`, `invalid_date_iso`, enum mismatches, etc.)
 - missing foreign key references (sampled distinct values)
 - example bad values to fix in source CSVs
 
@@ -128,7 +128,7 @@ Limit rows during iteration:
 
 - Relationship model: `diagnosis` now carries patient link (`diagnosed_patient` -> `patient.id` bigint), so one patient can have many diagnoses.
 - `patients_with_diagnosis.csv` is an aggregated helper/report file and should not be imported into `patient`.
-- The script auto-maps common aliases (for example `person_id -> person`, `birthdate -> birthday`, `dose -> dosis`, `uuid -> id`).
+- The script auto-maps common aliases (for example `person_id -> person`, `birthdate -> birthday`, `dose -> dosis`).
 - Explicit links in `insertion/table_links.json` override auto-inference.
 - Import checks now include FK readiness so you see missing referenced data (for example `employee.department` requires `department` rows first).
 - Import uses multi-row INSERT batches for better throughput on larger CSVs.

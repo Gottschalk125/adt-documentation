@@ -13,7 +13,7 @@ IMP="insertion/csv_importer.py"
 ENV_FILE=".env"
 SCHEMA_SQL="DATABASE.sql"
 GENERATOR_CACHE_FILE=".generator_row_counts"
-GENERATOR_CACHE_VERSION="v2"
+GENERATOR_CACHE_VERSION="v3"
 
 if [[ ! -f "$IMP" ]]; then
   echo "ERROR: importer not found: $IMP" >&2
@@ -67,6 +67,7 @@ sync_sequences() {
   run_psql -v ON_ERROR_STOP=1 <<'SQL'
 SELECT setval(pg_get_serial_sequence('public.medication', 'id'), COALESCE((SELECT MAX(id) FROM public.medication), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.diagnosis', 'id'), COALESCE((SELECT MAX(id) FROM public.diagnosis), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('public.person', 'id'), COALESCE((SELECT MAX(id) FROM public.person), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.patient', 'id'), COALESCE((SELECT MAX(id) FROM public.patient), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.dose', 'id'), COALESCE((SELECT MAX(id) FROM public.dose), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.department', 'id'), COALESCE((SELECT MAX(id) FROM public.department), 0) + 1, false);
@@ -74,6 +75,7 @@ SELECT setval(pg_get_serial_sequence('public.drugs', 'id'), COALESCE((SELECT MAX
 SELECT setval(pg_get_serial_sequence('public.station', 'id'), COALESCE((SELECT MAX(id) FROM public.station), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.bookings', 'id'), COALESCE((SELECT MAX(id) FROM public.bookings), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('public.rooms', 'id'), COALESCE((SELECT MAX(id) FROM public.rooms), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('public.employee', 'id'), COALESCE((SELECT MAX(id) FROM public.employee), 0) + 1, false);
 SQL
 }
 
@@ -242,20 +244,20 @@ batch_size_for_table() {
 
 copy_table_lines() {
   local root_dir="$1"
-  cat <<EOF
-\\copy public.person FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.department FROM '${root_dir}/departments.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.station FROM '${root_dir}/stations.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.rooms FROM '${root_dir}/rooms.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.dose FROM '${root_dir}/dose.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.drugs FROM '${root_dir}/drugs.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.employee FROM '${root_dir}/employees.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.doctors FROM '${root_dir}/doctors.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.nurses FROM '${root_dir}/nurses.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.medication FROM '${root_dir}/medication.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.patient FROM '${root_dir}/patients.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.diagnosis FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
-\\copy public.bookings FROM '${root_dir}/bookings.csv' WITH (FORMAT csv, HEADER true)
+cat <<EOF
+\\copy public.person (gender, first_name, last_name, plz, city, street, street_no, country, birthday, phone, email) FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.department (id, name, building) FROM '${root_dir}/departments.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.station (id, name, department, rooms) FROM '${root_dir}/stations.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.rooms (id, station, number, floor, beds) FROM '${root_dir}/rooms.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.dose (id, unit, amount, frequency, frequency_amount) FROM '${root_dir}/dose.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.drugs (id, stock, name, active_ingredient, type) FROM '${root_dir}/drugs.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.employee (id, department, person) FROM '${root_dir}/employees.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.doctors (id, work_phone, type) FROM '${root_dir}/doctors.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.nurses (id, station) FROM '${root_dir}/nurses.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.medication (id, dosis, drug, started, ended) FROM '${root_dir}/medication.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.patient (id, person) FROM '${root_dir}/patients.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.diagnosis (id, medication, disease, diagnosed_by, diagnosed_patient, diagnosed_at) FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.bookings (id, "from", until, state, room, patient) FROM '${root_dir}/bookings.csv' WITH (FORMAT csv, HEADER true)
 EOF
 }
 

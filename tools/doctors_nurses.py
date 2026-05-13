@@ -47,7 +47,7 @@ def read_input_csv(file_path):
     """
     Liest eine CSV ein.
     Erwartet:
-    - 1. Spalte = UUID
+    - 1. Spalte = employee_id
     - 2. Spalte = department_id
 
     Unterstützt CSVs mit oder ohne Header.
@@ -73,14 +73,14 @@ def read_input_csv(file_path):
         if len(row) < 2:
             continue
 
-        person_id = row[0].strip()
+        employee_id = row[0].strip()
         department_id = row[1].strip()
 
-        if not person_id or not department_id:
+        if not employee_id or not department_id:
             continue
 
         rows.append({
-            "id": person_id,
+            "id": employee_id,
             "department_id": department_id
         })
 
