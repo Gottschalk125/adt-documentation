@@ -1,6 +1,5 @@
 import csv
 import random
-import uuid
 
 INPUT_FILE = "persons_transformed.csv"
 PATIENTS_OUTPUT_FILE = "patients.csv"
@@ -16,23 +15,23 @@ def add_patient_sample(
     samples: list[tuple[int, str]],
     seen_count: int,
     patient_id: int,
-    person_uuid: str,
+    person_id: str,
 ) -> None:
     if len(samples) < PATIENT_SAMPLE_SIZE:
-        samples.append((patient_id, person_uuid))
+        samples.append((patient_id, person_id))
         return
 
     replace_index = random.randint(1, seen_count)
     if replace_index <= PATIENT_SAMPLE_SIZE:
-        samples[replace_index - 1] = (patient_id, person_uuid)
+        samples[replace_index - 1] = (patient_id, person_id)
 
 
 def write_patient_samples(samples: list[tuple[int, str]]) -> None:
     with open(PATIENTS_SAMPLE_FILE, "w", newline="", encoding="utf-8") as patients_file:
         writer = csv.writer(patients_file)
         writer.writerow(["id", "person"])
-        for patient_id, person_uuid in samples:
-            writer.writerow([patient_id, person_uuid])
+        for patient_id, person_id in samples:
+            writer.writerow([patient_id, person_id])
 
 
 def main():
@@ -53,24 +52,22 @@ def main():
         employee_writer.writerow(["id", "department", "person"])
 
         for row_index, row in enumerate(reader, start=1):
-            person_uuid = (row.get("id") or "").strip()
-            if not person_uuid:
-                continue
+            person_id = str(row_index)
 
             if random.random() < EMPLOYEE_RATIO:
                 employee_count += 1
                 employee_writer.writerow([
-                    str(uuid.uuid4()),
+                    employee_count,
                     random.randint(1, 27),
-                    person_uuid,
+                    person_id,
                 ])
 
                 if employee_count % PROGRESS_EVERY == 0:
                     print(f"{employee_count} employee rows written...")
             else:
                 patient_count += 1
-                patient_writer.writerow([patient_count, person_uuid])
-                add_patient_sample(samples, patient_count, patient_count, person_uuid)
+                patient_writer.writerow([patient_count, person_id])
+                add_patient_sample(samples, patient_count, patient_count, person_id)
 
                 if patient_count % PROGRESS_EVERY == 0:
                     print(f"{patient_count} patient rows written...")

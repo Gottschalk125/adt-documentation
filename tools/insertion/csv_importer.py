@@ -7,7 +7,6 @@ import io
 import json
 import os
 import sys
-import uuid
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
@@ -61,7 +60,6 @@ COLUMN_ALIASES = {
     "drug_id": "drug",
     "dose": "dosis",
     "birthdate": "birthday",
-    "uuid": "id",
 }
 
 VALUE_TRANSFORMS = {
@@ -223,7 +221,15 @@ def quote_ident(name: str) -> str:
 
 def fetch_table_schema(conn, schema: str = DEFAULT_SCHEMA) -> tuple[dict[str, list[str]], dict[tuple[str, str], dict[str, str]]]:
     sql = """
-        SELECT table_name, column_name, ordinal_position, data_type, udt_name, is_nullable
+        SELECT
+            table_name,
+            column_name,
+            ordinal_position,
+            data_type,
+            udt_name,
+            is_nullable,
+            is_identity,
+            identity_generation
         FROM information_schema.columns
         WHERE table_schema = %s
         ORDER BY table_name, ordinal_position
@@ -233,12 +239,23 @@ def fetch_table_schema(conn, schema: str = DEFAULT_SCHEMA) -> tuple[dict[str, li
 
     with conn.cursor() as cur:
         cur.execute(sql, (schema,))
-        for table_name, column_name, _ord, data_type, udt_name, is_nullable in cur.fetchall():
+        for (
+            table_name,
+            column_name,
+            _ord,
+            data_type,
+            udt_name,
+            is_nullable,
+            is_identity,
+            identity_generation,
+        ) in cur.fetchall():
             table_columns[table_name].append(column_name)
             column_meta[(table_name, column_name)] = {
                 "data_type": data_type,
                 "udt_name": udt_name,
                 "is_nullable": is_nullable,
+                "is_identity": is_identity,
+                "identity_generation": identity_generation or "",
             }
 
     return dict(table_columns), column_meta
@@ -509,13 +526,6 @@ def detect_value_issue(
             int(value_text)
         except (TypeError, ValueError):
             return "invalid_integer"
-        return None
-
-    if data_type == "uuid":
-        try:
-            uuid.UUID(value_text)
-        except (TypeError, ValueError):
-            return "invalid_uuid"
         return None
 
     if data_type == "date":
@@ -907,11 +917,17 @@ def iter_mapped_rows(
                 return
 
 
-def make_insert_prefix(schema: str, table: str, target_columns: list[str]) -> str:
+def make_insert_prefix(
+    schema: str,
+    table: str,
+    target_columns: list[str],
+    override_system_value: bool = False,
+) -> str:
     quoted_columns = ", ".join(quote_ident(col) for col in target_columns)
+    override_clause = " OVERRIDING SYSTEM VALUE" if override_system_value else ""
     return (
         f"INSERT INTO {quote_ident(schema)}.{quote_ident(table)} "
-        f"({quoted_columns}) VALUES "
+        f"({quoted_columns}){override_clause} VALUES "
     )
 
 
@@ -942,6 +958,45 @@ def make_copy_sql(schema: str, table: str, target_columns: list[str]) -> str:
         f"COPY {quote_ident(schema)}.{quote_ident(table)} "
         f"({quoted_columns}) FROM STDIN WITH (FORMAT csv, NULL '{COPY_NULL_SENTINEL}')"
     )
+
+
+def needs_system_value_override(
+    table: str,
+    target_columns: list[str],
+    column_meta: dict[tuple[str, str], dict[str, str]],
+) -> bool:
+    for column in target_columns:
+        meta = column_meta.get((table, column), {})
+        if meta.get("is_identity") == "YES" and meta.get("identity_generation") == "ALWAYS":
+            return True
+    return False
+
+
+def sync_identity_sequences(
+    conn,
+    schema: str,
+    table: str,
+    target_columns: list[str],
+    column_meta: dict[tuple[str, str], dict[str, str]],
+) -> None:
+    identity_columns = [
+        column
+        for column in target_columns
+        if column_meta.get((table, column), {}).get("is_identity") == "YES"
+    ]
+    if not identity_columns:
+        return
+
+    table_name = f"{schema}.{table}"
+    with conn.cursor() as cur:
+        for column in identity_columns:
+            max_sql = (
+                f"SELECT setval(pg_get_serial_sequence(%s, %s), "
+                f"COALESCE((SELECT MAX({quote_ident(column)}) FROM "
+                f"{quote_ident(schema)}.{quote_ident(table)}), 0) + 1, false)"
+            )
+            cur.execute(max_sql, (table_name, column))
+    conn.commit()
 
 
 def build_copy_buffer(rows: list[list[Any]]) -> io.StringIO:
@@ -978,6 +1033,7 @@ def execute_import(
     dry_run: bool,
     limit: int | None,
     on_conflict_do_nothing: bool,
+    override_system_value: bool = False,
 ) -> tuple[int, int, list[tuple[int, str]]]:
     target_columns = [target for _, target in mapping]
     row_source = iter_mapped_rows(csv_path, table, mapping, limit=limit)
@@ -988,7 +1044,12 @@ def execute_import(
             total += 1
         return total, 0, []
 
-    insert_prefix = make_insert_prefix(schema, table, target_columns)
+    insert_prefix = make_insert_prefix(
+        schema,
+        table,
+        target_columns,
+        override_system_value=override_system_value,
+    )
     copy_sql = make_copy_sql(schema, table, target_columns)
     single_row_sql = make_insert_sql(
         insert_prefix=insert_prefix,
@@ -1431,6 +1492,8 @@ def cmd_import(args: argparse.Namespace) -> int:
         print(f"Target table: {target_table}")
         print("Resolved column mapping:")
         print_mapping(mapping)
+        target_columns = [target for _, target in mapping]
+        override_system_value = needs_system_value_override(target_table, target_columns, column_meta)
 
         if args.drop and not args.dry_run:
             print(f"Dropping existing data in {target_table} (TRUNCATE ... CASCADE).")
@@ -1489,7 +1552,10 @@ def cmd_import(args: argparse.Namespace) -> int:
             dry_run=args.dry_run,
             limit=args.limit,
             on_conflict_do_nothing=args.on_conflict_do_nothing,
+            override_system_value=override_system_value,
         )
+        if inserted and not args.dry_run:
+            sync_identity_sequences(conn, args.schema, target_table, target_columns, column_meta)
 
         mode = "Dry run" if args.dry_run else "Import"
         print(f"{mode} finished. Rows processed: {inserted}")
@@ -1630,6 +1696,8 @@ def cmd_wizard(args: argparse.Namespace) -> int:
             if not mapping:
                 print("No mapped columns. Skipping import.")
             else:
+                target_columns = [target for _, target in mapping]
+                override_system_value = needs_system_value_override(target_table, target_columns, column_meta)
                 if report.fk_missing_counts:
                     proceed = input(
                         "FK precheck found missing references; import will likely fail and be slow. Continue anyway? [y/N]: "
@@ -1654,6 +1722,7 @@ def cmd_wizard(args: argparse.Namespace) -> int:
                     dry_run=True,
                     limit=limit,
                     on_conflict_do_nothing=args.on_conflict_do_nothing,
+                    override_system_value=override_system_value,
                 )
                 print(f"Dry run rows: {dry_run_inserted}")
                 if dry_run_failed:
@@ -1672,7 +1741,10 @@ def cmd_wizard(args: argparse.Namespace) -> int:
                         dry_run=False,
                         limit=limit,
                         on_conflict_do_nothing=args.on_conflict_do_nothing,
+                        override_system_value=override_system_value,
                     )
+                    if inserted:
+                        sync_identity_sequences(conn, args.schema, target_table, target_columns, column_meta)
                     imported_total += inserted
                     failed_total += failed
                     table_counts[target_table] = table_counts.get(target_table, 0) + inserted

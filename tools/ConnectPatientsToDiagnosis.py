@@ -14,7 +14,7 @@ def load_patients() -> list[dict[str, str]]:
         reader = csv.DictReader(f)
         for row in reader:
             patient_id = (row.get("id") or "").strip()
-            person_id = (row.get("person_id") or "").strip()
+            person_id = (row.get("person") or "").strip()
             if patient_id and person_id:
                 patients.append({"id": patient_id, "person_id": person_id})
     return patients
@@ -41,7 +41,7 @@ def main() -> None:
 
     result_rows: list[dict[str, str]] = []
     for patient in patients:
-        diagnosis_ids = diagnosis_by_patient.get(patient["person_id"], [])
+        diagnosis_ids = diagnosis_by_patient.get(patient["id"], [])
         result_rows.append(
             {
                 "id": patient["id"],
