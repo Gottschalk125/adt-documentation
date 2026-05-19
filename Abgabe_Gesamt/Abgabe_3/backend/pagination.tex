@@ -1,0 +1,72 @@
+\section{Pagination-Strategien}
+Um die Antwortzeiten der API bei großen Datenbeständen minimal zu halten und den Speicherverbrauch auf Client- und Serverseite zu begrenzen, erzwingt die API eine Paginierung der Daten. Je nach Endpoint und Abfragemuster kommen zwei unterschiedliche Strategien zum Einsatz.
+
+\subsection{Spring Pageable (Offset-basiert)}
+Die offset-basierte Paginierung mittels Springs \texttt{Pageable}-Schnittstelle wird für Entitäten verwendet, bei denen eine wahlfreie Seitennavigation (z.\,B. \textit{„Springe zu Seite 5“}) sinnvoll ist und die Datenänderungsrate moderat ausfällt.
+
+\subsubsection*{Verwendung}
+Diese Strategie wird von folgenden Endpoints genutzt: \textit{Departments, Stations, Rooms, Bookings, Drugs, Doses, Medications}.
+
+\subsubsection*{Query-Parameter}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|c|X|}
+\hline
+\textbf{Name} & \textbf{Typ} & \textbf{Standard} & \textbf{Beschreibung} \\ \hline
+\texttt{page} & int & \texttt{0} & Nullbasierter Index der gewünschten Seite. \\ \hline
+\texttt{size} & int & \texttt{20} & Anzahl der Elemente pro Seite. \\ \hline
+\texttt{sort} & String & — & Feld und Sortierrichtung, z.\,B. \texttt{name,asc}. \\ \hline
+\end{tabularx}
+\caption{Query-Parameter für das Offset-basierte Paging}
+\end{table}
+
+\subsubsection*{Struktur der API-Antwort}
+Die Antwort entspricht der standardmäßigen JSON-Struktur eines Spring \texttt{Page}-Objekts:
+
+\begin{lstlisting}[language={}]
+{
+  "content": [],
+  "pageable": {},
+  "totalElements": 0,
+  "totalPages": 0,
+  "last": true,
+  "size": 20,
+  "number": 0
+}
+\end{lstlisting}
+
+\subsection{Cursor-basierte Paginierung (Keyset Pagination)}
+Für Entitäten mit potenziell sehr großen Datenmengen oder hoher Schreibfrequenz wird die Cursor-basierte Paginierung (Keyset Pagination) eingesetzt. Sie verhindert das typische Performance-Problem von hohen Datenbank-Offsets (\textit{„Offset-Drift“}), bei dem Datensätze bei Neuzugängen übersprungen oder doppelt angezeigt werden.
+
+\subsubsection*{Verwendung}
+Diese Strategie wird von folgenden Endpoints genutzt: \textit{Patients, Doctors, Nurses, Diagnoses} sowie für die Sub-Ressourcen \texttt{GET /patients/\{id\}/bookings} und \texttt{GET /patients/\{id\}/diagnoses}.
+
+\subsubsection*{Query-Parameter}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|l|c|X|}
+\hline
+\textbf{Name} & \textbf{Typ} & \textbf{Standard} & \textbf{Beschreibung} \\ \hline
+\texttt{after} & long & — & ID des letzten Elements der vorherigen Seite. Für die erste Seite weglassen. \\ \hline
+\texttt{limit} & int & \texttt{10} & Maximale Anzahl an zurückzugebenden Elementen. \\ \hline
+\end{tabularx}
+\caption{Query-Parameter für das Cursor-basierte Paging}
+\end{table}
+
+\subsubsection*{Struktur der API-Antwort}
+\begin{lstlisting}[language={}]
+{
+  "items": [],
+  "nextCursor": 42,
+  "hasMore": true
+}
+\end{lstlisting}
+
+\begin{table}[H]
+\small
+\begin{tabularx}{\textwidth}{l X}
+\textbf{Hinweis:} & \texttt{nextCursor} entspricht der \texttt{id} des letzten Datensatzes im aktuellen \texttt{items}-Array. Dieser Wert muss im darauffolgenden Request als Parameter \texttt{after} übergeben werden. Ist \texttt{hasMore} auf \texttt{false}, wurde das Ende der Daten erreicht. Der Name des Keys für das \texttt{items}-Array variiert je nach Endpoint (z.\,B. \texttt{patients}, \texttt{doctors}, \dots).
+\end{tabularx}
+\end{table}

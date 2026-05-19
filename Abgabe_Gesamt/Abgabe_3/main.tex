@@ -1,0 +1,97 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}   
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{csquotes}
+\usepackage{parskip}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{biblatex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{keyblue}{RGB}{20,105,176}
+\definecolor{valgreen}{RGB}{0,128,0}
+\definecolor{numorange}{RGB}{255,102,0}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    escapeinside={(*}{*)} 
+}
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyblue}\bfseries,
+    stringstyle=\color{valgreen},
+    commentstyle=\color{gray}\itshape,
+    columns=fullflexible,
+    breaklines=true,
+    frame=single,
+    showstringspaces=false
+}
+
+\lstdefinelanguage{Kotlin}{
+  keywords={data, class, val, var, fun, null, true, false, @Entity, @Table, @Id, @GeneratedValue, @Temporal, @Column, @Convert, @ManyToOne, @JoinColumn},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{valgreen},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"
+}
+
+\lstdefinestyle{kotlinstyle}{
+    language=Kotlin,
+    basicstyle=\ttfamily\small,
+    columns=fixed,
+    breaklines=true,
+    breakatwhitespace=true,
+    frame=single,
+    showstringspaces=false,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{valgreen}
+}
+
+%\addbibresource{literature.bib}
+
+\title{Hospital Management System - Dokumentation Teil 3: Performance}
+\author{
+  {\Large Gruppe 1} \\[0.5em]
+  {\large \textit{THWS Würzburg Schweinfurt}} \\[1em]
+  Joshua Pfennig: 5123097\\
+  Tim Knüttel: 5123101\\
+  Jasmin Wander: 5123060\\
+  David Heppenheimer: 5123026\\
+  Tom Knoblach: 5123034
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\include{backend/models}
+\include{backend/pagination}
+\include{backend/caching}
+%TODO: \include{frontend/}
+\include{KI_Nutzung/KI_Nutzung}
+
+%\printbibliography
+
+\end{document}
