@@ -2,14 +2,16 @@
 Zur Steigerung der Abfrageperformance und Reduzierung der Systemlast bei steigenden Datenmengen wurden gezielte Optimierungen auf Datenbankebene durchgeführt. 
 
 \subsection{ID-Typumstellung und Indexierung}
-In der initialen Entwicklungsphase wurden Entitäten primär über UUIDs (Universally Unique Identifiers) identifiziert. Obwohl UUIDs Vorteile bei der dezentralen Generierung bieten, führen sie bei relationalen Datenbanken durch ihre Größe (128 Bit) und ihre unstrukturierte Natur zu einer Fragmentierung des Cluster-Indizes. Dies beeinträchtigt die Performance von \texttt{SELECT}- und Filteranfragen erheblich.
+In der initialen Entwicklungsphase wurden Entitäten primär über UUIDs (Universally Unique Identifiers) identifiziert. 
+Obwohl UUIDs Vorteile bei der dezentralen Generierung bieten, führen sie bei relationalen Datenbanken durch ihre Größe (128 Bit) und ihren unstrukturierten Aufbau zu einer Fragmentierung des Cluster-Indizes. 
+Dies beeinträchtigt die Performance von \texttt{SELECT}- und Filteranfragen erheblich und verhindert die effiziente Nutzung von Indizes.
 
-Aus diesem Grund wurden alle UUIDs auf den numerischen Datentyp \texttt{Long} bzw. \texttt{BIGINT} auf Datenbankebene umgestellt. Dies ermöglichte eine performantere Indexierung und beschleunigte Joins zwischen den Tabellen. 
+Aus diesem Grund wurden alle UUIDs als Primary Keys durch \texttt{Long} bzw. \texttt{BIGINT} auf Datenbank- und Backendebene umgestellt. Dies ermöglichte eine performantere Indexierung und beschleunigte Joins zwischen den Tabellen. 
 
-Darüber hinaus wurden für Klassen, die einer hohen Frequenz an Filter- und Sortierabfragen unterliegen, dedizierte Indizes (teilweise als zusammengesetzte Indizes / Composite Indexes) definiert.
+Darüber hinaus wurden für Klassen, die einer hohen Frequenz an Filter- und Sortierabfragen unterliegen, dedizierte Indizes, teilweise als zusammengesetzte Composite Indizes, definiert.
 
 %TODO: vermutlich noch mehr Beispiele und Begründungen warum wo Indizes eingebaut
-\subsection{Beispielhafte Implementierung: Booking-Entität}
+\subsection{Beispielhafte Implementierung im Backend}
 Das folgende Codebeispiel zeigt die optimierte Datenklasse \texttt{Booking}. Hierbei wurden Indizes für häufig genutzte Filterkombinationen wie \texttt{room}, \texttt{patient} sowie die zeitliche Komponente \texttt{from} und \texttt{until} hinterlegt:
 
 \begin{lstlisting}[style=kotlinstyle, caption={Optimierte Booking-Entität}]
