@@ -1,37 +1,35 @@
 \section{Caching-Strategie und Trade-offs}
-Im Rahmen der Performance-Optimierung wurde der Einsatz von Anwendungs-Caching (z.\,B. mittels \texttt{Spring Cache} und \texttt{Caffeine}) evaluiert. Caching bietet das Potenzial, die Datenbankauslastung zu reduzieren und Antwortzeiten drastisch zu senken, bringt jedoch in einem medizinischen Kontext spezifische Risiken und architektonische Herausforderungen mit sich.
+Im Rahmen der Performance-Optimierung wurde der Einsatz von Caching mittels \texttt{Spring Cache} und \texttt{Caffeine} evaluiert. 
+Caching bietet das Potenzial, die Datenbankauslastung zu reduzieren und Antwortzeiten drastisch zu senken, bringt jedoch in einem medizinischen Kontext spezifische Risiken und architektonische Herausforderungen mit sich.
 
-\subsection{Evaluierung für suchintensive Endpoints}
-Für Endpoints mit komplexen Such- und Filterfunktionen (wie den zuvor dokumentierten Buchungs- und Patientensuchen) wurde bewusst auf ein Caching verzichtet. Da jede einzigartige Kombination aus Filterparametern einen eigenen Cache-Schlüssel (\textit{Cache Key}) generiert, wäre die Trefferquote (\textit{Cache Hit Rate}) bei einer hohen Varianz der Suchanfragen verschwindend gering. Die Implementierung von Indizes auf Datenbankebene stellt für diese dynamischen Leseanforderungen die technisch stabilere und performantere Lösung dar.
+\subsection*{Evaluierung für suchintensive Endpoints}
+Für Endpoints mit komplexen Such- und Filterfunktionen wurde bewusst auf ein Caching verzichtet. 
+Da jede einzigartige Kombination aus Filterparametern einen eigenen Cache-Schlüssel (\textit{Cache Key}) generiert, wäre die Trefferquote (\textit{Cache Hit Rate}) bei einer hohen Varianz der Suchanfragen sehr gering und in der Praxis irrelevant. \\
+Dies betrifft primär die Endpoints für die Entitäten \texttt{Booking} und \texttt{Patient}, bei denen die Suchkriterien (z.B. Datum, Status, Patientendaten) stark variieren können.\\
+Die Implementierung von Indizes auf Datenbankebene stellt für diese dynamischen Leseanforderungen die technisch stabilere und performantere Lösung dar.
+\subsection*{Datenkonsistenz und Aktualität (Data Freshness)}
+Das größte Risiko beim Einsatz von Caching im Krankenhausumfeld ist die Datenaktualität. 
+Bei einem Großteil der verwalteten Entitäten handelt es sich um hochgradig variable, klinische Daten, vor allem Belegungen (\textit{Bookings}), Patientenakten, Diagnosen sowie Medikationspläne und Dosierungen. 
 
-\subsection{Datenkonsistenz und Aktualität (Data Freshness)}
-Das größte Risiko beim Einsatz von Caching im Krankenhausumfeld ist die Datenaktualität. Bei einem Großteil der verwalteten Entitäten handelt es sich um hochgradig volatile, veränderliche klinische Daten — darunter Belegungen (\textit{Bookings}), Patientenakten, Diagnosen sowie Medikationspläne und Dosierungen. 
+Das Ausliefern veralteter Daten (\textit{Stale Data}) stellt im Gesundheitswesen ein kritisches Korrektheits- und Sicherheitsrisiko dar. 
+Um dieses zu minimieren, müsste bei jedem Schreibvorgang eine präzise Cache-Invalidierung implementiert werden. Dies erhöht die Code-Komplexität erheblich, ohne einen nennenswerten Performance-Gewinn zu erzielen.
 
-Das Ausliefern veralteter Daten (\textit{Stale Data}) stellt im Gesundheitswesen ein kritisches Korrektheits- und Sicherheitsrisiko dar. Um dieses zu minimieren, müsste bei jedem Schreibvorgang (\textit{Write Path}) eine präzise Cache-Invalidierung (\texttt{@CacheEvict}) implementiert werden. Dies erhöht die Code-Komplexität erheblich, ohne im Gegenzug einen nennenswerten Performance-Gewinn für diese Entitäten zu erzielen.
-
-\subsection{Sinnvoller Einsatzbereich: Referenzdaten}
-Ein gewinnbringender Einsatz von Caching beschränkt sich folglich auf weitgehend statische Referenzdaten (Stammdaten), die häufig gelesen, aber extrem selten modifiziert werden. Im vorliegenden System betrifft dies primär folgende Entitäten:
+\subsection*{Sinnvoller Einsatzbereich: Referenzdaten}
+Ein sinnvoller Einsatz von Caching beschränkt sich folglich auf weitgehend statische Referenzdaten bzw. Stammdaten, die häufig gelesen, aber extrem selten modifiziert werden. 
+Im Hospital Management System betrifft dies primär folgende Entitäten:
 \begin{itemize}
-    \item \textbf{Department (Fachabteilungen)}
-    \item \textbf{Station (Pflegestationen)}
-    \item \textbf{Drug (Medikamente)}
+    \item \textbf{Department}
+    \item \textbf{Station}
+    \item \textbf{Drug}
+    \item \textbf{Room}
+    \item \textbf{Doctor}
+    \item \textbf{Nurse}
 \end{itemize}
 
-Diese Tabellen dienen im System primär als Nachschlagewerke (\textit{Lookup Tables}), um beispielsweise Dropdown-Menüs im Frontend zu befüllen oder IDs zu validieren. Eine einfache In-Memory-Kachelung mittels \texttt{@Cacheable} auf den \texttt{findAll}- oder \texttt{getById}-Methoden dieser drei Services ist risikoarm und reduziert wiederkehrende Standard-Datenbankzugriffe effektiv.
+Diese Tabellen dienen im System primär als Lookup-Tabellen, um beispielsweise in Dropdown-Menüs im Frontend angezeigt zu werden oder zur Validierung von IDs. 
+Ein In-Memory-Cache mittels \texttt{@Cacheable} auf den \texttt{findAll}- und \texttt{getById}-Methoden dieser Services reduziert wiederkehrende Standard-Datenbankzugriffe effektiv.
 
-\subsection{Architektonische Abwägung (Trade-off)}
-Selbst bei vermeintlich statischen Daten wie Medikamenten muss berücksichtigt werden: Sobald ein neues Medikament hinzugefügt oder ein bestehender Eintrag aktualisiert wird, muss die Konsistenz gewahrt bleiben. Dies erfordert entweder:
-\begin{itemize}
-    \item den gezielten Einsatz von \texttt{@CacheEvict} auf den entsprechenden Schreibmethoden oder
-    \item die Konfiguration einer kurzen Lebensdauer der Einträge (\textit{Short Time-To-Live / TTL}).
-\end{itemize}
-
-Obwohl dies bei einem einfachen In-Memory-Cache (wie Caffeine) mit moderatem Wartungsaufwand umsetzbar ist, erhöht es dennoch die Komplexität der Codebasis.
-
-\begin{table}[H]
-\small
-\begin{tabularx}{\textwidth}{l X}
-\hline
-\textbf{Fazit:} & Für such- und filterintensive Endpoints wird Caching zugunsten von Datenbankindizes übersprungen. Eine Implementierung für die genannten Referenzdaten wird erst dann final produktiv geschaltet, wenn bei realen Lasttests eine messbare Latenz bei den Stammdaten-Lookups auftritt. \\ \hline
-\end{tabularx}
-\end{table}
+\subsection*{Architektonische Abwägung}
+Selbst bei vermeintlich statischen Daten wie Medikamenten muss berücksichtigt werden, dass beim Hinzufügen eines neuen Medikaments oder beim Aktualisieren eines bestehenden Eintrags die Konsistenz gewährleistet werden muss. 
+Daher wurde die Lebensdauer der Cache-Einträge mit 5 bis 15 Minuten je nach Entität so gewählt, dass die Wahrscheinlichkeit von Stale Data minimiert ist.
+Dies ist bei einem In-Memory-Cache wie Caffeine mit moderatem Wartungsaufwand verbunden.
