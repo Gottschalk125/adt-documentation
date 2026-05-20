@@ -1,6 +1,8 @@
 \section{Pagination-Strategie (5123034)}
 Um die Antwortzeiten der API bei großen Datenbeständen minimal zu halten und den Speicherverbrauch auf Client- und Serverseite zu begrenzen, erzwingt die API eine Paginierung der Daten. Je nach Endpoint und Abfragemuster kommen zwei unterschiedliche Strategien zum Einsatz.
 
+%TODO: anpassen: erklären warum so viel effizienter
+%TODO: mittlerweile ist fast alles cursor-basiert => hier noch veralteter Stand
 \subsection{Spring Pageable (Offset-basiert)}
 Die offset-basierte Paginierung mittels Springs \texttt{Pageable}-Schnittstelle wird für Entitäten verwendet, bei denen eine wahlfreie Seitennavigation (z.\,B. \textit{„Springe zu Seite 5“}) sinnvoll ist und die Datenänderungsrate moderat ausfällt.
 
@@ -70,3 +72,134 @@ Diese Strategie wird von folgenden Endpoints genutzt: \textit{Patients, Doctors,
 \textbf{Hinweis:} & \texttt{nextCursor} entspricht der \texttt{id} des letzten Datensatzes im aktuellen \texttt{items}-Array. Dieser Wert muss im darauffolgenden Request als Parameter \texttt{after} übergeben werden. Ist \texttt{hasMore} auf \texttt{false}, wurde das Ende der Daten erreicht. Der Name des Keys für das \texttt{items}-Array variiert je nach Endpoint (z.\,B. \texttt{patients}, \texttt{doctors}, \dots).
 \end{tabularx}
 \end{table}
+
+
+\subsection*{Ergebnisse}
+
+%TODO - offset-pagination title is far too wide
+%TODO - vorher auch noch auf @EntityGraph eingehen, weil der hat hier auch schon verbessert!
+
+
+% --Doctors--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doctors.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={offset-pagination, cursor-based-pagination},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(offset-pagination, 3421.38) (cursor-based-pagination, 11.21)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -99,7\%}
+\end{minipage}%
+\hfill%
+%--Nurses--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{nurses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={offset-pagination, cursor-based-pagination},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(offset-pagination, 2751.43) (cursor-based-pagination, 12.41)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -99,5\%}
+\end{minipage}%
+
+%--Doses--
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={offset-pagination, cursor-based-pagination},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(offset-pagination, 2278.07) (cursor-based-pagination, 289.67)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -87,3\%}
+\end{minipage}
+\hfill%
+%--Medications--
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{medications.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={offset-pagination, cursor-based-pagination},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(offset-pagination, 1244.56) (cursor-based-pagination, 328.59)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -73,6\%}
+\end{minipage}
+
+%--Diagnoses--
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{diagnoses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={offset-pagination, cursor-based-pagination},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(offset-pagination, 2132.19) (cursor-based-pagination, 401.46)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -81,2\%}
+\end{minipage}

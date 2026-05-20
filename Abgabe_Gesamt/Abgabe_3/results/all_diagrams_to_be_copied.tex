@@ -1,0 +1,622 @@
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{departments.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 16.16) (nonpaged, 1.82) (sucks, 1.71) (latest, 1.8)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{departments.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 9.11) (nonpaged, 1.2) (sucks, 1.32) (latest, 1.47)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{stations.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 95.37) (nonpaged, 1.09) (sucks, 1.63) (latest, 1.53)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{stations.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 11.02) (nonpaged, 1.0) (sucks, 1.02) (latest, 1.04)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{rooms.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 29.56) (nonpaged, 1.0) (sucks, 1.92) (latest, 1.69)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{rooms.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 11.09) (nonpaged, 0.86) (sucks, 1.16) (latest, 0.96)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{rooms.by\_floor}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 420.25) (nonpaged, 140.99) (sucks, 148.1) (latest, 142.86)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{rooms.bookings}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 117.32) (nonpaged, 114.7) (sucks, 10.58) (latest, 132.45)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{bookings.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 428.38) (nonpaged, 427.82) (sucks, 1257.51) (latest, 1145.62)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{bookings.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 11.02) (nonpaged, 14.96) (sucks, 12.54) (latest, 11.07)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{patients.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 331.45) (nonpaged, 334.48) (sucks, 691.11) (latest, 715.53)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{patients.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 11.09) (nonpaged, 13.12) (sucks, 13.12) (latest, 10.01)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{patients.bookings}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 5.82) (nonpaged, 7.99) (sucks, 12.28) (latest, 11.97)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{patients.diagnoses}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 5.93) (nonpaged, 6.92) (sucks, 10.98) (latest, 15.44)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doctors.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 117.75) (nonpaged, 29.92) (sucks, 3421.38) (latest, 11.21)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doctors.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 13.35) (nonpaged, 1.54) (sucks, 2.44) (latest, 0.85)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{nurses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 168.19) (nonpaged, 41.23) (sucks, 2751.43) (latest, 12.41)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{nurses.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 11.38) (nonpaged, 2.2) (sucks, 2.82) (latest, 0.8)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{nurses.by\_station}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 0.0) (nonpaged, 0.0) (sucks, 0.0) (latest, 0.0)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{drugs.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 13.48) (nonpaged, 1.29) (sucks, 2.4) (latest, 2.08)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{drugs.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 9.26) (nonpaged, 0.82) (sucks, 1.4) (latest, 1.21)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 278.4) (nonpaged, 291.71) (sucks, 2278.07) (latest, 289.67)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{doses.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 12.54) (nonpaged, 11.03) (sucks, 13.62) (latest, 11.8)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{medications.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 458.88) (nonpaged, 473.28) (sucks, 1244.56) (latest, 328.59)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{medications.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 9.64) (nonpaged, 11.28) (sucks, 16.37) (latest, 12.1)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{diagnoses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 561.59) (nonpaged, 589.24) (sucks, 2132.19) (latest, 401.46)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=0.2,
+            title={\textbf{diagnoses.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={main, nonpaged, sucks, latest},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(main, 13.96) (nonpaged, 11.82) (sucks, 17.33) (latest, 14.45)};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}%
+
+\vspace{2em}

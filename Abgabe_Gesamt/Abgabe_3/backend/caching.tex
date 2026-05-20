@@ -33,3 +33,299 @@ Ein In-Memory-Cache mittels \texttt{@Cacheable} auf den \texttt{findAll}- und \t
 Selbst bei vermeintlich statischen Daten wie Medikamenten muss berücksichtigt werden, dass beim Hinzufügen eines neuen Medikaments oder beim Aktualisieren eines bestehenden Eintrags die Konsistenz gewährleistet werden muss. 
 Daher wurde die Lebensdauer der Cache-Einträge mit 5 bis 15 Minuten je nach Entität so gewählt, dass die Wahrscheinlichkeit von Stale Data minimiert ist.
 Dies ist bei einem In-Memory-Cache wie Caffeine mit moderatem Wartungsaufwand verbunden.
+
+
+\subsection*{Ergebnisse}
+
+% --Departments--
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{departments.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 16.16) (mit Caching, 1.82)};
+        \end{axis}    
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -88.7\%}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{departments.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 9.11) (mit Caching, 1.2)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -86,8\%}
+\end{minipage}
+
+%--Stations--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{stations.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 95.37) (mit Caching, 1.09)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -98.9\%}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{stations.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 11.02) (mit Caching, 1.0)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -88.2\%}
+\end{minipage}
+
+%--Rooms--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{rooms.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 29.56) (mit Caching, 1.0)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -96.6\%}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{rooms.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 11.09) (mit Caching, 0.86)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -92.3\%}
+\end{minipage}
+
+%--Drugs--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{drugs.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 13.48) (mit Caching, 1.29)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -90.4\%}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{drugs.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 9.26) (mit Caching, 0.82)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -91.1\%}
+\end{minipage}
+
+%--Doctors--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{doctors.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 117.75) (mit Caching, 29.92)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -88.7\%}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{doctors.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 13.35) (mit Caching, 1.54)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -88.4\%}
+\end{minipage}
+
+%--Nurses--
+\vspace{2em}
+\noindent
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{nurses.list}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 168.19) (mit Caching, 41.23)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -75.5\%}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \begin{axis}[
+            ybar,
+            bar width=15pt,
+            width=\textwidth,
+            height=6cm,
+            enlarge x limits=1.0,
+            title={\textbf{nurses.by\_id}},
+            ylabel={Avg. Time (ms)},
+            symbolic x coords={ohne Caching, mit Caching},
+            xtick=data,
+            nodes near coords,
+            nodes near coords style={/pgf/number format/.cd, fixed, precision=2},
+            ymin=0
+        ]
+        \addplot[fill=keyblue] coordinates {(ohne Caching, 11.38) (mit Caching, 2.2)};
+        \end{axis}
+    \end{tikzpicture}
+    \small\textit{Verbesserung: -80.7\%}
+\end{minipage}
