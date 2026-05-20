@@ -1,13 +1,43 @@
-\section{Pagination-Strategie (5123034)}
-Um die Antwortzeiten der API bei großen Datenbeständen minimal zu halten und den Speicherverbrauch auf Client- und Serverseite zu begrenzen, erzwingt die API eine Paginierung der Daten. Je nach Endpoint und Abfragemuster kommen zwei unterschiedliche Strategien zum Einsatz.
+\section{Pagination-Strategie (5123034, 5123060, 5123097)}
+\label{sec:pagination_strategie}
 
-%TODO: anpassen: erklären warum so viel effizienter
-%TODO: mittlerweile ist fast alles cursor-basiert => hier noch veralteter Stand
-\subsection{Spring Pageable (Offset-basiert)}
-Die offset-basierte Paginierung mittels Springs \texttt{Pageable}-Schnittstelle wird für Entitäten verwendet, bei denen eine wahlfreie Seitennavigation (z.\,B. \textit{„Springe zu Seite 5“}) sinnvoll ist und die Datenänderungsrate moderat ausfällt.
+Um die Antwortzeiten der API bei großen Datenbeständen minimal zu halten und den Speicherverbrauch auf Client- und Serverseite zu begrenzen, erzwingt das Backend eine strikte Paginierung aller Collection-Endpoints. 
+
+Im Zuge einer umfassenden Refactoring-Phase wurde die Architektur von einem klassischen, offset-basierten Ansatz auf eine zunehmend \textbf{cursor-basierte Paginierung (Keyset-Pagination)} umgestellt.
+Dieser Schritt war notwendig, da das System eine zunehmende Datenmenge, wie beispielsweise kontinuierliche Patientenakten und Diagnosen, verarbeiten soll und relationale Datenbanksysteme bei hohen Seiten-Offsets gravierende Performance-Einbußen aufweisen.
+
+\subsection{Bisheriger Ansatz: Offset-basierte Paginierung}
+In der initialen Entwicklungsphase wurde die Paginierung über Springs \texttt{Pageable}-Schnittstelle gelöst. Hierbei steuert der Client den Zugriff über die Parameter \texttt{page} (Seitennummer) und \texttt{size} (Elemente pro Seite).
+
+\subsubsection*{Generierte SQL-Statements}
+Unter der Haube generiert Hibernate für eine Abfrage (beispielsweise der Patienten auf Seite 5.000 bei einer Seitengröße von 20) zwei separate SQL-Statements:
+
+1. \textbf{Das Daten-Statement:}
+\begin{lstlisting}[style=sqlstyle]
+SELECT p.id, p.first_name, p.last_name 
+FROM patients p 
+ORDER BY p.id ASC 
+LIMIT 20 OFFSET 100000;
+\end{lstlisting}
+
+2. \textbf{Das Count-Statement (erforderlich für Metadaten):}
+\begin{lstlisting}[style=sqlstyle]
+SELECT count(p.id) FROM patients p;
+\end{lstlisting}
+
+\subsubsection*{Kritische Performance-Probleme}
+Der Offset-basierte Ansatz leidet unter zwei fundamentalen Skalierungsproblemen, die ihn für produktive Enterprise-Systeme ungeeignet machen:
+\begin{itemize}
+    \item \textbf{Das $O(N)$-Laufzeitproblem bei hohen Offsets:} Bei einem \texttt{OFFSET 100000} kann die Datenbank nicht einfach direkt zum 100.001. Datensatz springen. 
+    Sie muss zeigerbasiert die ersten 100.000 Datensätze von der Festplatte oder aus dem Cache lesen, im Arbeitsspeicher verarbeiten und anschließend komplett verwerfen, um nur die gewünschten 20 Zeilen zurückzugeben. Je weiter ein Client nach hinten blättert, desto langsamer wird die Abfrage.
+    \item \textbf{Der \texttt{COUNT(*)}-Overhead:} Um dem Client die Felder \texttt{totalPages} und \texttt{totalElements} bereitzustellen, muss bei jeder Abfrage die Gesamtanzahl der Zeilen ermittelt werden. 
+    Dies erzwingt einen Full-Table-Scan oder zeitintensive Index-Scans, was die CPU- und I/O-Last der Datenbank maximiert.
+    \item \textbf{Inkonsistenz (Data Drifting):} Wenn während des Blätterns Datensätze eingefügt oder gelöscht werden, verschiebt sich der Offset. Der Client sieht bestimmte Datensätze doppelt oder überspringt sie komplett.
+\end{itemize}
 
 \subsubsection*{Verwendung}
-Diese Strategie wird von folgenden Endpoints genutzt: \textit{Departments, Stations, Rooms, Bookings, Drugs, Doses, Medications}.
+Diese Strategie wird daher nur noch von den folgenden Endpoints verwendet, die keine umfangreichen Listen enthalten und bei denen eine wahlfreie Seitennavigation (z.\,B. \textit{„Springe zu Seite 5“}) sinnvoll ist sowie die Datenänderungsrate moderat ausfällt: 
+\\\textit{Departments, Stations, Rooms, Dose, Drug}
 
 \subsubsection*{Query-Parameter}
 \begin{table}[H]
@@ -38,43 +68,61 @@ Die Antwort entspricht der standardmäßigen JSON-Struktur eines Spring \texttt{
 }
 \end{lstlisting}
 
-\subsection{Cursor-basierte Paginierung (Keyset Pagination)}
-Für Entitäten mit potenziell sehr großen Datenmengen oder hoher Schreibfrequenz wird die Cursor-basierte Paginierung (Keyset Pagination) eingesetzt. Sie verhindert das typische Performance-Problem von hohen Datenbank-Offsets (\textit{„Offset-Drift“}), bei dem Datensätze bei Neuzugängen übersprungen oder doppelt angezeigt werden.
 
-\subsubsection*{Verwendung}
-Diese Strategie wird von folgenden Endpoints genutzt: \textit{Patients, Doctors, Nurses, Diagnoses} sowie für die Sub-Ressourcen \texttt{GET /patients/\{id\}/bookings} und \texttt{GET /patients/\{id\}/diagnoses}.
+\subsection{Cursor-basierte Paginierung (Keyset-Pagination) zur \\Performance-Optimierung}
+Um die oben genannten Probleme vollständig zu eliminieren, nutzen alle anderen der Listen-Endpoints des Hospital Management Systems eine cursor-basierte Paginierung. 
+Anstatt einer abstrakten Seitennummer merkt sich der Client die eindeutige ID (\texttt{after}) des letzten Elements der vorherigen Seite.
 
 \subsubsection*{Query-Parameter}
+Die Steuerung erfolgt effizient über zwei Parameter, welche für die cursor-basiereten Endpoints standardisiert sind:
+
 \begin{table}[H]
 \centering
 \small
 \begin{tabularx}{\textwidth}{|l|l|c|X|}
 \hline
 \textbf{Name} & \textbf{Typ} & \textbf{Standard} & \textbf{Beschreibung} \\ \hline
-\texttt{after} & long & — & ID des letzten Elements der vorherigen Seite. Für die erste Seite weglassen. \\ \hline
-\texttt{limit} & int & \texttt{10} & Maximale Anzahl an zurückzugebenden Elementen. \\ \hline
+\texttt{after} & long & — & Gibt an, ab welcher ID Datensätze geladen werden. Wird \texttt{0} oder nichts übergeben, startet die Abfrage ganz von vorne. \\ \hline
+\texttt{limit} & int & \texttt{10} & Maximale Anzahl an Elementen, die zurückgegeben werden sollen. \\ \hline
 \end{tabularx}
-\caption{Query-Parameter für das Cursor-basierte Paging}
+\caption{Standardisierte Query-Parameter der Cursor-Paginierung}
 \end{table}
 
+\subsubsection*{Generiertes SQL-Statement}
+Da das System nun weiß, an welcher exakten Stelle die letzte Abfrage endete, kann Hibernate ein deutlich effizienteres Statement umsetzen:
+
+\begin{lstlisting}[style=sqlstyle]
+SELECT p.id, p.first_name, p.last_name 
+FROM patients p 
+WHERE p.id > 100000 
+ORDER BY p.id ASC 
+LIMIT 11;
+\end{lstlisting}
+\textit{Hinweis:} Es wird intern bewusst \texttt{limit + 1} geladen (hier \texttt{LIMIT 11} bei angeforderten 10 Elementen). Existiert das elfte Element, weiß das Backend, dass \texttt{hasMore = true} ist, liefert dem Client jedoch nur die 10 gewünschten Zeilen aus.
+
+\subsubsection*{Gründe für Performance-Verbesserung bei langen Listen}
+\begin{itemize}
+    \item \textbf{Konstante Laufzeit $O(\log N)$ dank B-Tree-Index:} Das Statement nutzt direkt den Primärschlüsselindex (\texttt{PRIMARY KEY}) der Tabelle. Die Datenbank führt einen \textit{Index Seek} aus und springt ohne Umwege direkt zum ersten Eintrag, der die Bedingung \texttt{id > 100000} erfüllt. Es müssen keine vorherigen Datensätze gelesen oder verworfen werden. Die Abfragegeschwindigkeit ist auf Seite 1 exakt identisch zu der auf Seite 10.000.
+    \item \textbf{Kompletter Verzicht auf \texttt{COUNT(*)}:} Da dem Client keine absolute Seitenzahl mehr angezeigt werden muss (sondern lediglich ein „Nächste Seite“-Button realisiert wird), entfällt die rechenintensive Gesamtzählung der Tabellenzeilen vollständig.
+    %\item \textbf{Absolute Konsistenz:} Da die Filterung direkt auf dem Datenwert aufbaut, führen并发 (konkurrierende) Einfügungen oder Löschungen niemals dazu, dass Elemente innerhalb der Client-Ansicht übersprungen werden oder doppelt auftauchen.
+\end{itemize}
+
+
 \subsubsection*{Struktur der API-Antwort}
+Anstelle eines Spring-Page-Metadatenobjekt kapselt die AP das Ergebnis nun in folgendem JSON-Objekt:
 \begin{lstlisting}[language={}]
 {
   "items": [],
-  "nextCursor": 42,
+  "nextCursor": 100001,
   "hasMore": true
 }
 \end{lstlisting}
 
-\begin{table}[H]
-\small
-\begin{tabularx}{\textwidth}{l X}
-\textbf{Hinweis:} & \texttt{nextCursor} entspricht der \texttt{id} des letzten Datensatzes im aktuellen \texttt{items}-Array. Dieser Wert muss im darauffolgenden Request als Parameter \texttt{after} übergeben werden. Ist \texttt{hasMore} auf \texttt{false}, wurde das Ende der Daten erreicht. Der Name des Keys für das \texttt{items}-Array variiert je nach Endpoint (z.\,B. \texttt{patients}, \texttt{doctors}, \dots).
-\end{tabularx}
-\end{table}
+Erreicht das System das Ende der Liste, ändert sich die Antwort entsprechend auf \texttt{nextCursor: 0} und \texttt{hasMore: false}. 
+Der Client kann den Wert aus \texttt{nextCursor} direkt für den Folge-Request im Query-Parameter \texttt{after} verwenden.
 
 
-\subsection*{Ergebnisse}
+\subsection{Ergebnisse}
 
 %TODO - offset-pagination title is far too wide
 %TODO - vorher auch noch auf @EntityGraph eingehen, weil der hat hier auch schon verbessert!

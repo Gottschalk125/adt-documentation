@@ -1,0 +1,35 @@
+\section{Entity-Graph (5123034, 5123060, 5123097)}
+\label{sec:performance_entity_graphs}
+
+Entity Graphs in JPA/Hibernate ermöglichen es, gezielt zu steuern, welche Assoziationen beim Laden einer Entität mitgeladen werden. 
+Ohne diese Kontrolle entstehen zwei klassische Probleme: das $N+1$-Problem und unnötiges Lazy-Loading.
+
+\subsection*{Das $N+1$-Problem}
+Ohne Entity Graphs lädt Hibernate verknüpfte Entitäten standardmäßig einzeln pro Datensatz (\textit{lazy}). 
+Beispielsweise bei einer Liste von Ärzten würde Hibernate zunächst eine Abfrage für die Ärzte ausführen, danach aber für jeden Arzt eine separate Abfrage für dessen Zuweisungen, Diagnosen oder Medikamente.
+Mit einem Entity Graph werden alle benötigten Assoziationen in einer einzigen \texttt{JOIN}-Abfrage geladen. 
+Dadurch reduziert sich der Overhead durch Netzwerk-Roundtrips zur Datenbank drastisch.
+
+\subsection*{Anwendung im Projekt}
+In Tabelle~\ref{tab:entity_graphs_anwendung} sind die konkreten Problemstellen unseres Hospital Management Systems und deren jeweilige Lösung durch Entity Graphs gegenübergestellt.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Übersicht der Performance-Optimierung durch Entity Graphs}
+\label{tab:entity_graphs_anwendung}
+\begin{tabularx}{\textwidth}{l X X}
+\hline
+\textbf{Entität} & \textbf{Problemstelle ohne Graph} & \textbf{Lösung durch Graph} \\ \hline
+Doctor & Abteilung \& Krankenhausinfo separat geladen & Alles in einem \texttt{JOIN} \\
+Nurse & Schichten und Zuweisungen ($N+1$) & \textit{Eager-Join} auf relevante Felder \\
+Diagnosis & Zugehörige Booking \& Patient \textit{lazy} nachgeladen & Graph lädt Kontext direkt mit \\
+Medication & Diagnose-Verknüpfung erst bei Zugriff geladen & Direkt verfügbar ohne Extra-Query \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection*{Ergebnis}
+Durch den gezielten Einsatz von \texttt{@EntityGraph} in den Repository-Methoden reduziert sich die Anzahl der Datenbankabfragen erheblich, insbesondere bei Listenabfragen über viele Datensätze. 
+Gleichzeitig wird \textit{Overfetching} vermieden, da nur die tatsächlich benötigten Assoziationen mitgeladen werden, nicht pauschal alles.
+Das führt zu einer messbaren Verbesserung bei den Antwortzeiten der API, einer geringeren Datenbanklast und einem stabileren Verhalten unter hoher Last.
+Die Benchmarks der nachfolgenden Section enthalten bereits diese Verbesserungen.
