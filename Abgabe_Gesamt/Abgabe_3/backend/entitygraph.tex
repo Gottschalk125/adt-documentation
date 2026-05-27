@@ -32,4 +32,4 @@ Medication & Diagnose-Verknüpfung erst bei Zugriff geladen & Direkt verfügbar 
 Durch den gezielten Einsatz von \texttt{@EntityGraph} in den Repository-Methoden reduziert sich die Anzahl der Datenbankabfragen erheblich, insbesondere bei Listenabfragen über viele Datensätze. 
 Gleichzeitig wird \textit{Overfetching} vermieden, da nur die tatsächlich benötigten Assoziationen mitgeladen werden, nicht pauschal alles.
 Das führt zu einer messbaren Verbesserung bei den Antwortzeiten der API, einer geringeren Datenbanklast und einem stabileren Verhalten unter hoher Last.
-Die Benchmarks der nachfolgenden Section enthalten bereits diese Verbesserungen.
+Die Benchmarks der nachfolgenden Section zur Pagination-Strategie enthalten bereits diese Verbesserungen.
