@@ -1,0 +1,73 @@
+\section{Indizes auf Datenbankebene für Performanceverbesserungen (5123026)}
+\label{sec:datenbank_indizes}
+
+Ein wesentlicher Teil der Performanceverbesserungen wurde direkt auf Datenbankebene umgesetzt. Die API des Hospital Management Systems arbeitet in vielen Bereichen mit relationalen Zugriffsmustern: Patienten werden mit Buchungen verknüpft, Buchungen mit Räumen, Diagnosen mit Patienten, Ärzten und Medikationen. Ohne passende Indizes muss PostgreSQL bei solchen Endpunkten deutlich mehr Tabellenzeilen lesen, sortieren oder verwerfen. Das verursacht unnötige I/O-Last, höhere CPU-Auslastung und längere Antwortzeiten im Backend.
+
+Für die Performanceanalyse ist dabei entscheidend, dass Indizes nicht isoliert als Schema-Erweiterung betrachtet werden, sondern als Werkzeug zur Beschleunigung konkreter Abfragen. Ein Index ist besonders wirksam, wenn seine Spaltenreihenfolge zur tatsächlichen Abfrage passt: zuerst die stark einschränkende Filterspalte, danach Spalten für Sortierung, Zeitraum oder Cursor. Dadurch kann der Query Planner einen Index Scan oder Index Range Scan verwenden, statt große Tabellenbereiche sequenziell zu durchsuchen und anschließend im Speicher zu sortieren.
+
+Die in \texttt{tools/DATABASE.sql} definierten Indizes orientieren sich deshalb an den Endpunkten, die im Backend häufig gelesen werden. Fremdschlüsselspalten wie \texttt{diagnosis.medication}, \texttt{employee.department}, \texttt{rooms.station} oder \texttt{nurses.station} kommen regelmäßig in Joins oder Filterbedingungen vor. Der Primärschlüssel der referenzierten Tabelle ist automatisch indexiert, die verweisende Spalte der anderen Tabelle benötigt für performante Join-Zugriffe jedoch einen eigenen passenden Zugriffspfad.
+
+\begin{lstlisting}[style=sqlstyle, caption={Indizes für häufige Fremdschlüssel-Joins}]
+CREATE INDEX "idx_diagnosis_medication"
+    ON "public"."diagnosis" ("medication");
+
+CREATE INDEX "idx_employee_department_id"
+    ON "public"."employee" ("department", "id");
+
+CREATE INDEX "idx_rooms_station_id"
+    ON "public"."rooms" ("station", "id");
+\end{lstlisting}
+
+Diese Indizes reduzieren die Kosten für Join-lastige Endpunkte. Wenn beispielsweise Räume einer Station oder Diagnosen zu einer Medikation geladen werden, muss die Datenbank nicht die gesamte abhängige Tabelle prüfen. Stattdessen kann sie direkt in den relevanten Indexbereich springen und nur die passenden Tupel lesen.
+
+Besonders wichtig sind zusammengesetzte Indizes für Buchungen, da Buchungen in der Anwendung nicht nur nach einer ID geladen werden. Typische Endpunkte lesen Buchungen eines Patienten, prüfen die Belegung eines Raums oder filtern administrative Übersichten nach Status und Datum. Für diese Muster wurden Composite-Indizes definiert, deren Spaltenreihenfolge zur Filter- und Sortierlogik passt.
+
+\begin{lstlisting}[style=sqlstyle, caption={Composite-Indizes für Buchungs-Endpunkte}]
+CREATE INDEX "idx_bookings_patient_from_id"
+    ON "public"."bookings" ("patient", "from" DESC, "id" DESC);
+
+CREATE INDEX "idx_bookings_room_from_until"
+    ON "public"."bookings" ("room", "from", "until");
+
+CREATE INDEX "idx_bookings_state_from_id"
+    ON "public"."bookings" ("state", "from", "id");
+\end{lstlisting}
+
+Der Index \texttt{idx\_bookings\_patient\_from\_id} passt beispielsweise zur Buchungshistorie eines Patienten. Die Datenbank filtert zuerst auf die Patienten-ID und erhält die Datensätze bereits in einer Reihenfolge, die zur API-Ausgabe passt. Dadurch entfällt ein teurer zusätzlicher Sortierschritt.
+
+\begin{lstlisting}[style=sqlstyle, caption={Typische Abfrage auf die Buchungshistorie eines Patienten}]
+SELECT *
+FROM "public"."bookings"
+WHERE "patient" = 42
+ORDER BY "from" DESC, "id" DESC
+LIMIT 20;
+\end{lstlisting}
+
+Für die medizinische Dokumentation wurden die Diagnoseabfragen auf ähnliche Weise optimiert. Diagnosen werden im Backend häufig nach Patient, Arzt, Krankheit oder Diagnosezeitpunkt gelesen. Gerade bei wachsenden Diagnosemengen wäre ein sequenzieller Scan teuer, weil sehr viele historische Datensätze geprüft werden müssten, obwohl der Endpunkt meist nur einen kleinen Ausschnitt benötigt.
+
+\begin{lstlisting}[style=sqlstyle, caption={Composite-Indizes für Diagnose-Endpunkte}]
+CREATE INDEX "idx_diagnosis_patient_date_id"
+    ON "public"."diagnosis" ("diagnosed_patient", "diagnosed_at" DESC, "id" DESC);
+
+CREATE INDEX "idx_diagnosis_doctor_date_id"
+    ON "public"."diagnosis" ("diagnosed_by", "diagnosed_at" DESC, "id" DESC);
+
+CREATE INDEX "idx_diagnosis_disease_date"
+    ON "public"."diagnosis" ("disease", "diagnosed_at");
+\end{lstlisting}
+
+Der erste Index beschleunigt die Patientenakte, weil Diagnosen eines konkreten Patienten direkt nach Datum absteigend gelesen werden können. Der zweite Index unterstützt Auswertungen oder Übersichten nach behandelndem Arzt. Der dritte Index ist für krankheitsbezogene Analysen relevant, bei denen eine Diagnoseart über einen Zeitraum betrachtet wird. In allen Fällen wird die Performance dadurch verbessert, dass Filterung und Sortierung möglichst aus demselben Index bedient werden.
+
+Ein weiterer Schwerpunkt ist die Performance von Listenansichten und Pagination. Für sortierte Endpunkte reicht ein einfacher Index auf eine Filterspalte oft nicht aus, weil die Datenbank die Treffer danach noch sortieren müsste. Deshalb enthalten mehrere Indizes zusätzlich eine Datums- oder Startspalte und eine abschließende \texttt{id}. Die ID dient als eindeutiger Tiebreaker, wenn mehrere Datensätze denselben Zeitwert besitzen. Das ist für stabile Keyset-Pagination wichtig, weil der nächste Request reproduzierbar nach dem zuletzt gelesenen Datensatz fortsetzen muss.
+
+\begin{lstlisting}[style=sqlstyle, caption={Indexstruktur für stabile zeitbasierte Pagination}]
+CREATE INDEX "idx_medication_started_id"
+    ON "public"."medication" ("started", "id");
+
+CREATE INDEX "idx_diagnosis_date_id"
+    ON "public"."diagnosis" ("diagnosed_at", "id");
+\end{lstlisting}
+
+Die Performancewirkung dieser Indizes zeigt sich vor allem bei großen Tabellen. Ohne passenden Index muss PostgreSQL für eine sortierte Liste viele Zeilen lesen, sortieren und anschließend auf die gewünschte Seitengröße reduzieren. Mit passendem Index kann die Datenbank die Zeilen bereits in der benötigten Reihenfolge aus dem Index lesen und nach \texttt{LIMIT} früh abbrechen. Dadurch sinken Antwortzeit, Speicherbedarf für Sortieroperationen und Datenbanklast.
+
+Die Indexierung bleibt trotzdem eine bewusste Abwägung. Jeder zusätzliche Index beschleunigt bestimmte Lesezugriffe, erhöht aber den Aufwand bei Schreiboperationen, weil Inserts, Updates und Deletes auch die Indexstruktur aktualisieren müssen. Deshalb wurden nicht pauschal alle Spalten indexiert. Die Auswahl konzentriert sich auf leselastige Endpunkte, häufige Joins, wiederkehrende Filter, zeitliche Sortierungen und Pagination. Genau diese Bereiche bestimmen in der Anwendung die wahrnehmbare Performance der datenbankgestützten API.
