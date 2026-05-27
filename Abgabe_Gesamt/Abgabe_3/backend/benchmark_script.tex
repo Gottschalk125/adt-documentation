@@ -1,7 +1,7 @@
 \section{Benchmark-Skript für datenbankbasierte API-Endpunkte (5123026)}
 \label{sec:benchmark_script}
 
-Zur Bewertung der Datenbank-Performance wurde das Skript \texttt{benchmark\_db\_endpoints.py} erstellt. Es misst ausschließlich lesende \texttt{GET}-Endpunkte, damit ein Benchmark-Lauf keine Daten erzeugt, verändert oder löscht. Dadurch bleiben die Messungen wiederholbar und können genutzt werden, um Performanceverbesserungen wie Indizes, Entity Graphs, Caching oder Pagination miteinander zu vergleichen. Der Fokus liegt nicht auf einem isolierten SQL-Test, sondern auf der tatsächlichen Laufzeit der Backend-Endpunkte inklusive HTTP-Schicht, Controller, Service, Repository, ORM und Datenbankzugriff.
+Zur Bewertung der Datenbank-Performance wurde das Skript \texttt{benchmark\_} \texttt{db\_endpoints.py} erstellt. Es misst ausschließlich lesende \texttt{GET}-Endpunkte, damit ein Benchmark-Lauf keine Daten erzeugt, verändert oder löscht. Dadurch bleiben die Messungen wiederholbar und können genutzt werden, um Performanceverbesserungen wie Indizes, Entity Graphs, Caching oder Pagination miteinander zu vergleichen. Der Fokus liegt nicht auf einem isolierten SQL-Test, sondern auf der tatsächlichen Laufzeit der Backend-Endpunkte inklusive HTTP-Schicht, Controller, Service, Repository, ORM und Datenbankzugriff.
 
 Zu Beginn prüft das Skript, ob das Backend bereits läuft oder gestartet werden muss. Standardmäßig wird bei Bedarf die Spring-Boot-Anwendung über Gradle gestartet. Danach wartet das Skript, bis ein einfacher datenbankbasierter Endpunkt erreichbar ist. Diese Bereitschaftsprüfung ist wichtig, weil ein zu früh gestarteter Benchmark nicht die Performance der Datenbankzugriffe messen würde, sondern den noch laufenden Startprozess der Anwendung.
 

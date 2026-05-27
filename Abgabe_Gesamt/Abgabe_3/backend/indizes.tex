@@ -71,3 +71,53 @@ CREATE INDEX "idx_diagnosis_date_id"
 Die Performancewirkung dieser Indizes zeigt sich vor allem bei großen Tabellen. Ohne passenden Index muss PostgreSQL für eine sortierte Liste viele Zeilen lesen, sortieren und anschließend auf die gewünschte Seitengröße reduzieren. Mit passendem Index kann die Datenbank die Zeilen bereits in der benötigten Reihenfolge aus dem Index lesen und nach \texttt{LIMIT} früh abbrechen. Dadurch sinken Antwortzeit, Speicherbedarf für Sortieroperationen und Datenbanklast.
 
 Die Indexierung bleibt trotzdem eine bewusste Abwägung. Jeder zusätzliche Index beschleunigt bestimmte Lesezugriffe, erhöht aber den Aufwand bei Schreiboperationen, weil Inserts, Updates und Deletes auch die Indexstruktur aktualisieren müssen. Deshalb wurden nicht pauschal alle Spalten indexiert. Die Auswahl konzentriert sich auf leselastige Endpunkte, häufige Joins, wiederkehrende Filter, zeitliche Sortierungen und Pagination. Genau diese Bereiche bestimmen in der Anwendung die wahrnehmbare Performance der datenbankgestützten API.
+
+
+\subsection*{ID-Typumstellung und Indexierung}
+In der initialen Entwicklungsphase wurden Entitäten primär über UUIDs (Universally Unique Identifiers) identifiziert. 
+Obwohl UUIDs Vorteile bei der dezentralen Generierung bieten, führen sie bei relationalen Datenbanken durch ihre Größe (128 Bit) und ihren unstrukturierten Aufbau zu einer Fragmentierung des Cluster-Indizes. 
+Dies beeinträchtigt die Performance von \texttt{SELECT}- und Filteranfragen erheblich und verhindert die effiziente Nutzung von Indizes.
+
+Aus diesem Grund wurden alle UUIDs als Primary Keys durch \texttt{Long} bzw. \texttt{BIGINT} auf Datenbank- und Backendebene umgestellt. Dies ermöglichte eine performantere Indexierung und beschleunigte Joins zwischen den Tabellen. 
+
+Darüber hinaus wurden für Klassen, die einer hohen Frequenz an Filter- und Sortierabfragen unterliegen, dedizierte Indizes, teilweise als zusammengesetzte Composite Indizes, definiert.
+
+\subsection*{Beispielhafte Implementierung im Backend}
+Das folgende Codebeispiel zeigt die optimierte Datenklasse \texttt{Booking}. Hierbei wurden Indizes für häufig genutzte Filterkombinationen wie \texttt{room}, \texttt{patient} sowie die zeitliche Komponente \texttt{from} und \texttt{until} hinterlegt:
+
+\begin{lstlisting}[style=kotlinstyle, caption={Optimierte Booking-Entität}]
+@Entity
+@Table(
+    name = "bookings",
+    indexes = [
+        Index(name = "bookings_pkey", columnList = "id", unique = true),
+        Index(name = "idx_bookings_from_id", columnList = "\"from\", id"),
+        Index(name = "idx_bookings_patient_from_id", columnList = "patient, \"from\", id"),
+        Index(name = "idx_bookings_room_from_until", columnList = "room, \"from\", until"),
+        Index(name = "idx_bookings_state_from_id", columnList = "state, \"from\", id")
+    ]
+)
+data class Booking(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "\"from\"")
+    val from: Date,
+
+    @Temporal(TemporalType.DATE)
+    val until: Date?,
+
+    @Convert(converter = BookingState.BookingStateConverter::class)
+    val state: BookingState,
+
+    @ManyToOne
+    @JoinColumn(name = "room")
+    val room: Room,
+
+    @ManyToOne
+    @JoinColumn(name = "patient")
+    val patient: Patient
+)
+\end{lstlisting}
