@@ -1,4 +1,4 @@
-\section{Benchmark-Skript für datenbankbasierte API-Endpunkte (5123026)}
+\section{Benchmark-Skript für datenbankbasierte API-Endpunkte \\(5123026)}
 \label{sec:benchmark_script}
 
 Zur Bewertung der Datenbank-Performance wurde das Skript \texttt{benchmark\_} \texttt{db\_endpoints.py} erstellt. Es misst ausschließlich lesende \texttt{GET}-Endpunkte, damit ein Benchmark-Lauf keine Daten erzeugt, verändert oder löscht. Dadurch bleiben die Messungen wiederholbar und können genutzt werden, um Performanceverbesserungen wie Indizes, Entity Graphs, Caching oder Pagination miteinander zu vergleichen. Der Fokus liegt nicht auf einem isolierten SQL-Test, sondern auf der tatsächlichen Laufzeit der Backend-Endpunkte inklusive HTTP-Schicht, Controller, Service, Repository, ORM und Datenbankzugriff.
