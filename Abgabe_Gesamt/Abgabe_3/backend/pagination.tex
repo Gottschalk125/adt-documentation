@@ -6,7 +6,7 @@ Um die Antwortzeiten der API bei großen Datenbeständen minimal zu halten und d
 Im Zuge einer umfassenden Refactoring-Phase wurde die Architektur von einem klassischen, offset-basierten Ansatz auf eine zunehmend \textbf{cursor-basierte Paginierung (Keyset-Pagination)} umgestellt.
 Dieser Schritt war notwendig, da das System eine zunehmende Datenmenge, wie beispielsweise kontinuierliche Patientenakten und Diagnosen, verarbeiten soll und relationale Datenbanksysteme bei hohen Seiten-Offsets gravierende Performance-Einbußen aufweisen.
 
-\subsection*{Bisheriger Ansatz: Offset-basierte Paginierung}
+\subsection{Bisheriger Ansatz: Offset-basierte Paginierung}
 In der initialen Entwicklungsphase wurde die Paginierung über Springs \texttt{Pageable}-Schnittstelle gelöst. Hierbei steuert der Client den Zugriff über die Parameter \texttt{page} (Seitennummer) und \texttt{size} (Elemente pro Seite).
 
 \subsubsection*{Generierte SQL-Statements}
@@ -69,7 +69,7 @@ Die Antwort entspricht der standardmäßigen JSON-Struktur eines Spring \texttt{
 \end{lstlisting}
 
 
-\subsection*{Cursor-basierte Paginierung (Keyset-Pagination) zur \\Performance-Optimierung}
+\subsection{Cursor-basierte Paginierung (Keyset-Pagination) zur \\Performance-Optimierung}
 Um die oben genannten Probleme vollständig zu eliminieren, nutzen alle anderen der Listen-Endpoints des Hospital Management Systems eine cursor-basierte Paginierung. 
 Anstatt einer abstrakten Seitennummer merkt sich der Client die eindeutige ID (\texttt{after}) des letzten Elements der vorherigen Seite.
 
