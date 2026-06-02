@@ -1,0 +1,56 @@
+\section{API Rate Limiting zum Schutz deterministischer Blind Indizes}
+
+Mit der Einführung des Blind-Indexing-Verfahrens zur performanten Filterung verschlüsselter Attribute wurde eine deterministische Komponente in die Datenhaltung integriert. Da identische Klartextwerte (z.\,B. der Nachname "`Müller"') stets zu identischen Hashwerten führen, ergibt sich hieraus ein theoretischer Angriffsvektor: Erlangt ein Angreifer lesenden Zugriff auf die Datenbank oder missbraucht die API, könnte er durch automatisiertes Durchprobieren gängiger Namen (Wörterbuch-Attacke / Brute-Force) und den anschließenden Abgleich der Hashes Rückschlüsse auf die echten Patientendaten ziehen. 
+
+Um dieses Risiko proaktiv zu minimieren, wurde ein restriktives \textit{API Rate Limiting} auf Applikationsebene implementiert, welches die Frequenz automatisierter Suchanfragen drastisch begrenzt.
+
+\subsection{Technische Implementierung}
+
+Die Umsetzung des Ratenbegrenzungs-Mechanismus basiert auf dem etablierten Token-Bucket-Algorithmus und wurde wie folgt in die bestehende Spring-Boot-Architektur integriert:
+
+\begin{enumerate}
+    \item \textbf{Dependency-Integration:} In der Konfigurationsdatei \texttt{build.gradle.kts} wurde die Kern-Bibliothek von Bucket4j eingebunden:
+\begin{verbatim}
+implementation("com.bucket4j:bucket4j-core:8.10.1")
+\end{verbatim}
+
+    \item \textbf{Zentraler Interceptor (\texttt{RateLimitingInterceptor.kt}):} Die Kernlogik verwaltet die Buckets zustandslos und thread-sicher über eine \texttt{ConcurrentHashMap<String, Bucket>}, wobei die IP-Adresse des anfragenden Clients als Schlüssel dient. Jeder Client-IP wird ein Kontingent von maximal $10$ Tokens zugewiesen, welches sich nach dem "`greedy refill"'-Prinzip alle 60 Sekunden vollständig erneuert. Ist das Token-Kontingent erschöpft, bricht die Anfrage sofort ab und liefert den HTTP-Status \texttt{429 Too Many Requests} mitsamt einer standardisierten JSON-Fehlermeldung zurück.
+
+    \item \textbf{Spezifische Routen-Registrierung (\texttt{WebConfig.kt}):} Der Interceptor wurde über die \texttt{WebMvcConfigurer}-Klasse registriert. Aus Sicherheits- und Performancegründen wurde der Schutz bewusst exakt auf den Endpunkt \texttt{GET /api/patients} beschränkt. Administrative Endpunkte oder schreibende Operationen (wie \texttt{POST /api/patients/new}) sind hiervon nicht betroffen, da dort andere Schutzmechanismen greifen.
+\end{enumerate}
+
+\subsection{Konzeptionelle Einordnung und Bedrohungsmodell}
+
+In einem produktiven Krankenhausinformationssystem wird Rate Limiting nicht monolithisch, sondern feingranular und risikobasiert über die API-Landschaft gestaffelt. Tabelle~\ref{tab:rate_limiting} verdeutlicht die strategische Einordnung des implementierten Schutzes im Vergleich zu einer ganzheitlichen Architektur.
+
+\begin{table}[h]
+    \centering
+    \caption{Konzeptionelle Staffelung von Rate-Limiting-Richtlinien.}
+    \label{tab:rate_limiting}
+    \begin{tabular}{l|l|p{7cm}}
+        \hline
+        \textbf{API-Endpunkt} & \textbf{Limit} & \textbf{Sicherheitsrelevante Begründung} \\ \hline
+        \texttt{POST /auth/login} & 5 / Min. & Schutz vor Brute-Force-Angriffen auf Benutzerpasswörter. \\
+        \textbf{\texttt{GET /api/patients} (Suche)} & \textbf{10 / Min.} & \textbf{Prävention von Wörterbuch-Attacken auf Blind Indizes.} \\
+        \texttt{GET /api/patients/\{id\}} & 60 / Min. & Legitime klinische Nutzung; kein Risiko für systematische Hash-Analysen. \\
+        \textit{Interne Admin-Endpunkte} & 100+ / Min. & Höhere Toleranz, da exklusiv aus dem gesicherten Intranet erreichbar. \\ \hline
+    \end{tabular}
+\end{table}
+
+Der dedizierte Fokus auf den Patienten-Suchendpunkt demonstriert ein präzises Verständnis der zugrundeliegenden Krypto-Architektur: Es wird exakt die Schnittstelle abgesichert, die aufgrund der deterministischen Natur des Blind Indexes den primären Angriffsvektor darstellt.
+
+\subsection{Validierung und Verifikation}
+
+Die Funktion der Ratenbegrenzung wurde mittels automatisierter HTTP-Anfragen im Terminal verifiziert. Dabei simuliert eine Schleife zwölf sequentielle Aufrufe des geschützten Such-Endpunkts in direkter Abfolge:
+
+\begin{verbatim}
+for i in $(seq 1 12); do
+  echo -n "Request $i: "
+  curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/api/patients"
+  echo
+done
+\end{verbatim}
+
+Das Testergebnis bestätigt die korrekte Funktionsweise der Middleware: Die ersten zehn Anfragen werden erfolgreich verarbeitet (HTTP 200), während die Anfragen 11 und 12 aufgrund des erschöpften Token-Buckets blockiert werden (HTTP 429).
+
+

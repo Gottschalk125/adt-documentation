@@ -1,0 +1,34 @@
+\section{Domänenspezifische Input-Validierung zur Krypto-Sicherung}
+
+Ein deterministischer Blind Index entfaltet seine Schutz- und Filterfunktion nur dann fehlerfrei, wenn die zugrundeliegenden Daten in absoluter Konsistenz vorliegen. Geringfügige Abweichungen in der Formatierung (z.\,B. Leerzeichen, unterschiedliche Trennzeichen bei Datumsangaben oder uneinheitliche Groß-/Kleinschreibung) führen aufgrund der Lawineneigenschaft kryptografischer Hashfunktionen zu vollständig kollidierenden Blind Indizes. Datenqualität ist bei verschlüsselten Attributen somit direkt an die funktionale Suchbarkeit gekoppelt.
+
+Um zu verhindern, dass malformierte oder korrupte Daten die kryptografische Pipeline im Backend blockieren oder unauffindbare Datensätze erzeugen, wurde eine strikte domänenspezifische Input-Validierung implementiert.
+
+\subsection{Technische Umsetzung}
+
+Die Validierungskette wurde direkt vor der Verschlüsselungs- und Hashing-Logik verankert und nutzt das \textit{Jakarta Bean Validation}-Ökosystem (Hibernate Validator):
+
+\begin{itemize}
+    \item \textbf{Postleitzahlen-Validierung (\texttt{@ValidPlz}):} Mittels einer dedizierten Validierungs-Annotation und der Definition des regulären Ausdrucks \texttt{\^{}[0-9]\{5\}\$} wird sichergestellt, dass Postleitzahlen ausnahmslos aus exakt fünf numerischen Ziffern bestehen. Syntaktische Fehler (wie \texttt{"1234"}, \texttt{"ABC12"} oder \texttt{"12345a"}) werden im Vorfeld hart abgewiesen.
+    \item \textbf{Geburtsdatums-Validierung (\texttt{@ValidBirthday}):} Diese Logik erzwingt das standardisierte Datumsformat \texttt{ISO\_LOCAL\_DATE} (\texttt{YYYY-MM-DD}). Gleichzeitig wird über eine semantische Prüfung verifiziert, dass das angegebene Datum zwingend in der Vergangenheit liegt. Dies verhindert logische Artefakte und sichert eine homogene Datenbasis für die Berechnung des \texttt{birthdayHash}.
+    \item \textbf{Controller-Integration:} Die Annotationen wurden deklarativ auf den Feldern der Datentransferobjekte (\texttt{PersonCreateRequest.kt}) platziert. Durch das Anfügen der \texttt{@Valid}-Annotation am Endpunkt des \texttt{PatientController.kt} prüft das Framework die Integrität der Daten, noch bevor die Request-Payload die Geschäftslogik erreicht.
+\end{itemize}
+
+\subsection{Validierung und Verifikation}
+
+Die Effektivität der Validierungs-Pipeline wurde durch das Absetzen eines syntaktisch invaliden Datensatzes (unzureichende PLZ-Länge und Geburtsdatum in der Zukunft) überprüft:
+
+\begin{verbatim}
+curl -s -X POST http://localhost:8080/api/patients/new \
+  -H "Content-Type: application/json" \
+  -d '{"plz":"1234","birthday":"2090-01-01", ...}'
+\end{verbatim}
+
+Das System fängt die fehlerhaften Daten sofort ab, bricht die Krypto-Pipeline ab und antwortet mit dem HTTP-Status \texttt{400 Bad Request}. Die strukturierte JSON-Antwort maskiert interne Systemdetails und liefert dem Client präzise, domänenspezifische Fehlermeldungen:
+
+\begin{verbatim}
+"PLZ muss genau 5 Ziffern enthalten (z.B. 80331)"
+"Geburtsdatum muss im Format YYYY-MM-DD vorliegen und in der Vergangenheit liegen"
+\end{verbatim}
+
+Durch diese vorgeschaltete Validierungsarchitektur wird eine kompromisslose Datenintegrität garantiert, wodurch die Zuverlässigkeit der Blind-Index-Suche im klinischen Alltag sichergestellt ist.
