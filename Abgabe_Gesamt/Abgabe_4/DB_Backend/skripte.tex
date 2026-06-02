@@ -1,0 +1,21 @@
+\section{Aktualisierung der Dateneinfügungsskripte (Data Seeding und Ingestion)}
+
+Durch die Einführung des Blind-Indexing-Verfahrens mussten sämtliche bestehenden Migrations-, Import- und Ingestion-Skripte grundlegend überarbeitet werden. Da die Datenbank nun für jedes verschlüsselte Attribut zwingend den korrespondierenden Blind Index benötigt, können Rohdaten nicht mehr nativ oder über klassische SQL-Inserts direkt in die Tabellen eingepflegt werden.
+
+Die Skripte wurden dahingehend modifiziert, dass jeder Datensatz vor dem Schreibvorgang eine kryptografische Pipeline auf Applikationsebene durchläuft. Folgende Prozessschritte wurden in den automatisierten Einfügungsskripten implementiert:
+
+\begin{enumerate}
+    \item \textbf{Klartext-Validierung:} Die einzufügenden Rohdaten (z.\,B. aus CSV- oder JSON-Quellen) werden auf Validität und korrekte ISO-Formatierung (insbesondere Datums- und Telefonnummernformate) geprüft.
+    \item \textbf{Generierung des Blind Index:} Für die betroffenen Felder (\texttt{firstName}, \texttt{lastName}, \texttt{plz}, \texttt{city}, \texttt{street}, \texttt{birthday}, \texttt{phone}, \texttt{email}) wird deterministisch ein HMAC-SHA256-Hash unter Verwendung des applikationsspezifischen geheimen Schlüssels (\textit{Secret Pepper}) berechnet und Base64-kodiert im jeweiligen \texttt{*Hash}-Feld hinterlegt.
+    \item \textbf{Probabilistische Verschlüsselung:} Der eigentliche Nutzinhalt wird mittels eines sicheren, authentifizierten Verschlüsselungsverfahrens (AES-GCM-256) mit einem pro Datensatz einzigartigen, zufälligen Initialisierungsvektor (IV) verschlüsselt.
+    \item \textbf{Persistierung:} Der finale \texttt{INSERT}-Befehl schreibt sowohl den unvorhersehbaren Chiffretext als auch den indizierbaren Blind Index synchron in die Datenbank.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    % Hier kann bei Bedarf ein Flowchart-Pfad hinterlegt werden
+    \caption{Pipeline der Dateneinfügungsskripte für PII-Ressourcen.}
+    \label{fig:data_ingestion_pipeline}
+\end{figure}
+
+Die Skripte stellen somit sicher, dass die referenzielle Integrität und die Suchbarkeit der verschlüsselten Personenobjekte (\texttt{Patients}, \texttt{Doctors}, \texttt{Nurses}) ab dem exakten Zeitpunkt der Dateninjektion konsistent gewahrt bleiben.
