@@ -12,13 +12,13 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
     \item \textbf{Datenbank-seitige Entschlüsselung im Query-Verlauf}
     \begin{itemize}
         \item \textit{Ansatz:} Die Daten werden probabilistisch verschlüsselt in der Datenbank abgelegt. Bei einer Suchanfrage entschlüsselt die Datenbank die Spalte on-the-fly, um den Vergleich durchzuführen (\texttt{WHERE decrypt(firstName) = 'Rollie'}).
-        \item \textit{Problem:} Dieser Ansatz erzwingt bei \textit{jeder} Suchanfrage einen \textbf{Full Table Scan} ($O(N)$-Komplexität), da auf verschlüsselten Daten keine standardmäßigen B-Baum-Indizes der Datenbank greifen. Bei einer wachsenden Patientenkartei führt dies unweigerlich zum Performance-Kollaps. Zudem müsste der kryptografische Schlüssel auf dem Datenbankserver liegen, was das Prinzip der strikten Funktionstrennung (\textit{Zero-Trust} zwischen Applikationsserver und Datenhaltung) verletzt.
+        \item \textit{Problem:} Dieser Ansatz erzwingt bei \textit{jeder} Suchanfrage einen \textbf{Full Table Scan} ($O(N)$-Komplexität), da auf verschlüsselten Daten keine standardmäßigen B-Baum-Indizes der Datenbank greifen. Bei einer wachsenden Patientenkartei führt dies unweigerlich zu erheblichen Performance-Einbußen. Zudem müsste der kryptografische Schlüssel auf dem Datenbankserver liegen, was das Prinzip der strikten Funktionstrennung (\textit{Zero-Trust} zwischen Applikationsserver und Datenhaltung) verletzt.
     \end{itemize}
 
     \item \textbf{Deterministische Verschlüsselung (z.\,B. AES-ECB / AES-CBC mit festem IV)}
     \begin{itemize}
         \item \textit{Ansatz:} Derselbe Klartext führt immer zum exakt selben Chiffretext. Dadurch lassen sich Datenbankindizes erstellen und exakte Suchen durchführen.
-        \item \textit{Problem:} \textbf{Frequenzanalyse-Angriffe.} Wenn ein Angreifer Zugriff auf die Datenbank erlangt, sieht er zwar nicht die echten Namen, kann aber durch die Häufigkeit identischer Chiffretexte Muster erkennen (z.\,B. dass der Chiffretext für häufige Nachnamen wie "`Müller"' oder "`Schmidt"' inflationär oft auftaucht). Das kompromittiert die Anonymität der sensiblen Patientendaten massiv.
+        \item \textit{Problem:} \textbf{Frequenzanalyse-Angriffe.} Wenn ein Angreifer Zugriff auf die Datenbank erlangt, sieht er zwar nicht die echten Namen, kann aber durch die Häufigkeit identischer Chiffretexte Muster erkennen (z.\,B. dass der Chiffretext für häufige Nachnamen wie "`Müller"' oder "`Schmidt"' inflationär oft auftaucht). Hierdurch wird die Anonymität der sensiblen Patientendaten stark gefährdet.
     \end{itemize}
 
     \item \textbf{Homomorphe Verschlüsselung / Searchable Symmetric Encryption (SSE)}
@@ -33,9 +33,9 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
 Um die Sicherheit einer probabilistischen Verschlüsselung mit der Geschwindigkeit von Datenbankindizes zu kombinieren, haben wir uns für das \textbf{Blind Indexing} entschieden.
 
 \begin{itemize}
-    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das stark und unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen kryptografischen, gesalzenen Hashwert (unter Verwendung eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist) und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}).
+    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das stark und unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen gesalzenen Hashwert (unter Verwendung eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist) und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}).
     \item \textbf{Vorteil:} Auf diese \texttt{*Hash}-Spalten können wir standardmäßige Datenbank-Indizes legen. Die Suche erfolgt mit $O(1)$- oder $O(\log N)$-Geschwindigkeit, da die Anwendung den Suchbegriff vorab hasht und die Datenbank nur noch Hashes vergleicht. Ein Angreifer sieht in der Datenbank nur unlesbare Hashes ohne mathematischen Bezug zum Chiffretext, was Frequenzanalysen ohne Kenntnis des geheimen Schlüssels unmöglich macht.
-    \item \textbf{Kompromiss:} Da Hashes deterministisch und irreversibel sind, unterstützt dieses System systembedingt \textbf{nur exakte Treffer} (\textit{Exact Matches}). Teiltreffer-Suchen (\texttt{LIKE \%abc\%}) oder Bereichsabfragen ($\le$, $\ge$) sind für diese Felder technisch ausgeschlossen.
+    \item \textbf{Kompromiss:} Da Hashes deterministisch und irreversibel sind, unterstützt dieses System systembedingt \textbf{nur exakte Treffer}. Teiltreffer-Suchen (\texttt{LIKE \%abc\%}) oder Bereichsabfragen ($\le$, $\ge$) sind für diese Felder technisch ausgeschlossen.
 \end{itemize}
 
 %TODO darauf eingehen dass Backend + API entsprechend angepasst + Datenbank (Überleitung zur nächsten Sektion => Skripte)
