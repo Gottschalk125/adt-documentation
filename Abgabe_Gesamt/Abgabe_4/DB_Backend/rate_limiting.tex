@@ -1,5 +1,5 @@
 \section{API Rate Limiting zum Schutz deterministischer Blind Indizes}
-
+%TODO: hier darauf eingehen, dass /doctors und /nurses und /diseases das auch haben => nur die verschlüsselten Endpoints
 Mit der Einführung des Blind-Indexing-Verfahrens zur performanten Filterung verschlüsselter Attribute wurde eine deterministische Komponente in die Datenhaltung integriert. Da identische Klartextwerte (z.\,B. der Nachname "`Müller"') stets zu identischen Hashwerten führen, ergibt sich hieraus ein theoretischer Angriffsvektor: Erlangt ein Angreifer lesenden Zugriff auf die Datenbank oder missbraucht die API, könnte er durch automatisiertes Durchprobieren gängiger Namen (Wörterbuch-Attacke / Brute-Force) und den anschließenden Abgleich der Hashes Rückschlüsse auf die echten Patientendaten ziehen. 
 
 Um dieses Risiko proaktiv zu minimieren, wurde ein restriktives \textit{API Rate Limiting} auf Applikationsebene implementiert, welches die Frequenz automatisierter Suchanfragen drastisch begrenzt.
