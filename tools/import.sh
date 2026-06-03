@@ -252,9 +252,11 @@ DROP INDEX IF EXISTS public.idx_diagnosis_patient_date_id;
 DROP INDEX IF EXISTS public.idx_diagnosis_doctor_date_id;
 DROP INDEX IF EXISTS public.idx_diagnosis_medication;
 DROP INDEX IF EXISTS public.idx_diagnosis_date_id;
-DROP INDEX IF EXISTS public.idx_diagnosis_disease_date;
-DROP INDEX IF EXISTS public.idx_person_last_first_id;
-DROP INDEX IF EXISTS public.idx_person_city_id;
+DROP INDEX IF EXISTS public.idx_diagnosis_disease_hash;
+DROP INDEX IF EXISTS public.idx_person_firstName_hash;
+DROP INDEX IF EXISTS public.idx_person_lastName_hash;
+DROP INDEX IF EXISTS public.idx_person_city_hash;
+DROP INDEX IF EXISTS public.idx_person_lastName_firstName_hash;
 DROP INDEX IF EXISTS public.idx_employee_department_id;
 DROP INDEX IF EXISTS public.idx_doctors_type_id;
 DROP INDEX IF EXISTS public.idx_doctors_work_phone;
@@ -297,7 +299,7 @@ copy_table_lines() {
   local root_dir="$1"
 cat <<EOF
 \echo Importing person...
-\\copy public.person (gender, first_name, last_name, plz, city, street, street_no, country, birthday, phone, email) FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.person (gender, first_name_encrypted, first_name_hash, last_name_encrypted, last_name_hash, plz_encrypted, plz_hash, city_encrypted, city_hash, street_encrypted, street_hash, street_no, country, birthday_encrypted, birthday_hash, phone_encrypted, phone_hash, email_encrypted, email_hash) FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
 \echo Importing department...
 \\copy public.department (id, name, building) FROM '${root_dir}/departments.csv' WITH (FORMAT csv, HEADER true)
 \echo Importing station...
@@ -319,7 +321,7 @@ cat <<EOF
 \echo Importing patient...
 \\copy public.patient (id, person) FROM '${root_dir}/patients.csv' WITH (FORMAT csv, HEADER true)
 \echo Importing diagnosis...
-\\copy public.diagnosis (id, medication, disease, diagnosed_by, diagnosed_patient, diagnosed_at) FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
+\\copy public.diagnosis (id, medication, disease_encrypted, disease_hash, diagnosed_by, diagnosed_patient, diagnosed_at) FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
 \echo Importing bookings...
 \\copy public.bookings (id, "from", until, state, room, patient) FROM '${root_dir}/bookings.csv' WITH (FORMAT csv, HEADER true)
 EOF
@@ -435,14 +437,20 @@ CREATE INDEX "idx_diagnosis_medication"
 CREATE INDEX "idx_diagnosis_date_id"
     ON "public"."diagnosis" ("diagnosed_at", "id");
 
-CREATE INDEX "idx_diagnosis_disease_date"
-    ON "public"."diagnosis" ("disease", "diagnosed_at");
+CREATE INDEX "idx_diagnosis_disease_hash"
+    ON "public"."diagnosis" ("disease_hash");
 
-CREATE INDEX "idx_person_last_first_id"
-    ON "public"."person" ("last_name", "first_name", "id");
+CREATE INDEX "idx_person_firstName_hash"
+    ON "public"."person" ("first_name_hash");
 
-CREATE INDEX "idx_person_city_id"
-    ON "public"."person" ("city", "id");
+CREATE INDEX "idx_person_lastName_hash"
+    ON "public"."person" ("last_name_hash");
+
+CREATE INDEX "idx_person_city_hash"
+    ON "public"."person" ("city_hash");
+
+CREATE INDEX "idx_person_lastName_firstName_hash"
+    ON "public"."person" ("last_name_hash", "first_name_hash");
 
 CREATE INDEX "idx_employee_department_id"
     ON "public"."employee" ("department", "id");
