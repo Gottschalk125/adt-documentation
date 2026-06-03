@@ -70,26 +70,37 @@ CREATE TABLE "public"."medication" (
 CREATE TABLE "public"."diagnosis" (
     "id" bigint GENERATED ALWAYS AS IDENTITY,
     "medication" bigint NOT NULL,
-    "disease" text NOT NULL,
+    "disease_encrypted" text NOT NULL,
+    "disease_hash" text NOT NULL,
     "diagnosed_by" bigint NOT NULL,
     "diagnosed_patient" bigint NOT NULL,
     "diagnosed_at" date NOT NULL,
+    "diagnosed_end" date,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."person" (
     "id" bigint GENERATED ALWAYS AS IDENTITY,
     "gender" text,
-    "first_name" text,
-    "last_name" text,
-    "plz" int,
-    "city" text,
-    "street" text,
+    "first_name_encrypted" text NOT NULL,
+    "first_name_hash" text NOT NULL,
+    "last_name_encrypted" text NOT NULL,
+    "last_name_hash" text NOT NULL,
+    "plz_encrypted" text,
+    "plz_hash" text,
+    "city_encrypted" text,
+    "city_hash" text,
+    "street_encrypted" text,
+    "street_hash" text,
     "street_no" int,
     "country" text,
-    "birthday" date,
-    "phone" text,
-    "email" text,
+    "birthday_encrypted" text,
+    "birthday_hash" text,
+    "phone_encrypted" text,
+    "phone_hash" text,
+    "email_encrypted" text NOT NULL,
+    "email_hash" text NOT NULL,
+    CONSTRAINT "uq_person_email_hash" UNIQUE ("email_hash"),
     PRIMARY KEY ("id")
 );
 
@@ -279,11 +290,20 @@ CREATE INDEX "idx_diagnosis_date_id"
 CREATE INDEX "idx_diagnosis_disease_date"
     ON "public"."diagnosis" ("disease", "diagnosed_at");
 
-CREATE INDEX "idx_person_last_first_id"
-    ON "public"."person" ("last_name", "first_name", "id");
+CREATE INDEX "idx_diagnosis_disease_hash"
+    ON "public"."diagnosis" ("disease_hash");
 
-CREATE INDEX "idx_person_city_id"
-    ON "public"."person" ("city", "id");
+CREATE INDEX "idx_person_firstName_hash"
+    ON "public"."person" ("first_name_hash");
+
+CREATE INDEX "idx_person_lastName_hash"
+    ON "public"."person" ("last_name_hash");
+
+CREATE INDEX "idx_person_city_hash"
+    ON "public"."person" ("city_hash");
+
+CREATE INDEX "idx_person_lastName_firstName_hash"
+    ON "public"."person" ("last_name_hash", "first_name_hash");
 
 CREATE INDEX "idx_employee_department_id"
     ON "public"."employee" ("department", "id");
