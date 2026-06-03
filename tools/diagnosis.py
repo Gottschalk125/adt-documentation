@@ -159,7 +159,7 @@ def main() -> None:
     buffer: list[str] = []
 
     with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f:
-        f.write("id,medication,disease,disease_encrypted,disease_hash,diagnosed_by,diagnosed_patient,diagnosed_at\n")
+        f.write("id,medication,disease_encrypted,disease_hash,diagnosed_by,diagnosed_patient,diagnosed_at\n")
 
         for diagnosis_id in range(1, ROW_COUNT + 1):
             medication_id, start_ordinal = rand_choice(medications)
@@ -177,7 +177,7 @@ def main() -> None:
             disease_hash = blind_index(disease, hash_key)
 
             buffer.append(
-                f"{diagnosis_id},{medication_id},{csv_escape(disease)},"
+                f"{diagnosis_id},{medication_id},"
                 f"{csv_escape(disease_encrypted)},{csv_escape(disease_hash)},"
                 f"{doctor},{patient},{diagnosed_at}\n"
             )

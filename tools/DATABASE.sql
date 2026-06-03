@@ -287,9 +287,6 @@ CREATE INDEX "idx_diagnosis_medication"
 CREATE INDEX "idx_diagnosis_date_id"
     ON "public"."diagnosis" ("diagnosed_at", "id");
 
-CREATE INDEX "idx_diagnosis_disease_date"
-    ON "public"."diagnosis" ("disease", "diagnosed_at");
-
 CREATE INDEX "idx_diagnosis_disease_hash"
     ON "public"."diagnosis" ("disease_hash");
 
