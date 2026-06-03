@@ -346,34 +346,104 @@ EOF
 
 copy_table_lines() {
   local root_dir="$1"
+  local person_rows department_rows station_rows rooms_rows dose_rows drugs_rows
+  local employee_rows doctors_rows nurses_rows medication_rows patient_rows diagnosis_rows bookings_rows
+
+  person_rows="$(file_row_count "persons_transformed.csv")"
+  department_rows="$(file_row_count "departments.csv")"
+  station_rows="$(file_row_count "stations.csv")"
+  rooms_rows="$(file_row_count "rooms.csv")"
+  dose_rows="$(file_row_count "dose.csv")"
+  drugs_rows="$(file_row_count "drugs.csv")"
+  employee_rows="$(file_row_count "employees.csv")"
+  doctors_rows="$(file_row_count "doctors.csv")"
+  nurses_rows="$(file_row_count "nurses.csv")"
+  medication_rows="$(file_row_count "medication.csv")"
+  patient_rows="$(file_row_count "patients.csv")"
+  diagnosis_rows="$(file_row_count "diagnosis.csv")"
+  bookings_rows="$(file_row_count "bookings.csv")"
+
 cat <<EOF
-\echo Importing person...
+\echo Importing person (${person_rows} rows from persons_transformed.csv)...
 \\copy public.person (gender, first_name_encrypted, first_name_hash, last_name_encrypted, last_name_hash, plz_encrypted, plz_hash, city_encrypted, city_hash, street_encrypted, street_hash, street_no, country, birthday_encrypted, birthday_hash, phone_encrypted, phone_hash, email_encrypted, email_hash) FROM '${root_dir}/persons_transformed.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing department...
+\echo Finished person.
+\echo Importing department (${department_rows} rows from departments.csv)...
 \\copy public.department (id, name, building) FROM '${root_dir}/departments.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing station...
+\echo Finished department.
+\echo Importing station (${station_rows} rows from stations.csv)...
 \\copy public.station (id, name, department, rooms) FROM '${root_dir}/stations.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing rooms...
+\echo Finished station.
+\echo Importing rooms (${rooms_rows} rows from rooms.csv)...
 \\copy public.rooms (id, station, number, floor, beds) FROM '${root_dir}/rooms.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing dose...
+\echo Finished rooms.
+\echo Importing dose (${dose_rows} rows from dose.csv)...
 \\copy public.dose (id, unit, amount, frequency, frequency_amount) FROM '${root_dir}/dose.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing drugs...
+\echo Finished dose.
+\echo Importing drugs (${drugs_rows} rows from drugs.csv)...
 \\copy public.drugs (id, stock, name, active_ingredient, type) FROM '${root_dir}/drugs.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing employee...
+\echo Finished drugs.
+\echo Importing employee (${employee_rows} rows from employees.csv)...
 \\copy public.employee (id, department, person) FROM '${root_dir}/employees.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing doctors...
+\echo Finished employee.
+\echo Importing doctors (${doctors_rows} rows from doctors.csv)...
 \\copy public.doctors (id, work_phone, type) FROM '${root_dir}/doctors.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing nurses...
+\echo Finished doctors.
+\echo Importing nurses (${nurses_rows} rows from nurses.csv)...
 \\copy public.nurses (id, station) FROM '${root_dir}/nurses.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing medication...
+\echo Finished nurses.
+\echo Importing medication (${medication_rows} rows from medication.csv)...
 \\copy public.medication (id, dosis, drug, started, ended) FROM '${root_dir}/medication.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing patient...
+\echo Finished medication.
+\echo Importing patient (${patient_rows} rows from patients.csv)...
 \\copy public.patient (id, person) FROM '${root_dir}/patients.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing diagnosis...
+\echo Finished patient.
+\echo Importing diagnosis (${diagnosis_rows} rows from diagnosis.csv)...
 \\copy public.diagnosis (id, medication, disease_encrypted, disease_hash, diagnosed_by, diagnosed_patient, diagnosed_at) FROM '${root_dir}/diagnosis.csv' WITH (FORMAT csv, HEADER true)
-\echo Importing bookings...
+\echo Finished diagnosis.
+\echo Importing bookings (${bookings_rows} rows from bookings.csv)...
 \\copy public.bookings (id, "from", until, state, room, patient) FROM '${root_dir}/bookings.csv' WITH (FORMAT csv, HEADER true)
+\echo Finished bookings.
 EOF
+}
+
+monitor_copy_progress() {
+  local import_pid="$1"
+  local last_progress=""
+
+  while kill -0 "$import_pid" >/dev/null 2>&1; do
+    local progress
+    progress="$(
+      run_psql -At -c "SELECT concat(to_char(clock_timestamp(), 'HH24:MI:SS'), ' COPY progress - ', relid::regclass, ': ', tuples_processed, ' rows, ', pg_size_pretty(bytes_processed), CASE WHEN bytes_total > 0 THEN concat(' / ', pg_size_pretty(bytes_total)) ELSE '' END) FROM pg_stat_progress_copy ORDER BY pid" 2>/dev/null || true
+    )"
+
+    if [[ -n "$progress" && "$progress" != "$last_progress" ]]; then
+      echo "$progress"
+      last_progress="$progress"
+    fi
+
+    sleep "${IMPORT_PROGRESS_INTERVAL_SECONDS:-5}"
+  done
+}
+
+run_import_with_progress() {
+  local sql_file="$1"
+  local import_pid
+  local monitor_pid
+  local import_status
+
+  run_psql -f "$sql_file" &
+  import_pid="$!"
+  monitor_copy_progress "$import_pid" &
+  monitor_pid="$!"
+
+  set +e
+  wait "$import_pid"
+  import_status="$?"
+  kill "$monitor_pid" >/dev/null 2>&1
+  wait "$monitor_pid" >/dev/null 2>&1
+  set -e
+
+  return "$import_status"
 }
 
 create_foreign_key_lines() {
@@ -556,6 +626,7 @@ fast_import_all() {
 
   cat >"$sql_file" <<EOF
 \set ON_ERROR_STOP on
+\timing on
 SET synchronous_commit = off;
 SET statement_timeout = 0;
 EOF
@@ -590,8 +661,13 @@ EOF
 
   echo ""
   echo "=== Fast importing all tables with psql \\copy ==="
-  run_psql -f "$sql_file"
-  rm -f "$sql_file"
+  if run_import_with_progress "$sql_file"; then
+    rm -f "$sql_file"
+  else
+    local status="$?"
+    echo "ERROR: fast import failed. Generated SQL kept for debugging: $sql_file" >&2
+    return "$status"
+  fi
 }
 
 read -r -p "Drop and rebuild the complete database schema from ${SCHEMA_SQL} before importing? [y/N] " rebuild_reply
