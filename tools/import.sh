@@ -314,10 +314,10 @@ DROP INDEX IF EXISTS public.idx_diagnosis_doctor_date_id;
 DROP INDEX IF EXISTS public.idx_diagnosis_medication;
 DROP INDEX IF EXISTS public.idx_diagnosis_date_id;
 DROP INDEX IF EXISTS public.idx_diagnosis_disease_hash;
-DROP INDEX IF EXISTS public.idx_person_firstName_hash;
-DROP INDEX IF EXISTS public.idx_person_lastName_hash;
+DROP INDEX IF EXISTS public."idx_person_firstName_hash";
+DROP INDEX IF EXISTS public."idx_person_lastName_hash";
 DROP INDEX IF EXISTS public.idx_person_city_hash;
-DROP INDEX IF EXISTS public.idx_person_lastName_firstName_hash;
+DROP INDEX IF EXISTS public."idx_person_lastName_firstName_hash";
 DROP INDEX IF EXISTS public.idx_employee_department_id;
 DROP INDEX IF EXISTS public.idx_doctors_type_id;
 DROP INDEX IF EXISTS public.idx_doctors_work_phone;
@@ -547,82 +547,82 @@ EOF
 create_performance_index_lines() {
 cat <<'EOF'
 \echo Recreating performance indexes after bulk import...
-CREATE INDEX "idx_medication_dosis"
+CREATE INDEX IF NOT EXISTS "idx_medication_dosis"
     ON "public"."medication" ("dosis");
 
-CREATE INDEX "idx_medication_drug_started"
+CREATE INDEX IF NOT EXISTS "idx_medication_drug_started"
     ON "public"."medication" ("drug", "started", "id");
 
-CREATE INDEX "idx_medication_started_id"
+CREATE INDEX IF NOT EXISTS "idx_medication_started_id"
     ON "public"."medication" ("started", "id");
 
-CREATE INDEX "idx_diagnosis_patient_date_id"
+CREATE INDEX IF NOT EXISTS "idx_diagnosis_patient_date_id"
     ON "public"."diagnosis" ("diagnosed_patient", "diagnosed_at" DESC, "id" DESC);
 
-CREATE INDEX "idx_diagnosis_doctor_date_id"
+CREATE INDEX IF NOT EXISTS "idx_diagnosis_doctor_date_id"
     ON "public"."diagnosis" ("diagnosed_by", "diagnosed_at" DESC, "id" DESC);
 
-CREATE INDEX "idx_diagnosis_medication"
+CREATE INDEX IF NOT EXISTS "idx_diagnosis_medication"
     ON "public"."diagnosis" ("medication");
 
-CREATE INDEX "idx_diagnosis_date_id"
+CREATE INDEX IF NOT EXISTS "idx_diagnosis_date_id"
     ON "public"."diagnosis" ("diagnosed_at", "id");
 
-CREATE INDEX "idx_diagnosis_disease_hash"
+CREATE INDEX IF NOT EXISTS "idx_diagnosis_disease_hash"
     ON "public"."diagnosis" ("disease_hash");
 
-CREATE INDEX "idx_person_firstName_hash"
+CREATE INDEX IF NOT EXISTS "idx_person_firstName_hash"
     ON "public"."person" ("first_name_hash");
 
-CREATE INDEX "idx_person_lastName_hash"
+CREATE INDEX IF NOT EXISTS "idx_person_lastName_hash"
     ON "public"."person" ("last_name_hash");
 
-CREATE INDEX "idx_person_city_hash"
+CREATE INDEX IF NOT EXISTS "idx_person_city_hash"
     ON "public"."person" ("city_hash");
 
-CREATE INDEX "idx_person_lastName_firstName_hash"
+CREATE INDEX IF NOT EXISTS "idx_person_lastName_firstName_hash"
     ON "public"."person" ("last_name_hash", "first_name_hash");
 
-CREATE INDEX "idx_employee_department_id"
+CREATE INDEX IF NOT EXISTS "idx_employee_department_id"
     ON "public"."employee" ("department", "id");
 
-CREATE INDEX "idx_doctors_type_id"
+CREATE INDEX IF NOT EXISTS "idx_doctors_type_id"
     ON "public"."doctors" ("type", "id");
 
-CREATE UNIQUE INDEX "idx_doctors_work_phone"
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_doctors_work_phone"
     ON "public"."doctors" ("work_phone");
 
-CREATE INDEX "idx_nurses_station_id"
+CREATE INDEX IF NOT EXISTS "idx_nurses_station_id"
     ON "public"."nurses" ("station", "id");
 
-CREATE INDEX "idx_station_department_id"
+CREATE INDEX IF NOT EXISTS "idx_station_department_id"
     ON "public"."station" ("department", "id");
 
-CREATE INDEX "idx_rooms_station_id"
+CREATE INDEX IF NOT EXISTS "idx_rooms_station_id"
     ON "public"."rooms" ("station", "id");
 
-CREATE UNIQUE INDEX "idx_rooms_station_number"
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_rooms_station_number"
     ON "public"."rooms" ("station", "number");
 
-CREATE INDEX "idx_bookings_patient_from_id"
+CREATE INDEX IF NOT EXISTS "idx_bookings_patient_from_id"
     ON "public"."bookings" ("patient", "from" DESC, "id" DESC);
 
-CREATE INDEX "idx_bookings_room_from_until"
+CREATE INDEX IF NOT EXISTS "idx_bookings_room_from_until"
     ON "public"."bookings" ("room", "from", "until");
 
-CREATE INDEX "idx_bookings_state_from_id"
+CREATE INDEX IF NOT EXISTS "idx_bookings_state_from_id"
     ON "public"."bookings" ("state", "from", "id");
 
-CREATE INDEX "idx_bookings_from_id"
+CREATE INDEX IF NOT EXISTS "idx_bookings_from_id"
     ON "public"."bookings" ("from", "id");
 
-CREATE INDEX "idx_dose_unit_frequency"
+CREATE INDEX IF NOT EXISTS "idx_dose_unit_frequency"
     ON "public"."dose" ("unit", "frequency");
 
-CREATE INDEX "idx_drugs_type_id"
+CREATE INDEX IF NOT EXISTS "idx_drugs_type_id"
     ON "public"."drugs" ("type", "id");
 
-CREATE INDEX "idx_drugs_name"
+CREATE INDEX IF NOT EXISTS "idx_drugs_name"
     ON "public"."drugs" ("name");
 EOF
 }

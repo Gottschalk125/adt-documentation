@@ -122,3 +122,5 @@ v4:diagnosis:doctors.csv|doctors.csv|150173
 v4:diagnosis:patients_sample.csv|patients_sample.csv|200000
 v4:diagnosis:diseases_unique.csv|diseases_unique.csv|773
 v4:diagnosis:diagnosis.csv|diagnosis.csv|10000000
+v4:persons_transform_email_v2:person_10000000.csv|person_10000000.csv|10000000
+v4:persons_transform_email_v2:persons_transformed.csv|persons_transformed.csv|10000000
