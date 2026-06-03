@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ -x ".venv/bin/python" ]]; then
+if [[ -n "${VIRTUAL_ENV:-}" && -x "${VIRTUAL_ENV}/bin/python" ]]; then
+  PY="${VIRTUAL_ENV}/bin/python"
+elif [[ -x ".venv/bin/python" ]]; then
   PY=".venv/bin/python"
 elif [[ -x "insertion/.venv/bin/python" ]]; then
   PY="insertion/.venv/bin/python"
@@ -37,6 +39,15 @@ load_env() {
 ensure_psql() {
   if ! command -v psql >/dev/null 2>&1; then
     echo "ERROR: psql is required for schema rebuilds and sequence syncing." >&2
+    exit 1
+  fi
+}
+
+ensure_python_crypto() {
+  if ! "$PY" -c 'from cryptography.hazmat.primitives.ciphers.aead import AESGCM' >/dev/null 2>&1; then
+    echo "ERROR: Python dependency missing: cryptography" >&2
+    echo "Interpreter: $PY" >&2
+    echo "Install it with: $PY -m pip install cryptography" >&2
     exit 1
   fi
 }
@@ -218,6 +229,7 @@ run_generator() {
 
 generate_all() {
   load_env
+  ensure_python_crypto
 
   run_generator "persons_transform" "persons_transform.py" "person_10000000.csv" "persons_transformed.csv"
   run_generator "departments" "departments.py" "departments.csv"
