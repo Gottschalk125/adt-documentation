@@ -634,6 +634,7 @@ fast_import_all() {
   local root_dir
   root_dir="$(pwd -P)"
   local sql_file
+  local import_status
   sql_file="$(mktemp)"
 
   cat >"$sql_file" <<EOF
@@ -673,12 +674,16 @@ EOF
 
   echo ""
   echo "=== Fast importing all tables with psql \\copy ==="
-  if run_import_with_progress "$sql_file"; then
+  set +e
+  run_import_with_progress "$sql_file"
+  import_status="$?"
+  set -e
+
+  if [[ "$import_status" -eq 0 ]]; then
     rm -f "$sql_file"
   else
-    local status="$?"
     echo "ERROR: fast import failed. Generated SQL kept for debugging: $sql_file" >&2
-    return "$status"
+    return "$import_status"
   fi
 }
 
