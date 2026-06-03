@@ -13,7 +13,7 @@ IMP="insertion/csv_importer.py"
 ENV_FILE=".env"
 SCHEMA_SQL="DATABASE.sql"
 GENERATOR_CACHE_FILE=".generator_row_counts"
-GENERATOR_CACHE_VERSION="v3"
+GENERATOR_CACHE_VERSION="v4"
 
 if [[ ! -f "$IMP" ]]; then
   echo "ERROR: importer not found: $IMP" >&2
@@ -97,6 +97,39 @@ file_row_count() {
   fi
 }
 
+expected_header_for() {
+  local csv="$1"
+  case "$csv" in
+    persons_transformed.csv)
+      echo "gender,first_name_encrypted,first_name_hash,last_name_encrypted,last_name_hash,plz_encrypted,plz_hash,city_encrypted,city_hash,street_encrypted,street_hash,street_no,country,birthday_encrypted,birthday_hash,phone_encrypted,phone_hash,email_encrypted,email_hash"
+      ;;
+    diagnosis.csv)
+      echo "id,medication,disease_encrypted,disease_hash,diagnosed_by,diagnosed_patient,diagnosed_at"
+      ;;
+  esac
+}
+
+csv_header() {
+  local csv="$1"
+  if [[ ! -f "$csv" ]]; then
+    return
+  fi
+  head -n 1 "$csv" | tr -d '\r'
+}
+
+csv_header_matches_expected() {
+  local csv="$1"
+  local expected
+  expected="$(expected_header_for "$csv")"
+  if [[ -z "$expected" ]]; then
+    return 0
+  fi
+
+  local actual
+  actual="$(csv_header "$csv")"
+  [[ "$actual" == "$expected" ]]
+}
+
 cache_line_for() {
   local key="$1"
   if [[ -f "$GENERATOR_CACHE_FILE" ]]; then
@@ -127,6 +160,10 @@ should_skip_generator() {
     cached_rows="$(cache_value_for "${key}:${csv}" 3)"
 
     if [[ "$current_rows" -lt 0 || -z "$cached_rows" || "$current_rows" != "$cached_rows" ]]; then
+      return 1
+    fi
+
+    if ! csv_header_matches_expected "$csv"; then
       return 1
     fi
     shift
@@ -180,6 +217,8 @@ run_generator() {
 }
 
 generate_all() {
+  load_env
+
   run_generator "persons_transform" "persons_transform.py" "person_10000000.csv" "persons_transformed.csv"
   run_generator "departments" "departments.py" "departments.csv"
 
@@ -217,6 +256,16 @@ check_csv() {
   header="$(head -n 1 "$csv" | tr -d '\r')"
   if [[ -z "$header" ]]; then
     echo "ERROR: CSV header is empty: $csv" >&2
+    exit 1
+  fi
+
+  local expected
+  expected="$(expected_header_for "$csv")"
+  if [[ -n "$expected" && "$header" != "$expected" ]]; then
+    echo "ERROR: CSV header does not match expected encrypted import format: $csv" >&2
+    echo "Expected: $expected" >&2
+    echo "Found:    $header" >&2
+    echo "Regenerate it by rerunning ./import.sh after setting ENCRYPTION_KEY and ENCRYPTION_SALT." >&2
     exit 1
   fi
 }
