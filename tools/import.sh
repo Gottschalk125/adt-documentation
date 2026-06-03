@@ -231,7 +231,7 @@ generate_all() {
   load_env
   ensure_python_crypto
 
-  run_generator "persons_transform" "persons_transform.py" "person_10000000.csv" "persons_transformed.csv"
+  run_generator "persons_transform_email_v2" "persons_transform.py" "person_10000000.csv" "persons_transformed.csv"
   run_generator "departments" "departments.py" "departments.csv"
 
   if [[ -f "dis_dataset.csv" ]]; then

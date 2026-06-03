@@ -74,7 +74,7 @@ def generate_birthdate_from_age(age_value: str) -> str:
     return (start_of_year + timedelta(days=random_offset)).strftime("%Y-%m-%d")
 
 
-def generate_fake_email(first_name: str, last_name: str) -> str:
+def generate_fake_email(first_name: str, last_name: str, unique_id: str) -> str:
     domains = [
         "@pronton.me",
         "@freenet.de",
@@ -90,9 +90,9 @@ def generate_fake_email(first_name: str, last_name: str) -> str:
     first = (first_name or "").strip().lower()
     last = (last_name or "").strip().lower()
     if first and last:
-        local_part = f"{first}.{last}"
+        local_part = f"{first}.{last}.{unique_id}"
     else:
-        local_part = f"user{random.randint(1000, 9999)}"
+        local_part = f"user{unique_id}"
     return local_part + domain
 
 
@@ -165,6 +165,7 @@ def main():
         writer.writeheader()
 
         for written_rows, row in enumerate(reader, start=1):
+            unique_id = (row.get("person_id") or str(written_rows)).strip()
             first_name = (row.get("firstname") or "").strip()
             last_name = (row.get("lastname") or "").strip()
             plz = str(parse_int(row.get("postalcode")))
@@ -172,7 +173,7 @@ def main():
             street = (row.get("street") or "").strip()
             birthday = generate_birthdate_from_age(row.get("age"))
             phone = generate_fake_phone_number()
-            email = generate_fake_email(row.get("firstname"), row.get("lastname"))
+            email = generate_fake_email(row.get("firstname"), row.get("lastname"), unique_id)
 
             writer.writerow(
                 {
