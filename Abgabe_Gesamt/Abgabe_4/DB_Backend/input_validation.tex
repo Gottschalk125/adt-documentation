@@ -1,30 +1,51 @@
 \section{Domänenspezifische Input-Validierung zur Krypto-Sicherung}
+%TODO: TOM
 
-Ein deterministischer Blind Index entfaltet seine Schutz- und Filterfunktion nur dann fehlerfrei, wenn die zugrundeliegenden Daten in absoluter Konsistenz vorliegen. Geringfügige Abweichungen in der Formatierung (z.\,B. Leerzeichen, unterschiedliche Trennzeichen bei Datumsangaben oder uneinheitliche Groß-/Kleinschreibung) führen aufgrund der Lawineneigenschaft kryptografischer Hashfunktionen zu vollständig kollidierenden Blind Indizes. Datenqualität ist bei verschlüsselten Attributen somit direkt an die funktionale Suchbarkeit gekoppelt.
+Die Schutz- und Filterfunktion des deterministischen Blind Index entfaltet sich nur dann fehlerfrei, wenn die zugrundeliegenden Daten in absoluter 
+Konsistenz vorliegen. Kleinste Abweichungen in der Formatierung (z.\,B. Leerzeichen, unterschiedliche Trennzeichen 
+bei Datumsangaben oder uneinheitliche Groß-/Kleinschreibung) führen aufgrund der Lawineneigenschaft kryptografischer Hashfunktionen zu vollständig 
+kollidierenden Blind Indizes Datenqualität ist bei verschlüsselten Attributen somit direkt an die funktionale Suchbarkeit gekoppelt. 
 
-Um zu verhindern, dass malformierte oder korrupte Daten die kryptografische Pipeline im Backend blockieren oder unauffindbare Datensätze erzeugen, wurde eine strikte domänenspezifische Input-Validierung implementiert.
+Um zu verhindern, dass malformierte oder korrupte Daten die kryptografische Pipeline im Backend blockieren oder unauffindbare Datensätze erzeugen, 
+wurde eine strikte domänenspezifische Input-Validierung implementiert. 
 
 \subsection{Technische Umsetzung}
 
-Die Validierungskette wurde direkt vor der Verschlüsselungs- und Hashing-Logik verankert und nutzt das \textit{Jakarta Bean Validation}-Ökosystem (Hibernate Validator):
+Um das System gegen die häufigsten Fehlerquellen abzusichern, wurde direkt vor der Verschlüsselungs- und Hashing-Logik eine mehrstufige Validierungspipeline 
+implementiert und nutzt dabei das \textit{Jakarta Bean Validation}-Ökosystem (Hibernate Validator):
 
 \begin{itemize}
-    \item \textbf{Postleitzahlen-Validierung (\texttt{@ValidPlz}):} Mittels einer dedizierten Validierungs-Annotation und der Definition des regulären Ausdrucks \texttt{\^{}[0-9]\{5\}\$} wird sichergestellt, dass Postleitzahlen ausnahmslos aus exakt fünf numerischen Ziffern bestehen. Syntaktische Fehler (wie \texttt{"1234"}, \texttt{"ABC12"} oder \texttt{"12345a"}) werden im Vorfeld hart abgewiesen.
-    \item \textbf{Geburtsdatums-Validierung (\texttt{@ValidBirthday}):} Diese Logik erzwingt das standardisierte Datumsformat \texttt{ISO\_LOCAL\_DATE} (\texttt{YYYY-MM-DD}). Gleichzeitig wird über eine semantische Prüfung verifiziert, dass das angegebene Datum zwingend in der Vergangenheit liegt. Dies verhindert logische Artefakte und sichert eine homogene Datenbasis für die Berechnung des \texttt{birthdayHash}.
-    \item \textbf{Telefonnummern-Validierung (\texttt{@ValidGermanPhone}):} Über das Custom-Constraint \texttt{ValidGermanPhone.kt} und den regulären Ausdruck \texttt{\^{}(+49|0049|0)[1-9][0-9\textbackslash s\textbackslash-/\textbackslash.]\{5,14\}\$} wird eine syntaktische Prüfung deutscher Rufnummern erzwungen. Das Muster deckt gängige Formate wie \texttt{+49 30 12345678}, \texttt{030 12345678} sowie Mobilfunknummern (z.\,B. \texttt{0176 12345678}) ab und toleriert typische Trennzeichen bei der Eingabe.
-    \item \textbf{Namens- und Adressvalidierung (\texttt{@ValidName}):} Zur Absicherung von Freitextfeldern gegen Injection-Angriffe wurde mit \texttt{ValidName.kt} eine strikte Allow-List-Validierung implementiert. Der reguläre Ausdruck \texttt{[\textbackslash p\{L\}0-9\textbackslash s\textbackslash-'\textbackslash./]} erlaubt ausschließlich Unicode-Buchstaben, Zahlen, Leerzeichen sowie ausgewählte Interpunktionen (\texttt{-'\thinspace./}). Zeichen wie \texttt{<}, \texttt{>}, \texttt{"}, \texttt{;}, \texttt{=} sowie geschweifte oder runde Klammern werden blockiert, um Cross-Site Scripting (XSS) und SQL-/Script-Injections technologisch zu unterbinden. Zudem greift ein implizites Längenlimit von maximal 150 Zeichen.
-    \item \textbf{Controller- und DTO-Integration:} Die Validierungs-Annotationen wurden deklarativ auf den Feldern des zentralen Datentransferobjekts (\texttt{PersonCreateRequest.kt}) verankert:
+    \item \textbf{Postleitzahlen-Validierung (\texttt{@ValidPlz}):} Mittels einer dedizierten Validierungs-Annotation und der Definition des 
+    regulären Ausdrucks \texttt{\^{}[0-9]\{5\}\$} wird sichergestellt, dass Postleitzahlen ausnahmslos aus exakt fünf numerischen Ziffern bestehen. 
+    Syntaktische Fehler (wie \texttt{"1234"}, \texttt{"ABC12"} oder \texttt{"12345a"}) werden im Vorfeld hart abgewiesen.
+    \item \textbf{Geburtsdatums-Validierung (\texttt{@ValidBirthday}):} Diese Logik erzwingt das standardisierte Datumsformat \texttt{ISO\_LOCAL\_DATE} 
+    (\texttt{YYYY-MM-DD}). Gleichzeitig wird über eine semantische Prüfung verifiziert, dass das angegebene Datum zwingend in der Vergangenheit liegt. 
+    Dies verhindert logische Artefakte und sichert eine homogene Datenbasis für die Berechnung des \texttt{birthdayHash}.
+    \item \textbf{Telefonnummern-Validierung (\texttt{@ValidGermanPhone}):} Über das Custom-Constraint \texttt{ValidGermanPhone.kt} und den regulären Ausdruck 
+    \texttt{\^{}(+49|0049|0)[1-9][0-9\textbackslash s\textbackslash-/\textbackslash.]\{5,14\}\$} wird eine syntaktische Prüfung deutscher Rufnummern erzwungen. 
+    Das Muster deckt gängige Formate wie \texttt{+49 30 12345678}, \texttt{030 12345678} sowie Mobilfunknummern (z.\,B. \texttt{0176 12345678}) ab und toleriert 
+    typische Trennzeichen bei der Eingabe.
+    \item \textbf{Namens- und Adressvalidierung (\texttt{@ValidName}):} Zur Absicherung von Freitextfeldern gegen Injection-Angriffe wurde mit \texttt{ValidName.kt} 
+    eine strikte Allow-List-Validierung implementiert. Der reguläre Ausdruck \texttt{[\textbackslash p\{L\}0-9\textbackslash s\textbackslash-'\textbackslash./]} 
+    erlaubt ausschließlich Unicode-Buchstaben, Zahlen, Leerzeichen sowie ausgewählte Interpunktionen (\texttt{-'\thinspace./}). Zeichen wie \texttt{<}, \texttt{>}, 
+    \texttt{"}, \texttt{;}, \texttt{=} sowie geschweifte oder runde Klammern werden blockiert, um Cross-Site Scripting (XSS) und SQL-/Script-Injections technologisch 
+    zu unterbinden. Zudem greift ein implizites Längenlimit von maximal 150 Zeichen.
+    \item \textbf{Controller- und DTO-Integration:} Die Validierungs-Annotationen wurden deklarativ auf den Feldern des zentralen Datentransferobjekts 
+    (\texttt{PersonCreateRequest.kt}) verankert:
     \begin{itemize}
         \item \texttt{email} nutzt das integrierte \texttt{@Email}-Constraint von Jakarta.
         \item \texttt{phoneNumber} wird über \texttt{@ValidGermanPhone} geschützt.
-        \item \texttt{firstName}, \texttt{lastName}, \texttt{city}, \texttt{street}, \texttt{houseNumber} und \texttt{country} werden restriktiv über \texttt{@ValidName} validiert.
+        \item \texttt{firstName}, \texttt{lastName}, \texttt{city}, \texttt{street}, \texttt{houseNumber} und \texttt{country} werden 
+        restriktiv über \texttt{@ValidName} validiert.
     \end{itemize}
-    Durch das Anfügen der \texttt{@Valid}-Annotation am Endpunkt des \texttt{PatientController.kt} prüft das Framework die Integrität der gesamten Payload, noch bevor die Request-Daten die Geschäftslogik oder die nachgelagerte Krypto-Pipeline erreichen.
+    Durch das Anfügen der \texttt{@Valid}-Annotation am Endpunkt des \texttt{PatientController.kt} prüft das Framework die Integrität der gesamten Payload, 
+    noch bevor die Request-Daten die Geschäftslogik oder die nachgelagerte Krypto-Pipeline erreichen.
 \end{itemize}
 
 \subsection{Validierung und Verifikation}
 
-Die Effektivität der erweiterten Validierungs-Pipeline wurde durch das Absetzen eines manipulierten sowie syntaktisch invaliden Datensatzes überprüft. Hierbei wurden unzureichende Feldlängen, ein Datum in der Zukunft sowie potenzielle XSS-Sonderzeichen injiziert:
+Um die Effektivität der Validierungslogik zu überprüfen wurde ein manipulierter sowie syntaktisch invalider Datensatz verwendet, bei dem unzureichende 
+Feldlängen, ein Datum in der Zukunft sowie potenziellen XSS-Sonderzeichen injiziert wurden:
 
 \begin{verbatim}
 curl -s -X POST http://localhost:8080/api/patients/new \
@@ -39,7 +60,9 @@ curl -s -X POST http://localhost:8080/api/patients/new \
   }'
 \end{verbatim}
 
-Das System fängt die fehlerhaften Daten sofort ab, bricht die Verarbeitung vor der Hash-Generierung ab und antwortet mit dem HTTP-Status \texttt{400 Bad Request}. Die strukturierte JSON-Antwort maskiert interne Systemdetails und liefert dem Client präzise, domänenspezifische Fehlermeldungen:
+Die fehlerhaften Daten werden sofort vom System abgefangen, die Verarbeitung wird vor der Hash-Generierung abgebrochen es erfolgt eine Antwort mit dem
+HTTP-Status \texttt{400 Bad Request}. Die strukturierte JSON-Antwort maskiert interene Systemdetails und leifert dem Client eine präzise,
+domänenspezifische Fehlermeldungen: 
 
 \begin{verbatim}
 "firstName: Name enthält unzulässige Sonderzeichen (XSS/Script-Schutz)"
@@ -49,4 +72,5 @@ Das System fängt die fehlerhaften Daten sofort ab, bricht die Verarbeitung vor 
 "email: Muss eine wohlgeformte E-Mail-Adresse sein"
 \end{verbatim}
 
-Durch diese vorgeschaltete Validierungsarchitektur wird eine kompromisslose Datenintegrität garantiert, wodurch die Zuverlässigkeit der Blind-Index-Suche im klinischen Alltag sichergestellt ist.
+Durch diese vorgeschaltete Validierungsarchitektur wird eine hohe Datenqualität und Integrität garantiert, wodurch die Zuverlässigkeit der Blind-Index-Suche 
+im klinische Alltag sichergestellt ist.
