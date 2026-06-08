@@ -1,37 +1,35 @@
 \section{API Rate Limiting zum Schutz deterministischer Blind Indizes}
-%TODO: hier darauf eingehen, dass /doctors und /nurses und /diseases das auch haben => nur die verschlüsselten Endpoints
-Mit der Einführung des Blind-Indexing-Verfahrens zur performanten Filterung verschlüsselter Attribute wurde eine deterministische Komponente in die Datenhaltung integriert. Da identische Klartextwerte (z.\,B. der Nachname "`Müller"') stets zu identischen Hashwerten führen, ergibt sich hieraus ein theoretischer Angriffsvektor: Erlangt ein Angreifer lesenden Zugriff auf die Datenbank oder missbraucht die API, könnte er durch automatisiertes Durchprobieren gängiger Namen (Wörterbuch-Attacke / Brute-Force) und den anschließenden Abgleich der Hashes Rückschlüsse auf die echten Patientendaten ziehen. 
 
-Um dieses Risiko proaktiv zu minimieren, wurde ein restriktives \textit{API Rate Limiting} auf Applikationsebene implementiert, welches die Frequenz automatisierter Suchanfragen drastisch begrenzt.
+Mit der Einführung des Blind-Indexing-Verfahrens zur performanten Filterung verschlüsselter Attribute wurde eine deterministische Komponente in die Datenhaltung integriert. Da identische Klartextwerte (z.B. der Nachname "`Müller"') stets zu identischen Hashwerten führen, ergibt sich hieraus ein theoretischer Angriffsvektor: Erlangt ein Angreifer lesenden Zugriff auf die Datenbank oder missbraucht die API, könnte er durch automatisiertes Durchprobieren gängiger Werte (Wörterbuch-Attacke / Brute-Force) und den anschließenden Abgleich der Hashes Rückschlüsse auf die echten Daten ziehen.
+
+Dieses Risiko betrifft grundsätzlich sämtliche Domänenobjekte, deren sensible Attribute verschlüsselt gespeichert und über Blind Indizes durchsuchbar gemacht werden. Dazu zählen in der vorliegenden Anwendung insbesondere Patienten-, Pflegekraft-, Arzt-, Diagnose-, Medikations- und Buchungsdaten. Um dieses Risiko zu minimieren, wurde für alle entsprechenden Such- und Filterendpunkte ein restriktives \textit{API Rate Limiting} auf Applikationsebene implementiert, welches die Frequenz der ausführbaren Suchanfragen begrenzt.
 
 \subsection{Technische Implementierung}
 
 Die Umsetzung des Ratenbegrenzungs-Mechanismus basiert auf dem etablierten Token-Bucket-Algorithmus und wurde wie folgt in die bestehende Spring-Boot-Architektur integriert:
 
 \begin{enumerate}
-    \item \textbf{Dependency-Integration:} In der Konfigurationsdatei \texttt{build.gradle.kts} wurde die Kern-Bibliothek von Bucket4j eingebunden:
-\begin{verbatim}
-implementation("com.bucket4j:bucket4j-core:8.10.1")
-\end{verbatim}
 
-    \item \textbf{Zentraler Interceptor (\texttt{RateLimitingInterceptor.kt}):} Die Kernlogik verwaltet die Buckets zustandslos und thread-sicher über eine \texttt{ConcurrentHashMap<String, Bucket>}, wobei die IP-Adresse des anfragenden Clients als Schlüssel dient. Jeder Client-IP wird ein Kontingent von maximal $10$ Tokens zugewiesen, welches sich nach dem "`greedy refill"'-Prinzip alle 60 Sekunden vollständig erneuert. Ist das Token-Kontingent erschöpft, bricht die Anfrage sofort ab und liefert den HTTP-Status \texttt{429 Too Many Requests} mitsamt einer standardisierten JSON-Fehlermeldung zurück.
+\item \textbf{Zentraler Interceptor (\texttt{RateLimitingInterceptor.kt}):} Die Kernlogik verwaltet die Buckets zustandslos und thread-sicher über eine \texttt{ConcurrentHashMap<String, Bucket>}, wobei die IP-Adresse des anfragenden Clients als Schlüssel dient. Jeder Client-IP wird ein Kontingent von maximal $10$ Tokens zugewiesen, welches sich nach dem "`greedy refill"'-Prinzip alle 60 Sekunden vollständig erneuert. Ist das Token-Kontingent erschöpft, bricht die Anfrage sofort ab und liefert den HTTP-Status \texttt{429 Too Many Requests} mitsamt einer standardisierten JSON-Fehlermeldung zurück.
 
-    \item \textbf{Spezifische Routen-Registrierung (\texttt{WebConfig.kt}):} Der Interceptor wurde über die \texttt{WebMvcConfigurer}-Klasse registriert. Aus Sicherheits- und Performancegründen wurde der Schutz bewusst exakt auf den Endpunkt \texttt{GET /api/patients} beschränkt. Administrative Endpunkte oder schreibende Operationen (wie \texttt{POST /api/patients/new}) sind hiervon nicht betroffen, da dort andere Schutzmechanismen greifen.
+\item \textbf{Spezifische Routen-Registrierung (\texttt{WebConfig.kt}):} Der Interceptor wurde über die \texttt{WebMvcConfigurer}-Klasse registriert. Der Schutz wird gezielt auf alle Endpunkte angewendet, die Such- oder Filteroperationen über verschlüsselte Daten mittels Blind Indizes ermöglichen. Hierzu zählen insbesondere die Ressourcen \texttt{/api/patients}, \texttt{/api/nurses}, \texttt{/api/doctors}, \texttt{/api/diagnoses}, \texttt{/api/medications} sowie \texttt{/api/bookings}. Administrative Endpunkte oder rein schreibende Operationen (z.\,B. das Anlegen neuer Datensätze) sind hiervon nicht betroffen, da dort kein Risiko systematischer Blind-Index-Angriffe besteht.
+
 \end{enumerate}
+
 
 \subsection{Konzeptionelle Einordnung und Bedrohungsmodell}
 
-In einem produktiven Krankenhausinformationssystem wird Rate Limiting nicht monolithisch, sondern feingranular und risikobasiert über die API-Landschaft gestaffelt. Tabelle~\ref{tab:rate_limiting} verdeutlicht die strategische Einordnung des implementierten Schutzes im Vergleich zu einer ganzheitlichen Architektur.
-
+Je nach Anwendungsfall und Sicherheitsanforderung können für unterschiedliche API-Endpunkte verschiedene Rate-Limiting-Richtlinien festgelegt werden. Tabelle~\ref{tab:rate_limiting} zeigt beispielhaft, wie solche Begrenzungen in einem Krankenhausinformationssystem eingesetzt werden können.
+%TODO: Joshua fragen
 \begin{table}[h]
     \centering
     \caption{Konzeptionelle Staffelung von Rate-Limiting-Richtlinien.}
     \label{tab:rate_limiting}
-    \begin{tabular}{l|l|p{7cm}}
+    \begin{tabular}{p{5cm}|p{2cm}|p{7cm}}
         \hline
         \textbf{API-Endpunkt} & \textbf{Limit} & \textbf{Sicherheitsrelevante Begründung} \\ \hline
         \texttt{POST /auth/login} & 5 / Min. & Schutz vor Brute-Force-Angriffen auf Benutzerpasswörter. \\
-        \textbf{\texttt{GET /api/patients} (Suche)} & \textbf{10 / Min.} & \textbf{Prävention von Wörterbuch-Attacken auf Blind Indizes.} \\
+        \textbf{\texttt{GET /api/* (Suche auf Blind Indizes)}} & \textbf{10 / Min.} & \textbf{Prävention von Wörterbuch-Attacken auf Blind Indizes verschlüsselter Patienten-, Arzt-, Pflegekraft-, Diagnose-, Medikations- und Buchungsdaten.} \\
         \texttt{GET /api/patients/\{id\}} & 60 / Min. & Legitime klinische Nutzung; kein Risiko für systematische Hash-Analysen. \\
         \textit{Interne Admin-Endpunkte} & 100+ / Min. & Höhere Toleranz, da exklusiv aus dem gesicherten Intranet erreichbar. \\ \hline
     \end{tabular}
