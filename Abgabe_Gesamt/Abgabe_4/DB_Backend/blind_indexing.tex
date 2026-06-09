@@ -1,7 +1,7 @@
-\section{Architektur-Entscheidung: Blind Indexing zur PII-Verschlüsselung}
+\section{Architektur-Entscheidung: Blind Indexing zur PII-Verschlüsselung (5123034, 5123060, \\5123097)}
 %TODO: alle verschlüsselten Felder + auch in Diagnosis auflisten
 Die Speicherung von personenbezogenen Daten (engl. \textit{Personally Identifiable Information}, PII) wie Namen, Geburtstagen oder Kontaktdaten in einem Krankenhausinformationssystem erfordert aufgrund strenger regulatorischer Vorgaben, wie der DSGVO, ein Höchstmaß an Datenschutz. 
-Die bloße Verschlüsselung der Daten im Ruhezustand (\textit{Encryption at Rest}) reicht jedoch nicht aus, wenn die Anwendung performant nach diesen Daten suchen muss.
+Die bloße Verschlüsselung der betroffenen Datensätze reicht jedoch nicht aus, wenn die Anwendung performant nach diesen Daten suchen muss.
 \\\\
 Hierfür wurden diverse Verschlüsselungsverfahren für die verschiedenen Attribute aus Tabelle \ref{tab:pii_verschluesselung_uebersicht} evaluiert, die im Nachfolgenden genauer erläutert werden:
 
@@ -31,8 +31,10 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
 \begin{enumerate}
     \item \textbf{Datenbank-seitige Entschlüsselung im Query-Verlauf}
     \begin{itemize}
-        \item \textit{Ansatz:} Die Daten werden probabilistisch verschlüsselt in der Datenbank abgelegt. Bei einer Suchanfrage entschlüsselt die Datenbank die Spalte on-the-fly, um den Vergleich durchzuführen (\texttt{WHERE decrypt(firstName) = 'Rollie'}).
-        \item \textit{Problem:} Dieser Ansatz erzwingt bei \textit{jeder} Suchanfrage einen \textbf{Full Table Scan} ($O(N)$-Komplexität), da auf verschlüsselten Daten keine standardmäßigen B-Baum-Indizes der Datenbank greifen. Bei einer wachsenden Patientenkartei führt dies unweigerlich zu erheblichen Performance-Einbußen. Zudem müsste der kryptografische Schlüssel auf dem Datenbankserver liegen, was das Prinzip der strikten Funktionstrennung (\textit{Zero-Trust} zwischen Applikationsserver und Datenhaltung) verletzt.
+        \item \textit{Ansatz:} Die Daten werden probabilistisch verschlüsselt in der Datenbank abgelegt. Bei einer Suchanfrage entschlüsselt die Datenbank die Spalte on-the-fly, um den Vergleich durchzuführen (\texttt{WHERE decrypt(firstName) = 'Max'}).
+        \item \textit{Problem:} Dieser Ansatz erzwingt bei \textit{jeder} Suchanfrage einen \textbf{Full Table Scan} mit einer Komplexität von $O(N)$, da auf verschlüsselten Daten keine standardmäßigen B-Baum-Indizes der Datenbank möglich sind. 
+        Bei einer wachsenden Patientenkartei führt dies unweigerlich zu erheblichen Performance-Einbußen.
+        \\Zudem müsste der kryptografische Schlüssel auf dem Datenbankserver liegen, was das Prinzip der strikten Funktionstrennung zwischen Applikationsserver und Datenbank verletzt.
     \end{itemize}
 
     %\item \textbf{Deterministische Verschlüsselung (z.\,B. AES-ECB / AES-CBC mit festem IV)}
@@ -41,21 +43,23 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
     %    \item \textit{Problem:} \textbf{Frequenzanalyse-Angriffe.} Wenn ein Angreifer Zugriff auf die Datenbank erlangt, sieht er zwar nicht die echten Namen, kann aber durch die Häufigkeit identischer Chiffretexte Muster erkennen (z.\,B. dass der Chiffretext für häufige Nachnamen wie "`Müller"' oder "`Schmidt"' inflationär oft auftaucht). Hierdurch wird die Anonymität der sensiblen Patientendaten stark gefährdet.
     %\end{itemize}
 
+    %TODO: hierzu eine Quelle finden!
     \item \textbf{Homomorphe Verschlüsselung / Searchable Symmetric Encryption (SSE)}
     \begin{itemize}
-        \item \textit{Ansatz:} Mathematische Verfahren, die komplexe Suchoperationen (inklusive Wildcards oder Bereichsabfragen) direkt auf Chiffretexten erlauben.
+        \item \textit{Ansatz:} Mathematische Verfahren, die komplexe Suchoperationen wie Wildcards direkt auf Chiffretexten erlauben.
         \item \textit{Problem:} Diese Technologien sind extrem rechenintensiv, hochkomplex in der Implementierung und werden von relationalen Standard-Datenbanken wie PostgreSQL nicht nativ in einer performanten Weise unterstützt.
     \end{itemize}
 \end{enumerate}
 
 \subsection{Die gewählte Lösung: Der Blind-Indexing-Ansatz}
 
-Um die Sicherheit einer probabilistischen Verschlüsselung mit der Geschwindigkeit von Datenbankindizes zu kombinieren, haben wir uns für das \textbf{Blind Indexing} entschieden.
+Um die Sicherheit einer probabilistischen Verschlüsselung mit der Geschwindigkeit von Datenbankindizes zu kombinieren, haben wir uns für \textbf{Blind Indexing} entschieden.
 
 \begin{itemize}
-    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das stark und unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen gesalzenen Hashwert (unter Verwendung eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist) und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}).
-    \item \textbf{Vorteil:} Auf diese \texttt{*Hash}-Spalten können wir standardmäßige Datenbank-Indizes legen. Die Suche erfolgt mit $O(1)$- oder $O(\log N)$-Geschwindigkeit, da die Anwendung den Suchbegriff vorab hasht und die Datenbank nur noch Hashes vergleicht. Ein Angreifer sieht in der Datenbank nur unlesbare Hashes ohne mathematischen Bezug zum Chiffretext, was Frequenzanalysen ohne Kenntnis des geheimen Schlüssels unmöglich macht.
-    \item \textbf{Kompromiss:} Da Hashes deterministisch und irreversibel sind, unterstützt dieses System systembedingt \textbf{nur exakte Treffer}. Teiltreffer-Suchen (\texttt{LIKE \%abc\%}) oder Bereichsabfragen ($\le$, $\ge$) sind für diese Felder technisch ausgeschlossen.
+    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen Hashwert mit der Hilfe eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}).
+    \item \textbf{Vorteil:} Auf diese Hash-Spalten können wir standardmäßige Datenbank-Indizes legen. Die Suche erfolgt mit $O(1)$- oder $O(\log N)$-Geschwindigkeit, da die Anwendung den Suchbegriff vorab hasht und die Datenbank nur noch Hashes vergleicht. Ein Angreifer sieht in der Datenbank nur unlesbare Hashes ohne mathematischen Bezug zum Chiffretext, was Frequenzanalysen ohne Kenntnis des geheimen Schlüssels unmöglich macht.
+    \item \textbf{Kompromiss:} Da Hashes deterministisch und irreversibel sind, unterstützt dieses System nur exakte Treffer. 
+    Teiltreffer-Suchen (\texttt{LIKE \%abc\%}) oder Bereichsabfragen ($\le$, $\ge$) sind für diese Felder ausgeschlossen.
 \end{itemize}
 
 \subsubsection{Kryptografische Algorithmen und Schlüsseltrennung}
@@ -63,23 +67,18 @@ Um die Sicherheit einer probabilistischen Verschlüsselung mit der Geschwindigke
 Die konkrete technische Umsetzung der kryptografischen Operationen ist in der Komponente \texttt{CryptoUtility.kt} gekapselt und basiert auf etablierten Industrie-Standards:
 
 \begin{itemize}
-    \item \textbf{Verschlüsselung mittels AES-256-GCM:} Für die Datenverschlüsselung wird der Advanced Encryption Standard (AES) mit einer Schlüssellänge von 256 Bit im Galois/Counter Mode (GCM) verwendet. GCM wurde explizit gewählt, da es sich um ein authentifiziertes Verschlüsselungsverfahren (engl. \textit{Authenticated Encryption with Associated Data}, AEAD) handelt. Dies garantiert neben der Vertraulichkeit auch den \textbf{Integritätsschutz} der Daten. Eine unbefugte Manipulation der Chiffretexte auf Datenbankebene wird beim Entschlüsselungsprozess im Applikationsserver hardwarunabhängig erkannt und führt zum Abbruch der Operation.
-    \item \textbf{Blind Index mittels HMAC-SHA256:} Der Blind Index wird als Keyed-Hash Message Authentication Code (HMAC) auf Basis von SHA-256 berechnet. Der dafür notwendige geheime Schlüssel (Salt/Pepper) wird ausschließlich zur Laufzeit aus den Umgebungsvariablen (\texttt{.env}) geladen und verlässt den Applikationsserver zu keinem Zeitpunkt.
-    \item \textbf{Sicherheitsrelevante Schlüsseltrennung via HKDF:} Um das Risiko bei einer potenziellen Kompromittierung zu minimieren, wird eine strikte kryptografische Separation durchgesetzt. Aus einem zentralen Master-Key wird mittels einer \textit{HMAC-based Extract-and-Expand Key Derivation Function} (HKDF-SHA256) ein separater, dedizierter Schlüssel für die HMAC-Berechnung abgeleitet. Da zwischen dem abgeleiteten Hash-Schlüssel und dem Verschlüsselungsschlüssel kein direkter mathematischer Zusammenhang existiert, kann ein Angreifer selbst bei einer hypothetischen Kompromittierung des Hash-Keys keinerlei Chiffretexte entschlüsseln.
+    \item \textbf{Verschlüsselung mittels AES-256-GCM:} Für die Datenverschlüsselung wird der Advanced Encryption Standard (AES) mit einer Schlüssellänge von 256 Bit im Galois/Counter Mode (GCM) verwendet. GCM wurde explizit gewählt, da es sich um ein authentifiziertes Verschlüsselungsverfahren (engl. \textit{Authenticated Encryption with Associated Data}, AEAD) handelt. 
+    \\Dies garantiert neben der Vertraulichkeit auch den \textbf{Integritätsschutz} der Daten. Eine unbefugte Manipulation der Chiffretexte auf Datenbankebene wird beim Entschlüsselungsprozess im Applikationsserver hardwarunabhängig erkannt und führt zum Abbruch der Operation.
+    \item \textbf{Blind Index mittels HMAC-SHA256:} Der Blind Index wird als Keyed-Hash Message Authentication Code (HMAC) auf Basis von SHA-256 berechnet. Der dafür notwendige geheime Schlüssel (Pepper) wird ausschließlich zur Laufzeit aus den Umgebungsvariablen (\texttt{.env}) geladen und verlässt den Applikationsserver zu keinem Zeitpunkt.
+    \item \textbf{Sicherheitsrelevante Schlüsseltrennung via HKDF:} Um das Risiko bei einer potenziellen Kompromittierung zu minimieren, wird eine strikte kryptografische Trennung durchgesetzt. Aus einem zentralen Master-Key wird mittels einer \textit{HMAC-based Extract-and-Expand Key Derivation Function} (HKDF-SHA256) ein separater, dedizierter Schlüssel für die HMAC-Berechnung abgeleitet. 
+    \\Da zwischen dem abgeleiteten Hash-Schlüssel und dem Verschlüsselungsschlüssel kein direkter mathematischer Zusammenhang existiert, kann ein Angreifer selbst bei einer hypothetischen Kompromittierung des Hash-Keys keinerlei Chiffretexte entschlüsseln.
 \end{itemize}
 
-Alle betroffenen Datenfelder wurden im Backend entsprechend modifizert und die Datenbankstruktur um die zusätzlichen \texttt{*Hash}-Spalten erweitert. 
+Alle betroffenen Datenfelder wurden im Backend entsprechend modifizert und die Datenbankstruktur um die zusätzlichen Hash-Spalten erweitert. 
 \\
 Beim Einfügen neuer Datensätze generiert die Applikation automatisch die verschlüsselten Werte und die zugehörigen Hashes, wodurch die Integrität der Blind-Indexing-Pipeline gewährleistet ist.
-Bei GET-Endpoints der API wird weiterehin die unverschlüsselte Version der Daten zurückgegeben, wodurch keine Veränderung für die Frontend-Integration entsteht. \\
-Alle Such- und Filteroperationen im Backend wurden jedoch so angepasst, dass sie über die Hash-Spalten laufen, um die Performance zu sichern.
-\\
-\\
-Auch die entsprechenden Import-Skripte mussten überarbeitet werden, was in der nachfolgenden Sektion detailliert beschrieben wird.
-
-
-
-Bei GET-Endpoints der REST-API wird weiterhin die unverschlüsselte Version der Daten zurückgegeben, wodurch keine Veränderung für die Frontend-Integration entsteht. Alle Such- und Filteroperationen im Backend wurden jedoch so angepasst, dass sie anstelle der verschlüsselten Textspalten gezielt die indizierten Hash-Spalten abfragen, um die Performance des Gesamtsystems zu sichern.
+Bei GET-Endpoints der REST-API wird weiterhin die unverschlüsselte Version der Daten zurückgegeben, wodurch keine Veränderung für die Frontend-Integration entsteht. 
+Alle Such- und Filteroperationen im Backend wurden jedoch so angepasst, dass sie anstelle der verschlüsselten Textspalten gezielt die indizierten Hash-Spalten abfragen, um die Performance des Gesamtsystems zu sichern.
 \\
 \\
 Auch die entsprechenden Import-Skripte mussten überarbeitet werden, was in der nachfolgenden Sektion detailliert beschrieben wird.
