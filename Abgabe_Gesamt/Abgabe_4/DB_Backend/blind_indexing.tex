@@ -46,7 +46,7 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
     %TODO: hierzu eine Quelle finden!
     \item \textbf{Homomorphe Verschlüsselung / Searchable Symmetric Encryption (SSE)}
     \begin{itemize}
-        \item \textit{Ansatz:} Mathematische Verfahren, die komplexe Suchoperationen wie Wildcards direkt auf Chiffretexten erlauben.
+        \item \textit{Ansatz:} Mathematische Verfahren, die komplexe Suchoperationen wie Wildcards direkt auf Chiffretexten erlauben (vgl. \cite{curtmola2006searchable}).
         \item \textit{Problem:} Diese Technologien sind extrem rechenintensiv, hochkomplex in der Implementierung und werden von relationalen Standard-Datenbanken wie PostgreSQL nicht nativ in einer performanten Weise unterstützt.
     \end{itemize}
 \end{enumerate}
@@ -56,7 +56,7 @@ Um dieses Problem zu lösen, wurden im Vorfeld verschiedene alternative Ansätze
 Um die Sicherheit einer probabilistischen Verschlüsselung mit der Geschwindigkeit von Datenbankindizes zu kombinieren, haben wir uns für \textbf{Blind Indexing} entschieden.
 
 \begin{itemize}
-    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen Hashwert mit der Hilfe eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}).
+    \item \textbf{Funktionsweise:} Neben dem eigentlichen Datenfeld, das unvorhersehbar verschlüsselt wird (z.\,B. \texttt{firstName}), generiert die Anwendung beim Speichern einen Hashwert mit der Hilfe eines geheimen \textit{Peppers}, der nur dem Applikationsserver bekannt ist und schreibt diesen in eine separate Spalte (z.\,B. \texttt{firstNameHash}) (vgl. \cite{vialar2024blindextee}).
     \item \textbf{Vorteil:} Auf diese Hash-Spalten können wir standardmäßige Datenbank-Indizes legen. Die Suche erfolgt mit $O(1)$- oder $O(\log N)$-Geschwindigkeit, da die Anwendung den Suchbegriff vorab hasht und die Datenbank nur noch Hashes vergleicht. Ein Angreifer sieht in der Datenbank nur unlesbare Hashes ohne mathematischen Bezug zum Chiffretext, was Frequenzanalysen ohne Kenntnis des geheimen Schlüssels unmöglich macht.
     \item \textbf{Kompromiss:} Da Hashes deterministisch und irreversibel sind, unterstützt dieses System nur exakte Treffer. 
     Teiltreffer-Suchen (\texttt{LIKE \%abc\%}) oder Bereichsabfragen ($\le$, $\ge$) sind für diese Felder ausgeschlossen.
