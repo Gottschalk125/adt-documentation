@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt]{report}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}   
@@ -14,8 +14,19 @@
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{biblatex}
+\usepackage{pgfplots}
+\usepackage{booktabs}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{titlesec}
+
+\titleformat{\chapter}[block]
+  {\normalfont\huge\bfseries}
+  {}
+  {0pt}
+  {}
+
+\pgfplotsset{compat=1.18}
 
 \definecolor{keyblue}{RGB}{20,105,176}
 \definecolor{valgreen}{RGB}{0,128,0}
@@ -42,17 +53,31 @@
 }
 
 \lstdefinelanguage{Kotlin}{
-  keywords={data, class, val, var, fun, null, true, false},
-  keywordstyle=\color{blue},
+  keywords={data, class, val, var, fun, null, true, false, @Entity, @Table, @Id, @GeneratedValue, @Temporal, @Column, @Convert, @ManyToOne, @JoinColumn},
+  keywordstyle=\color{blue}\bfseries,
   commentstyle=\color{gray},
-  stringstyle=\color{red},
+  stringstyle=\color{valgreen},
   morecomment=[l]{//},
   morecomment=[s]{/*}{*/},
   morestring=[b]"
 }
 
+\lstdefinestyle{kotlinstyle}{
+    language=Kotlin,
+    basicstyle=\ttfamily\small,
+    columns=fixed,
+    breaklines=true,
+    breakatwhitespace=true,
+    frame=single,
+    showstringspaces=false,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{valgreen}
+}
+
 \addbibresource{Abgabe_1/literature.bib}
 \addbibresource{Abgabe_2/literature.bib}
+\addbibresource{Abgabe_4/literature.bib}
 
 \graphicspath{
     {./Abgabe_1/}
@@ -75,28 +100,50 @@
 \begin{document}
 
 \maketitle
-\newpage
+
+\clearpage
 \tableofcontents
+\clearpage
 
-%TODO think about using Abgabe 1, ... as "supersections"
+\chapter{Abgabe 1}
 
-\include{Abgabe_1/Einleitung/einleitung}
-\include{Abgabe_1/Infrastruktur/text}
-\include{Abgabe_1/Daten_Quellen/text}
-\include{Abgabe_1/Bereiche_Datenmodell/Diagnosis}
-\include{Abgabe_1/Bereiche_Datenmodell/PatientsAndPerson}
-\include{Abgabe_1/Bereiche_Datenmodell/Rooms}
-\include{Abgabe_1/Bereiche_Datenmodell/KomplettesDiagramm}
-\include{Abgabe_2/DatenquellenUndVerarbeitung/person}
-\include{Abgabe_2/DatenquellenUndVerarbeitung/facilities}
-\include{Abgabe_2/DatenquellenUndVerarbeitung/medication}
-\include{Abgabe_2/Dateneinlesen/text}
-\include{Abgabe_2/BackendUndAPI/introduction}
-\include{Abgabe_2/BackendUndAPI/person}
-\include{Abgabe_2/BackendUndAPI/facilities}
-\include{Abgabe_2/BackendUndAPI/medication}
-\include{Abgabe_2/Frontend/text}
-\include{Abgabe_2/KI_Nutzung/kiNutzung}
+\input{Abgabe_1/Einleitung/einleitung}
+\input{Abgabe_1/Infrastruktur/text}
+\input{Abgabe_1/Daten_Quellen/text}
+\input{Abgabe_1/Bereiche_Datenmodell/Diagnosis}
+\input{Abgabe_1/Bereiche_Datenmodell/PatientsAndPerson}
+\input{Abgabe_1/Bereiche_Datenmodell/Rooms}
+\input{Abgabe_1/Bereiche_Datenmodell/KomplettesDiagramm}
+
+\chapter{Abgabe 2}
+
+\input{Abgabe_2/Einleitung/einleitung}
+\input{Abgabe_2/DatenquellenUndVerarbeitung/persons}
+\input{Abgabe_2/DatenquellenUndVerarbeitung/facilities}
+\input{Abgabe_2/DatenquellenUndVerarbeitung/medication}
+\input{Abgabe_2/Dateneinlesen/Dateneinlesen}
+\input{Abgabe_2/BackendUndAPI/introduction}
+\input{Abgabe_2/BackendUndAPI/person}
+\input{Abgabe_2/BackendUndAPI/facilities}
+\input{Abgabe_2/BackendUndAPI/medication}
+
+\chapter{Abgabe 3}
+
+\input{Abgabe_3/backend/indizes}
+\input{Abgabe_3/backend/benchmark_script}
+\input{Abgabe_3/backend/caching}
+\input{Abgabe_3/backend/entitygraph}
+\input{Abgabe_3/backend/pagination}
+\input{Abgabe_3/frontend/frontend}
+
+\chapter{Abgabe 4}
+
+\input{Abgabe_4/DB_Backend/blind_indexing}
+\input{Abgabe_4/DB_Backend/skripte}
+\input{Abgabe_4/DB_Backend/rate_limiting}
+\input{Abgabe_4/DB_Backend/input_validation}
+\input{Abgabe_4/Frontend/frontend}
+\input{Abgabe_4/KI_Nutzung/kiNutzung}
 
 \printbibliography
 
