@@ -1,12 +1,12 @@
-\section{Frontend}
+\section{Frontend (5123101, 5123026)}
 
-\subsection{Features}
- - Anzeige aller Patients, Doctors, Nurses, Departments, Stations und Drugs inklusive Pagination
- (siehe Abbildungen~\ref{fig:frontend-patients} bis~\ref{fig:frontend-drugs})
- 
- - Filter für die Anzeige jedes Datensatzes
- (siehe Abbildung~\ref{fig:frontend-filter})
- 
- - Alle Bookings und alle Dignosen zu jedem Patienten anzeigen
- (siehe Abbildungen~\ref{fig:frontend-patient-diagnoses} und~\ref{fig:frontend-patient-bookings})
- 
+\subsection{Funktionsumfang}
+
+\subsubsection{Grundanzeige}
+Das Frontend stellt eine zentrale Benutzeroberfläche zur Verwaltung und Anzeige der im Krankenhausinformationssystem gespeicherten Daten bereit. Über die seitliche Navigation können die Übersichtsseiten für Patienten, Ärzte, Pflegekräfte, Abteilungen, Stationen und Medikamente aufgerufen werden. Die jeweiligen Datensätze werden in einheitlich aufgebauten Tabellen dargestellt. Aufgrund der teilweise sehr großen Datenmengen erfolgt die Anzeige seitenweise mithilfe einer Pagination. Dadurch müssen nicht sämtliche Datensätze gleichzeitig geladen und dargestellt werden, was sowohl die Übersichtlichkeit als auch die Performanz der Anwendung verbessert. Die verschiedenen Übersichtsseiten sind in den Abbildungen~\ref{fig:frontend-patients} bis~\ref{fig:frontend-drugs} dargestellt.
+
+\subsubsection{Filterung und Suche}
+Zur gezielten Einschränkung der angezeigten Daten verfügt jede Übersichtsseite über einen an den jeweiligen Datentyp angepassten Filterbereich. Die Benutzer können beispielsweise nach Namen, Identifikationsnummern oder weiteren fachlich relevanten Eigenschaften suchen. Die eingegebenen Filterkriterien werden bei der Abfrage der Daten berücksichtigt, sodass ausschließlich passende Datensätze in der Tabelle angezeigt werden. Abbildung~\ref{fig:frontend-filter} zeigt beispielhaft den Aufbau und die Verwendung des Filterbereichs.
+
+\subsubsection{Detailanzeige Patienten}
+Für Patienten stehen darüber hinaus erweiterte Detailansichten und Aktionen zur Verfügung. Durch die Auswahl eines Patienten in der Tabellenansicht wird ein zusätzlicher Detailbereich geöffnet. Dieser ermöglicht die Anzeige aller zugehörigen Diagnosen und Buchungen. Die Diagnosen eines Patienten sind in Abbildung~\ref{fig:frontend-patient-diagnoses} dargestellt, während Abbildung~\ref{fig:frontend-patient-bookings} die vorhandenen Buchungen beziehungsweise Aufenthalte zeigt.
