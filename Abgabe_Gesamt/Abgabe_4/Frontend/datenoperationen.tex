@@ -1,0 +1,21 @@
+\subsection{Frontend-Datenoperationen (5123026)}
+
+Die betrachteten Commits erweitern die Patientenansicht von einer primär lesenden Oberfläche zu einer Oberfläche, die kontrollierte Datenänderungen auslösen kann. Zentral ist dabei eine neue HTTP-Abstraktion für JSON-Requests. Sie vereinheitlicht die Übertragung von Payloads, die Auswertung von Statuscodes und die Rückgabe feldbezogener Validierungsfehler. Dadurch werden Datenbankoperationen im Frontend nicht als isolierte Formularaktionen behandelt, sondern als nachvollziehbare Zustandsübergänge mit klarer Fehlerbehandlung.
+
+\subsubsection{Patienten- und Buchungsaktionen}
+
+Für Patienten wurde ein Erstellungsdialog ergänzt, der die notwendigen Personendaten als strukturierte Payload an den Backend-Endpunkt zur Patientenerstellung übermittelt. Die Oberfläche verarbeitet dabei auch mögliche Treffer bereits existierender Personen. Dadurch wird vermieden, dass für dieselbe reale Person unnötig neue Stammdatensätze entstehen. Auf Datenbankebene unterstützt dies die Konsistenz zwischen Person- und Patiententabelle, weil vorhandene Personen gezielt in die Patientenrolle übernommen werden können.
+
+Zusätzlich wurde die Detailansicht eines Patienten um Aktionen für Zimmerbuchungen erweitert. Neue Buchungen, Verlegungen und Entlassungen werden über eigene POST-Operationen ausgelöst. Die Oberfläche unterscheidet dabei, ob für einen Patienten aktuell eine relevante Buchung existiert. Als aktuelle Buchungen gelten insbesondere bestätigte oder eingecheckte Aufenthalte. Damit spiegelt das Frontend die fachliche Bedeutung der Buchungstabelle wider: Buchungen bilden nicht nur eine einfache Liste, sondern die zeitliche und zustandsbasierte Beziehung zwischen Patient und Zimmer. Nach jeder erfolgreichen Änderung werden die zugehörigen Patientendetails erneut geladen, damit die angezeigten Diagnosen und Buchungen dem persistierten Zustand entsprechen.
+
+\subsubsection{Statusfilter für Patienten}
+
+Ein weiterer Schwerpunkt ist der neue Mehrfachfilter für den Buchungsstatus von Patienten. Im Frontend werden mehrere ausgewählte Statuswerte als wiederholbare Query-Parameter übertragen. Das Backend übersetzt diese Werte in Spezifikationen auf der Buchungsebene. Für aktuell eingecheckte Patienten wird geprüft, ob eine Buchung mit dem Zustand \texttt{CHECKED\_IN} existiert, deren Zeitraum das aktuelle Datum umfasst. Für kommende Aufenthalte werden zukünftige Buchungen mit den Zuständen \texttt{PENDING} oder \texttt{CONFIRMED} betrachtet.
+
+Aus Sicht der Datenhaltung ist relevant, dass dieser Filter nicht auf verschlüsselten Personenattributen basiert. Er wird über die Relation zwischen Patient und Booking ausgewertet und kann deshalb mit den bestehenden exakten Personenfiltern kombiniert werden, ohne deren Einschränkungen durch verschlüsselte Felder und Blind-Index-Suche zu umgehen. Die Statuslogik bleibt damit relational modelliert, während personenbezogene Suchfelder weiterhin nur in der vorgesehenen, deterministischen Form filterbar sind.
+
+\subsubsection{Diagnosen, Medikamente und Dosierungen}
+
+Die Patientenaktionen wurden außerdem um das Anlegen von Diagnosen erweitert. Der Dialog lädt dafür Ärzte und Medikamente als Auswahlwerte und bildet anschließend die Abhängigkeiten der Datenbankobjekte in der Reihenfolge der Requests ab: Zuerst wird eine Dosierung erstellt, anschließend eine Medikation mit Bezug auf Dosierung und Medikament, danach die Diagnose mit Bezug auf Patient, Arzt und Medikation. Diese Reihenfolge entspricht den Fremdschlüsselabhängigkeiten der Domäne und verhindert, dass eine Diagnose ohne die benötigten Referenzdatensätze erzeugt wird.
+
+Ergänzend wurde backendseitig ein Endpunkt zum Erstellen von Dosierungen eingeführt. Dabei werden Menge und Frequenzmenge vor der Persistierung auf positive Werte geprüft. Im Frontend werden diese Werte typisiert erfasst und als numerische Angaben übertragen. Bestehende Diagnosen können aus der Detailansicht heraus beendet werden; die Aktion verändert damit den fachlichen Lebenszyklus einer Diagnose, ohne den historischen Datensatz zu löschen.
