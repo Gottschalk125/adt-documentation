@@ -17,28 +17,32 @@ Die Umsetzung des Ratenbegrenzungs-Mechanismus basiert auf dem etablierten Token
 \end{enumerate}
 
 
-\subsection{Konzeptionelle Einordnung und Bedrohungsmodell}
+\subsection{Wahl der Rate-Limiting-Parameter}
 
-Je nach Anwendungsfall und Sicherheitsanforderung können für unterschiedliche API-Endpunkte verschiedene Rate-Limiting-Richtlinien festgelegt werden. Tabelle~\ref{tab:rate_limiting} zeigt beispielhaft, wie solche Begrenzungen in einem Krankenhausinformationssystem eingesetzt werden können.
-%TODO: Joshua fragen
-\begin{table}[h]
-    \centering
-    \caption{Konzeptionelle Staffelung von Rate-Limiting-Richtlinien.}
-    \label{tab:rate_limiting}
-    \begin{tabular}{p{5cm}|p{2cm}|p{7cm}}
-        \hline
-        \textbf{API-Endpunkt} & \textbf{Limit} & \textbf{Sicherheitsrelevante Begründung} \\ \hline
-        \texttt{POST /auth/login} & 5 / Min. & Schutz vor Brute-Force-Angriffen auf Benutzerpasswörter. \\
-        \textbf{\texttt{GET /api/* (Suche auf Blind Indizes)}} & \textbf{10 / Min.} & \textbf{Prävention von Wörterbuch-Attacken auf Blind Indizes verschlüsselter Patienten-, Arzt-, Pflegekraft-, Diagnose-, Medikations- und Buchungsdaten.} \\
-        \texttt{GET /api/patients/\{id\}} & 60 / Min. & Legitime klinische Nutzung; kein Risiko für systematische Hash-Analysen. \\
-        \textit{Interne Admin-Endpunkte} & 100+ / Min. & Höhere Toleranz, da exklusiv aus dem gesicherten Intranet erreichbar. \\ \hline
-    \end{tabular}
-\end{table}
+Für die vorliegende Anwendung wurde ein einheitliches Rate Limit von
+10 Anfragen pro Minute und Client-IP umgesetzt. Nach Ablauf einer Minute
+wird das verfügbare Token-Kontingent automatisch wieder aufgefüllt.
+Dieser Wert wurde bewusst niedrig gewählt, um die Funktionsweise des
+Schutzmechanismus während der Entwicklung und Validierung leicht
+nachvollziehbar zu machen und Wörterbuch-Angriffe auf die verwendeten
+Blind Indizes wirksam einzuschränken.
 
-Der dedizierte Fokus auf den Patienten-Suchendpunkt demonstriert ein präzises Verständnis der zugrundeliegenden Krypto-Architektur: Es wird exakt die Schnittstelle abgesichert, die aufgrund der deterministischen Natur des Blind Indexes den primären Angriffsvektor darstellt.
+In einem produktiven Krankenhausinformationssystem würden die konkreten
+Grenzwerte abhängig vom erwarteten Nutzerverhalten und der
+Systemauslastung festgelegt werden. Dabei wären deutlich höhere Limits
+denkbar, beispielsweise mehrere hundert oder tausend Anfragen innerhalb
+eines definierten Zeitraums. Solche Werte liegen in der Regel weit über
+dem Anfragevolumen eines normalen Benutzers, können jedoch bei
+automatisierten Angriffen erreicht werden.
+
+Zusätzlich wäre es möglich in produktiven Umgebungen weitergehende
+Maßnahmen einzusetzen, etwa längere Sperrzeiten nach Überschreiten des
+Limits, gestaffelte Strafzeiten oder die temporäre Blockierung
+auffälliger Clients. Dadurch steigt der Aufwand für automatisierte
+Wörterbuch- und Brute-Force-Angriffe erheblich, während legitime Nutzer
+im Normalbetrieb nicht beeinträchtigt werden.
 
 \subsection{Validierung und Verifikation}
-
 Die Funktion der Ratenbegrenzung wurde mittels automatisierter HTTP-Anfragen im Terminal verifiziert. Dabei simuliert eine Schleife zwölf sequentielle Aufrufe des geschützten Such-Endpunkts in direkter Abfolge:
 
 \begin{verbatim}
@@ -47,6 +51,16 @@ for i in $(seq 1 12); do
   curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/api/patients"
   echo
 done
+\end{verbatim}
+
+für MacOS bzw. unter Windows:
+
+\begin{verbatim}
+for /L %i in (1,1,12) do (
+    echo Request %i:
+    curl -s -o NUL -w "%{http_code}" http://localhost:8080/api/patients
+    echo.
+)
 \end{verbatim}
 
 Das Testergebnis bestätigt die korrekte Funktionsweise der Middleware: Die ersten zehn Anfragen werden erfolgreich verarbeitet (HTTP 200), während die Anfragen 11 und 12 aufgrund des erschöpften Token-Buckets blockiert werden (HTTP 429).
