@@ -21,7 +21,7 @@ implementiert und nutzt dabei das \textit{Jakarta Bean Validation}-Ökosystem (H
     \item \textbf{Geburtsdatums-Validierung (\texttt{@ValidBirthday}):} Diese Logik erzwingt das standardisierte Datumsformat \texttt{ISO\_LOCAL\_DATE} 
     (\texttt{YYYY-MM-DD}). Gleichzeitig wird über eine semantische Prüfung verifiziert, dass das angegebene Datum zwingend in der Vergangenheit liegt. 
     Dies verhindert logische Artefakte und sichert eine homogene Datenbasis für die Berechnung des \texttt{birthdayHash}.
-    \item \textbf{Telefonnummern-Validierung (\texttt{@ValidGermanPhone}):} Über das Custom-Constraint \texttt{ValidGermanPhone.kt} und den regulären Ausdruck 
+    \item \textbf{Telefonnummern-Validierung (\texttt{@ValidGermanPhone}):} Über das Custom-Constraint \texttt{ValidGermanPhone.kt} und den regulären Ausdruck \\
     \texttt{\^{}(+49|0049|0)[1-9][0-9\textbackslash s\textbackslash-/\textbackslash.]\{5,14\}\$} wird eine syntaktische Prüfung deutscher Rufnummern erzwungen. 
     Das Muster deckt gängige Formate wie \texttt{+49 30 12345678}, \texttt{030 12345678} sowie Mobilfunknummern (z.\,B. \texttt{0176 12345678}) ab und toleriert 
     typische Trennzeichen bei der Eingabe.
@@ -67,7 +67,8 @@ domänenspezifische Fehlermeldungen:
 \begin{verbatim}
 "firstName: Name enthält unzulässige Sonderzeichen (XSS/Script-Schutz)"
 "plz: PLZ muss genau 5 Ziffern enthalten (z.B. 80331)"
-"birthday: Geburtsdatum muss im Format YYYY-MM-DD vorliegen und in der Vergangenheit liegen"
+"birthday: Geburtsdatum muss im Format 
+YYYY-MM-DD vorliegen und in der Vergangenheit liegen"
 "phoneNumber: Ungültiges Format für eine deutsche Telefonnummer"
 "email: Muss eine wohlgeformte E-Mail-Adresse sein"
 \end{verbatim}
